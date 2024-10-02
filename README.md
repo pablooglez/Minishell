@@ -36,4 +36,28 @@ Minishell is a miniature shell program based on Bash. Minishell supports:
 
 However, Minishell does not support `\`, `;`, `&&`, `||`, or wildcards.
 
----
+## Mini-guide for branch usage
+### Available Branches
+- main
+- dev-pablooglez
+- dev-israelalcaide
+
+### Branch commands
+- Check available branches: git branch
+- Create new branch: git branch name | Ex: git branch dev-israelalcaide
+- Change branches: git checkout name | Ex: git checkout dev-pablooglez
+- Update actual branch with main branch: git rebase main
+
+### Things to do before starting / Update dev branch to be like main
+- [ ] Check [Network Graph](https://github.com/pablooglez/minishell/network)
+- [ ] git pull (on main and your dev branch)
+- [ ] Go to your working dev branch using git checkout
+- [ ] Update your dev branch to be up to date with main -> git rebase main
+
+
+### Things to do after coding
+- [ ] Add and commit each change (as specified as possible) - on the dev branch
+- [ ] Push your commits
+- [ ] Merge dev branch with main with a merge pull request on Github (or merge on local + push)
+- [ ] git checkout main
+- [ ] git pull (on main) to check changes
