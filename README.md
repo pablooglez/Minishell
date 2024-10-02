@@ -39,13 +39,13 @@ However, Minishell does not support `\`, `;`, `&&`, `||`, or wildcards.
 ## Mini-guide for branch usage
 ### Available Branches
 - main
-- dev-pablooglez
-- dev-israelalcaide
+- dev-pablogon
+- dev-albelope
 
 ### Branch commands
 - Check available branches: git branch
-- Create new branch: git branch name | Ex: git branch dev-israelalcaide
-- Change branches: git checkout name | Ex: git checkout dev-pablooglez
+- Create new branch: git branch name | Ex: git branch dev-albelope
+- Change branches: git checkout name | Ex: git checkout dev-pablogon
 - Update actual branch with main branch: git rebase main
 
 ### Things to do before starting / Update dev branch to be like main
