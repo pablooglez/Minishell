@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/03 20:56:48 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/10/03 21:19:57 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int main(int argc, char **argv, char **env)
 
 	while (shell.running)
 	{
-		input = readline(PROMPT);
+		input = readline("minishell>");
 		if (!input)
 		{
 			printf("exit\n");
