@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/03 19:26:03 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/10/03 20:56:48 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,17 @@ int main(int argc, char **argv, char **env)
 		if (!input)
 		{
 			printf("exit\n");
-			break ;
+			continue; ;
 		}
 
 		command = parse_input(input);
-		if (command)
+		if (!command)
 		{
-			printf("Entendí que quieres hacer: %s\n", command->path);
-			i = 0;
-			while (command->arguments && command->arguments[i])
-			{
-				printf("Argumento %d: %s\n", i, command->arguments[i]);
-				i++;
-			}
+			free(input);
+			continue;
 		}
+		if (execute_command(command, &shell) == -1)
+			ft_error("Error: Command not found\n", &shell, 1);
 		free(input);
 		free_command(command);
 	}
