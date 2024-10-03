@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/03 14:10:17 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/10/03 15:05:05 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # include <readline/history.h>
 # include "../Libft/libft.h"
 
-# define PROMPT "minishell> "
+# define PROMPT "minishell>"
 
 typedef struct s_minishell
 {
@@ -44,16 +44,14 @@ typedef struct s_command
 {
 	char	*command; //Comando principal (ejemplo: "ls")
 	char	**arguments; // Argumentos del comando (ejemplo: ["-l"])
-	int		is_pipe; //Indica si el comando esta conectadoa una pipe
+	int		pipe; //Indica si el comando esta conectadoa una pipe
 	char	*input_file; //Gestionar redirecciones de entrada
 	char	*output_file; //Gestionar redirecciones de salida
-	int		append; // 1 si se usa '>>' o 0 si '>'
+	int		append; // 1 si se usa '>>' o 0 si se usa '>'
 	int		background; // 1 si el comando debe ejecutarse en segundo plano ('&')
 	int		redirection_error; //Código error para redirecciones (Ejemplo: Permisos denegados)
 	struct s_command	*next; //Siguiente comando en las listas (Para Pipes)
 }	t_command;
-
-
 
 
 //--------------FUNCIONES PARSING---------------//
