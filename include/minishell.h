@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/03 21:28:00 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/10/03 21:55:03 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,16 @@
 # define MAGENTA	"\033[35m"
 # define CYAN		"\033[36m"
 
+enum e_error {
+	MEMORY = 20,
+	CMD_NOT_FOUND = 21
+};
+
+typedef struct s_redir
+{
+	int		type;												//Tipo de redirreción (<, >, >>)
+	char	*ruta;												//Ruta del archivo para la redirecci
+}	t_redir;
 
 typedef struct s_cmd
 {
@@ -48,12 +58,6 @@ typedef struct s_cmd
 	struct s_cmd	*next;										//Siguiente comando en las listas (para pipes)
 	struct s_cmd	*prev;										//Comando anterior en la lista (para pipes)
 }	t_cmd;
-
-typedef struct s_redir
-{
-	int		type;												//Tipo de redirreción (<, >, >>)
-	char	*ruta;												//Ruta del archivo para la redirecci
-}	t_redir;
 
 typedef struct s_env
 {
@@ -89,7 +93,7 @@ void		free_command(t_cmd *cmd);							// Libera memoria asignada a un comando
 void		cleanup_minishell(t_minishell *shell);				// Liberar recursos minishell
 
 //-----------------ERROR-----------------------//
-void		ft_error(t_minishell *shell, char *msg, int exit_code);
+void		ft_error(t_minishell *shell, int code, char * value);
 
 
 

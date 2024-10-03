@@ -6,7 +6,7 @@
 #    By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/02 21:15:23 by pablogon         ###   ########.fr        #
+#    Updated: 2024/10/03 21:53:36 by pablogon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ HEADERS := -I include -I$(LIBFT)
 ##                              SOURCE AND OBJECTS                            ##
 ################################################################################
 
-SRCS	:= 
+SRCS	:= src/main.c \
+			src/error.c \
 
 SRCS_PARSER =
 
