@@ -6,13 +6,13 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:55:18 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/03 19:51:52 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/10/03 21:31:16 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_error(char *msg, t_minishell *shell, int exit_code)
+void	ft_error(t_minishell *shell, char *msg, int exit_code)
 {
 	write (2, msg, ft_strlen(msg));
 	write (2, "\n", 1);

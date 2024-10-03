@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/03 20:55:29 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/10/03 21:28:00 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,14 @@
 # include <readline/history.h>
 # include "../Libft/libft.h"
 
-# define PROMPT "minishell>"
+# define WHITE		"\033[0m"
+# define BOLD		"\033[1m"
+# define GREEN		"\033[0;32m"
+# define RED		"\033[0;31m"
+# define BLUE		"\033[0;34m"
+# define YELLOW		"\033[33m"
+# define MAGENTA	"\033[35m"
+# define CYAN		"\033[36m"
 
 
 typedef struct s_cmd
@@ -82,7 +89,7 @@ void		free_command(t_cmd *cmd);							// Libera memoria asignada a un comando
 void		cleanup_minishell(t_minishell *shell);				// Liberar recursos minishell
 
 //-----------------ERROR-----------------------//
-void		ft_error(char *msg, t_minishell *shell, int exit_code)
+void		ft_error(t_minishell *shell, char *msg, int exit_code);
 
 
 
