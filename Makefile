@@ -6,7 +6,7 @@
 #    By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/03 21:53:36 by pablogon         ###   ########.fr        #
+#    Updated: 2024/10/04 18:38:18 by pablogon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,7 +77,7 @@ head:
 
 
 libft:
-	@make -C $(LIBFT_DIR)
+	@make -s -C $(LIBFT_DIR)
 
 $(NAME): line $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC)
 	@echo "✦ ---------------------- ✦$(END)"
@@ -89,20 +89,20 @@ $(NAME): line $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC)
 
 line:
 	@echo "$(GREEN) $(BOLD)"
-	@echo " Compiling Minishell...$(END) $(GREEN)"
+	@echo " COMPILING MINSHELL...$(END) $(GREEN)"
 	@echo "✦ ---------------------- ✦"
 
 clean:
-	@printf "\n$(YELLOW) 🗑   Removing objects...$(END)"
+	@echo "\n$(YELLOW) 🗑 Removing objects...$(END)"
 	@$(RM) $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC)
-	@echo "$(GREEN)\r  ✓  $(RED)Removed  objects from $(NAME) $(END)"
-	@make clean -s -C $(LIBFT)
+	@echo "$(GREEN)\r✓ $(RED)Removed objects from $(NAME) $(END)"
+	@make clean -s -C $(LIBFT_DIR)
 	
 fclean: clean
-	@printf "\n$(YELLOW) 🗑   Removing... $(NAME) $(END)"
+	@echo "\n$(YELLOW) 🗑 Removing... $(NAME) $(END)"
 	@$(RM) $(NAME)
-	@make fclean -s -C $(LIBFT)
-	@echo "$(GREEN)\r"  ✓  $(RED) Removed $(NAME) $(END)\n"
+	@make fclean -s -C $(LIBFT_DIR)
+	@echo "$(GREEN)\r✓ $(RED)Removed $(NAME) $(END)\n"
 
 re: fclean all
 

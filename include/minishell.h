@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/03 21:55:03 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/10/04 18:01:50 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void		free_command(t_cmd *cmd);							// Libera memoria asignada a un comando
 void		cleanup_minishell(t_minishell *shell);				// Liberar recursos minishell
 
 //-----------------ERROR-----------------------//
-void		ft_error(t_minishell *shell, int code, char * value);
+void		ft_error(t_minishell *shell, int code, char * value, int should_exit);
 
 
 

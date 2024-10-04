@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/03 21:58:06 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/10/04 18:02:57 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void * safe_malloc(t_minishell *shell, size_t size) {
 
 	tmp = malloc(size);
 	if (!tmp)
-		ft_error(shell, MEMORY, NULL);
+		ft_error(shell, MEMORY, NULL, 1);
 	return (tmp);
 }
 
@@ -46,7 +46,7 @@ int main(int argc, char **argv, char **env)
 {
 	t_minishell	shell;
 	//char	*input;
-	//t_cmd	*command;	
+	//t_cmd	*command;
 	(void) argc;
 	(void) argv;
 	

@@ -1,3 +1,18 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/10/04 18:24:23 by pablogon          #+#    #+#              #
+#    Updated: 2024/10/04 18:38:24 by pablogon         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+################################################################################
+##                              COMPILATION INFO                              ##
+################################################################################
 LIB = ar rcs
 RM = rm -f
 
@@ -5,6 +20,10 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 NAME = libft.a
+
+################################################################################
+##                              SOURCE AND OBJECTS                            ##
+################################################################################
 
 SRCS =  ft_bzero.c ft_isalpha.c ft_isdigit.c ft_memcpy.c ft_memchr.c \
 ft_memmove.c ft_memset.c ft_memcmp.c ft_strlen.c ft_strlcpy.c \
@@ -22,11 +41,31 @@ OFILES = $(SRCS:.c=.o)
 BOFILES = $(BSRCS:.c=.o)
 INCLUDE = libft.h
 
+################################################################################
+##                                   COLORS                                   ##
+################################################################################
+
+END=\033[0m
+BOLD=\033[1m
+RED=\033[0;31m
+GREEN=\033[0;32m
+YELLOW=\033[33m
+BLUE=\033[0;34m
+MAGENTA=\033[35m
+CYAN=\033[36m
+WHITE=\033[37m
+
+################################################################################
+##                                   RULES                                    ##
+################################################################################
+
 all: $(NAME)
 
 $(NAME):$(OFILES) $(INCLUDE)
 	@$(LIB) $(NAME) $(OFILES)
-	@echo "Compiling Libft + Get_next_line..."
+	@echo "$(GREEN) $(BOLD)"
+	@echo "COMPILING LIBFT + GET_NEXT_LINE...$(END) $(GREEN)"
+	@echo "✦ ---------------------- ✦"
 
 bonus: $(NAME) $(BOFILES) $(INCLUDE)
 	$(LIB) $(NAME) $(BOFILES) 
@@ -40,4 +79,5 @@ fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all
+
 .PHONY: all clean fclean re ar bonus
