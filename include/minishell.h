@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/04 18:01:50 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/10/04 19:57:41 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ enum e_error {
 typedef struct s_redir
 {
 	int		type;												//Tipo de redirreción (<, >, >>)
-	char	*ruta;												//Ruta del archivo para la redirecci
+	char	*ruta;												//Ruta del archivo para la redireccion
 }	t_redir;
 
 typedef struct s_cmd
 {
-	char	*path;												//Comando principal (ejemplo: "ls")
-	char	**arguments;										// Argumentos del comando (ejemplo: ["-l"])
+	char	*path;												//Comando principal (ejemplo: "/bin/ls")
+	char	**arguments;										// Argumentos del comando (ejemplo:[ls] ["-l"])
 	int		pipe[2];											//Descriptor de archivo para el pipe
 	t_redir	*redir;												//Redirecciones de entrada y de salida
 	struct s_cmd	*next;										//Siguiente comando en las listas (para pipes)
