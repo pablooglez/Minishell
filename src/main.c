@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/04 18:02:57 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/10/04 20:03:47 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,5 @@ int main(int argc, char **argv, char **env)
 	// 	free(input);
 	// 	free_command(command);
 	// }
-	return (0);
+
 }
