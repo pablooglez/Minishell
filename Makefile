@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+         #
+#    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/04 18:38:18 by pablogon         ###   ########.fr        #
+#    Updated: 2024/10/08 20:18:47 by pabloglez        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,8 @@ HEADERS := -I include -I$(LIBFT)
 
 SRCS	:= src/main.c \
 			src/error.c \
+			src/free_utils.c \
+			src/utils.c \
 
 SRCS_PARSER =
 
@@ -64,7 +66,7 @@ all: libft $(NAME)
 
 head:
 	@echo "$(GREEN)$(BOLD)"
-	@echo "\t███    ███ ██ ███    ██ ██ ███████ ██   ██ ███████ ██             "
+	@echo "\t███    ███ ██ ███    ██ ██ ███████ ██   ██ ███████ ██      ██      "
 	@echo "\t████  ████ ██ ████   ██ ██ ██      ██   ██ ██      ██      ██      "
 	@echo "\t██ ████ ██ ██ ██ ██  ██ ██ ███████ ███████ █████   ██      ██      "
 	@echo "\t██  ██  ██ ██ ██  ██ ██ ██      ██ ██   ██ ██      ██      ██      "
@@ -93,13 +95,13 @@ line:
 	@echo "✦ ---------------------- ✦"
 
 clean:
-	@echo "\n$(YELLOW) 🗑 Removing objects...$(END)"
+	@echo "\n$(YELLOW) 🗑  Removing objects...$(END)"
 	@$(RM) $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC)
 	@echo "$(GREEN)\r✓ $(RED)Removed objects from $(NAME) $(END)"
 	@make clean -s -C $(LIBFT_DIR)
 	
 fclean: clean
-	@echo "\n$(YELLOW) 🗑 Removing... $(NAME) $(END)"
+	@echo "\n$(YELLOW) 🗑  Removing $(NAME)...$(END)"
 	@$(RM) $(NAME)
 	@make fclean -s -C $(LIBFT_DIR)
 	@echo "$(GREEN)\r✓ $(RED)Removed $(NAME) $(END)\n"
