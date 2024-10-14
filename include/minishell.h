@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/08 20:40:17 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/09 17:24:05 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ typedef struct s_minishell
 //-------------FUNCIONES MAIN------------------//
 void		exit_shell(t_minishell *shell);						// Función para salir del shell limpiamente.
 void		init_minishell(t_minishell *shell, char **env);		// Inicializa el shell con las variables de entorno.
-
+int			add_history(const char *);							//Añade un comando al historial
 //----------------------ERROR-----------------------//
 void		fatal(int code, char *value);						// Maneja errores críticos que requieren la salida inmediata del shell.
 void		ft_error(t_minishell *shell, int code, char * value, int should_exit); // Maneja errores y opcionalmente termina la ejecución.
