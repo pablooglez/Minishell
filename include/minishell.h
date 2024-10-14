@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/09 17:24:05 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/14 19:58:31 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,5 +149,14 @@ int			handle_builtin(t_cmd *cmd, t_minishell *shell);		// Maneja la ejecución d
 void		handle_redirection(t_cmd *cmd);						// Maneja las redirecciones de entrada y salida.
 void		handle_pipes(t_cmd *cmd);							// Maneja la ejecución de comandos conectados por pipes.
 void		signal_handler(int signal);							// Función para manejar señales del sistema como Ctrl+C o Ctrl+D.
+
+//--------------BUILT-INS------------//
+void		ft_cd(t_minishell *shell, char **arg);
+void		ft_echo(t_minishell *shell, char **arg);
+void		ft_pwd(t_minishell *shell);
+void		ft_export(t_minishell *shell, char **arg);
+void		ft_unset(t_minishell *shell, char **arg);
+void		ft_env(t_minishell *shell);
+void		ft_exit(t_minishell *shell);
 
 #endif
