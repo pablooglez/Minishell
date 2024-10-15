@@ -6,7 +6,9 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:33 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/14 20:00:34 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/15 20:15:27 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 

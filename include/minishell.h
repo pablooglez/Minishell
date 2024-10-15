@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/14 19:58:31 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/15 19:02:14 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,13 +124,14 @@ typedef struct s_minishell
 void		exit_shell(t_minishell *shell);						// Función para salir del shell limpiamente.
 void		init_minishell(t_minishell *shell, char **env);		// Inicializa el shell con las variables de entorno.
 int			add_history(const char *);							//Añade un comando al historial
+
+//---------------------ENV-------------------------//
+void		*safe_malloc(t_minishell *shell, size_t size);		// Asigna memoria de forma segura, manejando errores.
+void		create_env_vars(t_minishell *shell, char **env);	// Crea una lista de variables de entorno desde el entorno del sistema.
+
 //----------------------ERROR-----------------------//
 void		fatal(int code, char *value);						// Maneja errores críticos que requieren la salida inmediata del shell.
 void		ft_error(t_minishell *shell, int code, char * value, int should_exit); // Maneja errores y opcionalmente termina la ejecución.
-
-//-------------------UTILS-------------------------//
-void		*safe_malloc(t_minishell *shell, size_t size);		// Asigna memoria de forma segura, manejando errores.
-void		create_env_vars(t_minishell *shell, char **env);	// Crea una lista de variables de entorno desde el entorno del sistema.
 
 //-----------------FREE_UTILS---------------------//
 void		*free_tokens(t_cmd **tokens);						// Libera la memoria asociada a los tokens.
@@ -139,10 +140,14 @@ void		free_redir(t_redir **redir);						// Libera la memoria asociada a las redi
 void		*free_shell(t_minishell **shell);					// Libera toda la memoria del shell.
 void		free_env_list(t_env	**l_env);						// Libera la memoria de la lista de variables de entorno.
 
+//-------------------UTILS---------------------//
+char		*ft_strncpy(char *dest, const char *src, size_t n);
+char		*ft_strndup(const char *s, size_t n);
+
 //--------------FUNCIONES PARSING---------------//
 t_cmd		*parse_input(char *input_line, t_minishell *shell); // Función para separar la línea de entrada en tokens (comandos y operadores).
 
-//--------------FUNCIONES EXECUTION------------//
+//--------------FUNCIONES EXECUTION-------------//
 int			heardoc(t_minishell *shell);						// Implementación del heredoc para redirección.
 int			execute_command(t_minishell *shell);				// Ejecuta un comando individual.
 int			handle_builtin(t_cmd *cmd, t_minishell *shell);		// Maneja la ejecución de comandos internos (builtins).
@@ -150,13 +155,22 @@ void		handle_redirection(t_cmd *cmd);						// Maneja las redirecciones de entrad
 void		handle_pipes(t_cmd *cmd);							// Maneja la ejecución de comandos conectados por pipes.
 void		signal_handler(int signal);							// Función para manejar señales del sistema como Ctrl+C o Ctrl+D.
 
-//--------------BUILT-INS------------//
+//--------------BUILT-INS----------------------//
+//------------------CD---------------//
+char		*get_env_value(t_env *env_list, char *key);
+void		update_env_var(t_env **env_list, char *key, char *value);
 void		ft_cd(t_minishell *shell, char **arg);
+//------------------ECHO---------------//
 void		ft_echo(t_minishell *shell, char **arg);
+//------------------PWD----------------//
 void		ft_pwd(t_minishell *shell);
+//------------------EXPORT-------------//
 void		ft_export(t_minishell *shell, char **arg);
+//------------------UNSET--------------//
 void		ft_unset(t_minishell *shell, char **arg);
+//------------------ENV----------------//
 void		ft_env(t_minishell *shell);
+//------------------EXIT---------------//
 void		ft_exit(t_minishell *shell);
 
 #endif
