@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/09 16:50:06 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/15 20:21:51 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*read_input(void)									// Función que se encarga de leer la entr
 void	exit_shell(t_minishell *shell)							//Función que se encarga de liberar recursos y salir del shell.
 {
 	int	status;
-	
+
 	status = shell->exit_status;								// Guarda el estado de salida del shell.
 	printf("exit\n");											// Muestra el mensaje "exit" en la terminal.
 	if(shell->tokens)											// Si existen tokens creados durante la ejecución...

@@ -6,7 +6,7 @@
 #    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/08 20:18:47 by pabloglez        ###   ########.fr        #
+#    Updated: 2024/10/15 20:12:16 by pabloglez        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,14 +31,19 @@ HEADERS := -I include -I$(LIBFT)
 ##                              SOURCE AND OBJECTS                            ##
 ################################################################################
 
-SRCS	:= src/main.c \
+SRCS	:= src/env.c \
 			src/error.c \
 			src/free_utils.c \
+			src/main.c \
 			src/utils.c \
 
 SRCS_PARSER =
 
-SRCS_EXEC = 
+SRCS_EXEC = src_exec/built-ins/built-ins.c\
+			src_exec/built-ins/cd.c \
+			src_exec/built-ins/echo.c \
+			src_exec/built-ins/env.c \
+			src_exec/execute.c \
 
 OBJS		:= ${SRCS:.c=.o}
 OBJS_PARSER	:= ${SRCS_PARSER:.c=.o}
