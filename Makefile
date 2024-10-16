@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+         #
+#    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/04 18:38:18 by pablogon         ###   ########.fr        #
+#    Updated: 2024/10/16 12:11:25 by albelope         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ MINISHELL = include/
 LIBFT_DIR = ./Libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-HEADERS := -I include -I$(LIBFT)
+HEADERS := -I include -I$(LIBFT_DIR) ## CAMBIADO A LIBFT_DIR PARA QUE COJA LA LIBRERIA LIBFT##
 
 ################################################################################
 ##                              SOURCE AND OBJECTS                            ##
@@ -34,8 +34,11 @@ HEADERS := -I include -I$(LIBFT)
 SRCS	:= src/main.c \
 			src/error.c \
 
-SRCS_PARSER =
-
+SRCS_PARSER =src_parsing/read_input.c src_parsing/tokenize.c \
+				src_parsing/parse_input.c src_parsing/handle_quotes.c \
+				src_parsing/handle_char.c src_parsing/handle_pipes.c \
+				src_parsing/command_utils.c src_parsing/code_checks.c \
+				src_parsing/handle_redirections.c
 SRCS_EXEC = 
 
 OBJS		:= ${SRCS:.c=.o}
@@ -81,8 +84,8 @@ libft:
 
 $(NAME): line $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC)
 	@echo "✦ ---------------------- ✦$(END)"
-	@$(CC) $(CFLAGS) $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC) $(LIBFT) $(HEADERS) $(LINK) -o $(NAME)
-
+	@$(CC) $(CFLAGS) $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC) $(LIBFT) $(HEADERS) $(LINK) -lreadline -o $(NAME)
+####AÑADIDO -LREADLINE PARA QUE FUNCIONE LA LIBRERIA DE READLINE#####
 %.o: %.c $(MINISHELL)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 	@echo "$(GREEN) ✓ Compiled: $(notdir $<)"

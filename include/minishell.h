@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/04 19:57:41 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/10/16 13:55:47 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,29 @@ enum e_error {
 	CMD_NOT_FOUND = 21
 };
 
+typedef enum e_redir_type
+{
+	REDIR_OUT = 1,											// >
+	REDIR_APPEND,   										// >>
+	REDIR_IN,       										// <
+	REDIR_HEREDOC    										// <<
+}	t_redir_type;
+
 typedef struct s_redir
 {
-	int		type;												//Tipo de redirreción (<, >, >>)
-	char	*ruta;												//Ruta del archivo para la redireccion
+	t_redir_type	type;									//Tipo de redirreción (<, >, >>)
+	char			*ruta;									//CHANGE NAME	Ruta del archivo para la redireccion
+	struct s_redir	*next;
 }	t_redir;
 
 typedef struct s_cmd
 {
-	char	*path;												//Comando principal (ejemplo: "/bin/ls")
-	char	**arguments;										// Argumentos del comando (ejemplo:[ls] ["-l"])
-	int		pipe[2];											//Descriptor de archivo para el pipe
-	t_redir	*redir;												//Redirecciones de entrada y de salida
-	struct s_cmd	*next;										//Siguiente comando en las listas (para pipes)
-	struct s_cmd	*prev;										//Comando anterior en la lista (para pipes)
+	char			*path;									//Comando principal (ejemplo: "/bin/ls")
+	char			**arguments;							// Argumentos del comando (ejemplo:[ls] ["-l"])
+	int				pipe[2];								//Descriptor de archivo para el pipe
+	t_redir			*redir;									//Redirecciones de entrada y de salida
+	struct s_cmd	*next;									//Siguiente comando en las listas (para pipes)
+	struct s_cmd	*prev;									//Comando anterior en la lista (para pipes)
 }	t_cmd;
 
 typedef struct s_env
@@ -76,9 +85,21 @@ typedef struct s_minishell
 }	t_minishell;
 
 //--------------FUNCIONES PARSING---------------//
-void		read_input(void);									//Lee la entrada del usuario
-t_cmd		*parse_input(char *input_line);						//Separa la entrada en tokens y crea el comando (parsing)
+char		*read_input(void);									//Lee la entrada del usuario ##CAMBIADO TIPO CHAR EN VEZ DE VOID##
+char		**tokenize_input(char *input);
+void		free_tokens(char **tokens);
+t_cmd		*parse_input(char *input_line, t_minishell *shell);	//Separa la entrada en tokens y crea el comando (parsing)
 char		*expand_env_vars(char *input, char **env);			//Gestiona la expansion de variables de entorno($USER, $?)
+int			handle_quotes(char *input, int i, char **tokens, int *j);
+bool		is_quote(char c);
+int			handle_special_char(char *input, int i, char **tokens, int *j);
+int			is_special_char(char c);
+t_cmd   	*create_new_command(t_minishell *shell);  				// Declaración de create_new_command
+int    		process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell); // Declaración de process_token_pipe
+int    		process_arguments(char **tokens, int *i, t_cmd *cmd);  // Declaración de process_arguments
+void		display_commands(t_cmd *cmd);
+int			process_redirection(char **tokens, int *i, t_cmd *cmd);
+int			get_redirection_type(char *token);
 
 //--------------FUNCIONES EXECUTION------------//
 int			heardoc(t_minishell *shell);
@@ -91,6 +112,7 @@ void		signal_handler(int signal);							//Gestion de señales (Ctrl+C , Ctrl + D
 //-------------FUNCIONES MAIN------------------//
 void		free_command(t_cmd *cmd);							// Libera memoria asignada a un comando
 void		cleanup_minishell(t_minishell *shell);				// Liberar recursos minishell
+void		*ft_safe_malloc(t_minishell *shell, size_t size);
 
 //-----------------ERROR-----------------------//
 void		ft_error(t_minishell *shell, int code, char * value, int should_exit);

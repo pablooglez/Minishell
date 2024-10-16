@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/04 20:03:47 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:42:34 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void * safe_malloc(t_minishell *shell, size_t size) {
+void	*ft_safe_malloc(t_minishell *shell, size_t size)
+{
 	void * tmp;
 
 	tmp = malloc(size);
@@ -21,7 +22,7 @@ void * safe_malloc(t_minishell *shell, size_t size) {
 	return (tmp);
 }
 
-void	create_env_vars(t_minishell *shell, char **env)
+/*void	create_env_vars(t_minishell *shell, char **env)
 {
 	int	i;
 	i = 0;
@@ -33,44 +34,44 @@ void	create_env_vars(t_minishell *shell, char **env)
 		node = safe_malloc(shell, sizeof(t_env));
 		i++;
 	}
-}
+}*/
 
-void	init_minishell(t_minishell *shell, char **env)
+/*void	init_minishell(t_minishell *shell, char **env)
 {
 	ft_memset(shell, 0, sizeof(t_minishell));
 	create_env_vars(shell, env);
 	shell->running = 1;
-}
+}*/
 
 int main(int argc, char **argv, char **env) 
 {
-	t_minishell	shell;
-	//char	*input;
-	//t_cmd	*command;
-	(void) argc;
-	(void) argv;
+	t_minishell		shell;
+	char			*input;
+	t_cmd			*command;
 	
-	init_minishell(&shell, env);
-
-	// while (shell.running)
-	// {
-	// 	input = readline("minishell>");
-	// 	if (!input)
-	// 	{
-	// 		printf("exit\n");
-	// 		continue;
-	// 	}
-
-	// 	command = parse_input(input);
-	// 	if (!command)
-	// 	{
-	// 		free(input);
-	// 		continue;
-	// 	}
+	(void)argc;
+	(void)argv;
+	(void)env;
+	
+	// init_minishell(&shell, env);
+	shell.running = 1;
+	while (shell.running)
+	{
+		input = read_input();
+		if (!input)
+			break ;
+		command = parse_input(input, &shell);
+		if (!command)
+		{
+			free(input);
+			continue;
+		}
 	// 	if (execute_command(command, &shell) == -1)
-	// 		ft_error(&shell, 1, NULL);
-	// 	free(input);
-	// 	free_command(command);
-	// }
-
+	// 		ft_error(&shell, 1, NULL)
+		free(input);
+		free(command->path);
+		free_tokens(command->arguments);
+		free(command);
+	}
+	return (0);
 }
