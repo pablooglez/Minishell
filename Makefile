@@ -6,7 +6,7 @@
 #    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/17 18:56:21 by pabloglez        ###   ########.fr        #
+#    Updated: 2024/10/17 19:41:04 by pabloglez        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS_EXEC = src_exec/built-ins/built-ins.c\
 			src_exec/built-ins/cd.c \
 			src_exec/built-ins/echo.c \
 			src_exec/built-ins/env.c \
+			src_exec/built-ins/pwd.c \
 			src_exec/execute.c \
 
 SRCS_PARSER = src_parsing/read_input.c src_parsing/tokenize.c \

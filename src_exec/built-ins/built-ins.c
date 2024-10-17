@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:15:09 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/17 19:09:49 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/17 19:40:09 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int	handle_builtin(t_cmd *cmd, t_minishell *shell)
 		ft_cd(shell, cmd->arguments);								//Llama a la función personalizada para "cd"
 		return (1);													//Retorna 1 para indicar que es un comando builtin
 	}
-	/*else if (ft_strncmp(cmd->arguments[0], "pwd", 4) == 0)			//Comprobamos si el comando es "pwd"
+	else if (ft_strncmp(cmd->arguments[0], "pwd", 4) == 0)			//Comprobamos si el comando es "pwd"
 	{
 		ft_pwd(shell);												//Llama a la función personalizada para "pwd"
 		return (1);													//Retorna 1 para indicar que es un comando builtin
 	}
-	else if(ft_strncmp(cmd->arguments[0], "export", 7) == 0)		//Comprobamos si el comando es "export"
+	/*else if(ft_strncmp(cmd->arguments[0], "export", 7) == 0)		//Comprobamos si el comando es "export"
 	{
 		ft_export(shell, cmd->arguments);							//Llama a la función personalizada para "export"
 		return (1);													//Retorna 1 para indicar que es un comando builtin
