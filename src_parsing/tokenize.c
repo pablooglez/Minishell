@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 18:52:02 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/17 20:20:37 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ char	**tokenize_input(char *input)
     {
         while (input[i] == ' ')
             i++;
+         printf("(TOKENIZE_INPUT.c)	Procesando carácter:	(%c)-> in POS: %d\n", input[i], i);
         if (process_token(input, &i, tokens, &j) == -1)
         {
             free_tokens_parse(tokens);
@@ -135,6 +136,7 @@ char	**tokenize_input(char *input)
             i++;
     }
     tokens[j] = NULL;
+    printf("(TOKENIZE_INPUT.c)      Tokens OK Núm tokens:	%d\n", j);
     return (tokens);
 }
  // IMPLEMENTAR SI I = -1. LIBERAR TOKENS EN CADA ACCION.

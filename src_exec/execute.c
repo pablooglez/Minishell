@@ -6,11 +6,11 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/17 13:18:24 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:22:29 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 int	execute_command(t_minishell *shell)
 {
@@ -20,8 +20,12 @@ int	execute_command(t_minishell *shell)
 	
 	while(cmd)																//Comienza un bucle que continua hasta que haya comandos para procesar
 	{
+		printf("(EXECUTE_COMMAND())	Comando a ejecutar: 	%s\n", cmd->arguments[0]);
 		if (handle_builtin(cmd, shell))										//Verificamos primero si se trata de un comando especial(built-ins[echo, cd, pwd, export, unset, env, exit]);
+		{ 									
+			printf("(EXECUTE_COMMAND())     Ejecutando built-in:     %s\n", cmd->path);
 			return (0);														//Si es un comando interno, sale de la función sin terminar
+		}
 		//if (cmd->next && cmd->next->type == PIPE)							//Comprueba si existe luego un comando y si es un PIPE
 		//	handle_pipes(cmd);												//Maneja la ejecución de comandos conectados por pipes
 		else																//Si no hay pipe después del comando actual...

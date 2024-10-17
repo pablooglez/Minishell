@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/17 18:49:12 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/17 20:24:39 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,29 @@ int main(int argc, char **argv, char **env)						// Función principal del progr
 
 	while (true)												// Bucle infinito para mantener el shell ejecutándose continuamente.
 	{
-		input = read_input();									// Llama a la función "read_input" para obtener la entrada del usuario.
+		input = read_input();	
+		printf("(MAIN.c)		Input es:		%s\n", input);								// Llama a la función "read_input" para obtener la entrada del usuario.
 		if (!input)												// Si no se recibe ninguna entrada (posible EOF)...
 			exit_shell(&shell);									// ...se llama a "exit_shell" para liberar recursos y salir del shell.
 		else if (input[0] != '\0')								// Si la entrada no está vacía...
-		{
-			parse_input(ft_strdup(input), &shell);				// Llama a la función de parseo (implementada por ALBELOPE).
-			if (shell.tokens)									// Si hay tokens después del parseo...
-				execute_command(&shell);						// ...llama a la función de ejecución de comandos (implementada por PABLOGON).
+		{ 
+			printf("(MAIN.c) 		Input es:		%s\n", input);
+			shell.tokens = parse_input(ft_strdup(input), &shell);				// Llama a la función de parseo (implementada por ALBELOPE).
+			if (shell.tokens)
+			{
+				t_cmd *cmd = shell.tokens;
+				while (cmd)
+				{
+					printf("(MAIN.c) 		Procesando comando:	%s\n", cmd->path);
+					cmd = cmd->next;
+				}
+				execute_command(&shell);
+			}
+			else
+			{
+				printf("(MAIN.c)ERROR: shell.tokens no esta asignado\n");	
+			}								
+										// ...llama a la función de ejecución de comandos (implementada por PABLOGON).
 		}
 		free(input);											// Libera la memoria ocupada por la entrada del usuario después de procesarla.
 	}

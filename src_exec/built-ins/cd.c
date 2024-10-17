@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:54:51 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/17 19:09:55 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/17 20:20:17 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	update_env_var(t_env **env_list, char *key, char *value)					//Función par
 void	ft_cd(t_minishell *shell, char **arg)										//Función para manejar el comando "cd" (cambiar directorio)
 {
 	char	*dir;																	//Variable para almacenar el directorio al que se desea cambiar.
-	char	cwd[PATH_MAX];															//Buffer para almacenar el directorio actual.
+	char	cwd[PATH_MAX];															//Buffer para almacenar el directorio actual. INLCUIR LIMITS.H?
 
 	if (!arg[1])																	//Si no se proporciona un argumento (es decir, el usuario solo escribió 'cd')...
 	{

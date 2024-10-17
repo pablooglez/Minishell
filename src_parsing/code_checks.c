@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   code_checks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:16:23 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 18:51:13 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/17 20:20:25 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void display_commands(t_cmd *cmd)
     current = cmd;
     while (current)
     {
-        printf("Command: %s\n", current->path);
+        printf("(DISPLAY_COMMANDS())    Command:		%s\n", current->path);
         i = 0;
         while (current->arguments && current->arguments[i])
         {
-            printf("Argument %d: %s\n", i, current->arguments[i]);
+            printf("(DISPLAY_COMMAND())	Argument%d:		%s\n", i, current->arguments[i]);
             i++;
         }
         if (current->redir)

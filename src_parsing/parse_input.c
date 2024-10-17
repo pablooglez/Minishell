@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 18:51:55 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/17 20:20:33 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,32 @@ int process_arguments(char **tokens, int *i, t_cmd *cmd)
    llamo a `process_arguments` para almacenarlo en el comando. */
 int process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
 {
-    int i;
+    int i = 0;
 
-    i = 0;
-    while (tokens[i])
-    {
-        if (process_token_pipe(tokens, &i, &current_cmd, shell) == -1)
+    printf("(PROCESS_TOKENS())  	Procesando tokens...\n");
+    while (tokens[i]) {
+        printf("(PROCESS_TOKENS())  	Procesando token: 	%s\n", tokens[i]);
+
+        if (process_token_pipe(tokens, &i, &current_cmd, shell) == -1) {
+            printf("(PROCESS_TOKENS())  Error: Fallo en process_token_pipe\n");
             return (-1);
-        if (process_redirection(tokens, &i, current_cmd) == 0)
+        }
+
+        if (process_redirection(tokens, &i, current_cmd) == 0) {
+            printf("(PROCESS_TOKENS())  Redirección detectada: %s\n", tokens[i]);
             continue;
-        if (process_arguments(tokens, &i, current_cmd) == -1)
+        }
+
+        if (process_arguments(tokens, &i, current_cmd) == -1) {
+            printf("(PROCESS_TOKENS())  Error: Fallo en process_arguments\n");
             return (-1);
+        }
+
+        i++;
     }
     return (0);
 }
+
 
 /* Tokeniza la entrada y estructura los comandos en una lista doblemente enlazada.
    Esta función es el punto de partida. Toma la línea de input que el usuario
@@ -92,22 +104,38 @@ t_cmd *parse_input(char *input_line, t_minishell *shell)
 {
     char    **tokens;
     t_cmd   *cmd;
+    int     i;
+
+    printf("(PARSE_INPUT())					%s\n", input_line);  // Depuración
 
     tokens = tokenize_input(input_line);   // Tokenizamos la entrada
-    if (!tokens || !tokens[0])
+    if (!tokens || !tokens[0]) {
+        printf("Error: No se encontraron tokens\n");
         return (NULL);
+    }
+    i = 0;
+    while (tokens[i]) {
+        printf("(PARSE_INPUT())     	Token %d:		%s\n", i, tokens[i]);  // Imprime los tokens
+        i++;
+    }
+
     cmd = initialize_first_command(shell);
-    if (!cmd)
+    if (!cmd) {
+        printf("(PARSE_INPUT()) Error: No se pudo inicializar el primer comando\n");
         return (NULL);
-    if (process_tokens(tokens, cmd, shell) == -1)
-    {
+    }
+
+    if (process_tokens(tokens, cmd, shell) == -1) {
+        printf("(PARSE_INPUT()) Error: Fallo en process_tokens\n");
         free_tokens_parse(tokens);
         return (NULL);
     }
+
     free_tokens_parse(tokens);
-    display_commands(cmd);
-    return (cmd); 
+    display_commands(cmd);  // Verifica que los comandos estén bien formados
+    return (cmd);
 }
+
 
 
 
