@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   built-ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:15:09 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/15 18:27:56 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/17 13:17:40 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
 int	handle_builtin(t_cmd *cmd, t_minishell *shell)
 {
@@ -24,7 +24,7 @@ int	handle_builtin(t_cmd *cmd, t_minishell *shell)
 		ft_cd(shell, cmd->arguments);								//Llama a la función personalizada para "cd"
 		return (1);													//Retorna 1 para indicar que es un comando builtin
 	}
-	else if (ft_strncmp(cmd->arguments[0], "pwd", 4) == 0)			//Comprobamos si el comando es "pwd"
+	/*else if (ft_strncmp(cmd->arguments[0], "pwd", 4) == 0)			//Comprobamos si el comando es "pwd"
 	{
 		ft_pwd(shell);												//Llama a la función personalizada para "pwd"
 		return (1);													//Retorna 1 para indicar que es un comando builtin
@@ -38,7 +38,7 @@ int	handle_builtin(t_cmd *cmd, t_minishell *shell)
 	{
 		ft_unset(shell, cmd->arguments);							//Llama a la función personalizada para "unset"
 		return (1);													//Retorna 1 para indicar que es un comando builtin
-	}
+	}*/
 	else if (ft_strncmp(cmd->arguments[0], "env", 4) == 0)			//Comprobamos si el comando es "env"
 	{
 		ft_env(shell);												//Llama a la función personalizada para "env"

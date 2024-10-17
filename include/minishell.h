@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/15 19:02:14 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/17 13:20:24 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <readline/readline.h> 								// readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay, add_history
 # include <readline/history.h>
 # include "../Libft/libft.h"
+# include <limits.h>
 
 //----------------- COLOR MACROS --------------------------//
 # define WHITE		"\033[0m"									// Código de escape ANSI para color blanco.
@@ -123,7 +124,40 @@ typedef struct s_minishell
 //-------------FUNCIONES MAIN------------------//
 void		exit_shell(t_minishell *shell);						// Función para salir del shell limpiamente.
 void		init_minishell(t_minishell *shell, char **env);		// Inicializa el shell con las variables de entorno.
-int			add_history(const char *);							//Añade un comando al historial
+void		add_history(const char *);							//Añade un comando al historial
+//--------------FUNCIONES PARSING---------------//
+char		*read_input(void);									//Lee la entrada del usuario ##CAMBIADO TIPO CHAR EN VEZ DE VOID##
+char		**tokenize_input(char *input);
+void		free_tokens_parse(char **tokens);
+t_cmd		*parse_input(char *input_line, t_minishell *shell);	//Separa la entrada en tokens y crea el comando (parsing)
+char		*expand_env_vars(char *input, char **env);			//Gestiona la expansion de variables de entorno($USER, $?)
+int			handle_quotes(char *input, int i, char **tokens, int *j);
+bool		is_quote(char c);
+int			handle_special_char(char *input, int i, char **tokens, int *j);
+int			is_special_char(char c);
+t_cmd   	*create_new_command(t_minishell *shell);  				// Declaración de create_new_command
+int    		process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell); // Declaración de process_token_pipe
+int    		process_arguments(char **tokens, int *i, t_cmd *cmd);  // Declaración de process_arguments
+void		display_commands(t_cmd *cmd);
+int			process_redirection(char **tokens, int *i, t_cmd *cmd);
+int			get_redirection_type(char *token);
+
+//--------------FUNCIONES EXECUTION------------//
+int			heardoc(t_minishell *shell);
+//int			execute_command(t_cmd *cmd, t_minishell *shell);	//Ejecuta un comando individual
+int			handle_builtin(t_cmd *cmd, t_minishell *shell);		//Maneja comandos internos (built-ins)
+void		handle_redirection(t_cmd *cmd);						//Maneja redirecciones de entrada y de salida
+void		handle_pipes(t_cmd *cmd);							//Maneja pipes entre comandos
+void		signal_handler(int signal);							//Gestion de señales (Ctrl+C , Ctrl + D, Ctrl + \)
+
+//-------------FUNCIONES MAIN------------------//
+void		free_command(t_cmd *cmd);							// Libera memoria asignada a un comando
+void		cleanup_minishell(t_minishell *shell);				// Liberar recursos minishell
+void		*ft_safe_malloc(t_minishell *shell, size_t size);
+//-------------FUNCIONES MAIN------------------//
+void		exit_shell(t_minishell *shell);						// Función para salir del shell limpiamente.
+void		init_minishell(t_minishell *shell, char **env);		// Inicializa el shell con las variables de entorno.
+void		add_history(const char *);							//Añade un comando al historial
 
 //---------------------ENV-------------------------//
 void		*safe_malloc(t_minishell *shell, size_t size);		// Asigna memoria de forma segura, manejando errores.

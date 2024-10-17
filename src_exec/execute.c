@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/15 19:02:37 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/17 13:18:24 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ int	execute_command(t_minishell *shell)
 	{
 		if (handle_builtin(cmd, shell))										//Verificamos primero si se trata de un comando especial(built-ins[echo, cd, pwd, export, unset, env, exit]);
 			return (0);														//Si es un comando interno, sale de la función sin terminar
-		if (cmd->next && cmd->next->type == PIPE)							//Comprueba si existe luego un comando y si es un PIPE
-			handle_pipes(cmd);												//Maneja la ejecución de comandos conectados por pipes
+		//if (cmd->next && cmd->next->type == PIPE)							//Comprueba si existe luego un comando y si es un PIPE
+		//	handle_pipes(cmd);												//Maneja la ejecución de comandos conectados por pipes
 		else																//Si no hay pipe después del comando actual...
 		{
 			pid_t pid = fork();												//Creamos un nuevo proceso hijo usando fork()
 			if (pid == 0)													//Verificamos si estamos en el proceso hijo
 			{
-				handle_redirection(cmd);									//Maneja las redirecciones de entrada y de salida
+				//handle_redirection(cmd);									//Maneja las redirecciones de entrada y de salida
 				if (execvp(cmd->arguments[0], cmd->arguments) == -1)		//Ejecutamos el comando con execvpe
 					ft_error(shell, CMD_NOT_FOUND, cmd->arguments[0], 1);	//Manejar el error si falla execvp()
 			}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/15 20:21:51 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/17 13:10:08 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 volatile sig_atomic_t	g_signal;
 
-static char	*read_input(void)									// Función que se encarga de leer la entrada del usuario.
+/*static char	*read_input(void)									// Función que se encarga de leer la entrada del usuario.
 {
 	char	*input;
 
@@ -22,7 +22,7 @@ static char	*read_input(void)									// Función que se encarga de leer la entr
 	if (input && input[0] != '\0')								// Si la entrada no es nula y no está vacía...
 		add_history(input);										// ...se añade la entrada a la historia de comandos para poder recuperarla luego con las teclas de flecha.
 	return(input);												// Retorna la entrada del usuario.
-}
+}*/
 
 void	exit_shell(t_minishell *shell)							//Función que se encarga de liberar recursos y salir del shell.
 {
@@ -61,8 +61,8 @@ int main(int argc, char **argv, char **env)						// Función principal del progr
 		else if (input[0] != '\0')								// Si la entrada no está vacía...
 		{
 			parse_input(ft_strdup(input), &shell);				// Llama a la función de parseo (implementada por ALBELOPE).
-			if (shell.tokens)									// Si hay tokens después del parseo...
-				execute_command(&shell);						// ...llama a la función de ejecución de comandos (implementada por PABLOGON).
+			//if (shell.tokens)									// Si hay tokens después del parseo...
+			//	execute_command(&shell);						// ...llama a la función de ejecución de comandos (implementada por PABLOGON).
 		}
 		free(input);											// Libera la memoria ocupada por la entrada del usuario después de procesarla.
 	}

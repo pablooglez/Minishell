@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:48:22 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/08 20:52:53 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/17 13:04:57 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
