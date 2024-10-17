@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:43:54 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/16 18:40:11 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 18:51:30 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 /*
 ** Verifica si el pipe esta bien, si no hay comando antes del pipe (i = 0) o después.

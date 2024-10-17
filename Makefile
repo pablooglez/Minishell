@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
+#    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/17 13:14:03 by albelope         ###   ########.fr        #
+#    Updated: 2024/10/17 18:56:21 by pabloglez        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ MINISHELL = include/
 LIBFT_DIR = ./Libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-HEADERS := -I include -I$(LIBFT_DIR) ## CAMBIADO A LIBFT_DIR PARA QUE COJA LA LIBRERIA LIBFT##
+HEADERS := -I include -I$(LIBFT_DIR)
 
 ################################################################################
 ##                              SOURCE AND OBJECTS                            ##
@@ -72,10 +72,10 @@ WHITE=\033[37m
 ##                                   RULES                                    ##
 ################################################################################
 
-all: libft $(NAME)
+all: head libft $(NAME)
 
 head:
-	@echo "$(GREEN)$(BOLD)"
+	@echo "$(CYAN)$(BOLD)"
 	@echo "\t███    ███ ██ ███    ██ ██ ███████ ██   ██ ███████ ██      ██      "
 	@echo "\t████  ████ ██ ████   ██ ██ ██      ██   ██ ██      ██      ██      "
 	@echo "\t██ ████ ██ ██ ██ ██  ██ ██ ███████ ███████ █████   ██      ██      "
@@ -85,7 +85,7 @@ head:
 	@echo "$(BOLD)\t        42MLG: by pablogon && albelope$(END)"
 	@echo "\tProyect: $(CYAN)minishell$(END)"
 	@echo "\tCommands: $(CYAN)all clean fclean re $(END)"
-	@echo "$(BLUE)\t🛠   Compiler: $(BOLD)$(CC)$(END)\n"
+	@echo "$(BLUE)\t🛠 Compiler: $(BOLD)$(CC)$(END)\n"
 
 
 libft:
@@ -94,7 +94,7 @@ libft:
 $(NAME): line $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC)
 	@echo "✦ ---------------------- ✦$(END)"
 	@$(CC) $(CFLAGS) $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC) $(LIBFT) $(HEADERS) $(LINK) -lreadline -o $(NAME)
-####AÑADIDO -LREADLINE PARA QUE FUNCIONE LA LIBRERIA DE READLINE#####
+
 %.o: %.c $(MINISHELL)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 	@echo "$(GREEN) ✓ Compiled: $(notdir $<)"

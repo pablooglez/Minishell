@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:53:22 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 13:09:49 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 18:51:19 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 /* CREAR NUEVA ESTRUCTURA T_CMD
     Cada vez que el usuario ingresa un comando le damos e inicialimos los

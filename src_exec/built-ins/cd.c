@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:54:51 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/17 13:15:59 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 19:09:55 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 char	*get_env_value(t_env *env_list, char *key)									//Función para buscar una variable de entorno de la lista
 {

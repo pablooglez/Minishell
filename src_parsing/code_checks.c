@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   code_checks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:16:23 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 12:47:39 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 18:51:13 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 void display_commands(t_cmd *cmd)
 {

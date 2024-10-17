@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:32:11 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/16 16:24:19 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 18:51:35 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 /*sencilla. Solo revisa si un carácter es una comilla simple o comilla doble. 
  ayuda a identificar cuándo comienza y cuándo termina una cadena que está 

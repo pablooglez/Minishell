@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 12:42:18 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 18:51:55 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 /* Inicializa el primer comando y crea la lista de comandos.
 Lo que hago aquí es crear la estructura del primer comando con la función

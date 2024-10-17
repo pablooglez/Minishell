@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/17 13:20:24 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 18:43:37 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ typedef struct s_minishell
 //-------------FUNCIONES MAIN------------------//
 void		exit_shell(t_minishell *shell);						// Función para salir del shell limpiamente.
 void		init_minishell(t_minishell *shell, char **env);		// Inicializa el shell con las variables de entorno.
-void		add_history(const char *);							//Añade un comando al historial
+
 //--------------FUNCIONES PARSING---------------//
 char		*read_input(void);									//Lee la entrada del usuario ##CAMBIADO TIPO CHAR EN VEZ DE VOID##
 char		**tokenize_input(char *input);
@@ -157,8 +157,6 @@ void		*ft_safe_malloc(t_minishell *shell, size_t size);
 //-------------FUNCIONES MAIN------------------//
 void		exit_shell(t_minishell *shell);						// Función para salir del shell limpiamente.
 void		init_minishell(t_minishell *shell, char **env);		// Inicializa el shell con las variables de entorno.
-void		add_history(const char *);							//Añade un comando al historial
-
 //---------------------ENV-------------------------//
 void		*safe_malloc(t_minishell *shell, size_t size);		// Asigna memoria de forma segura, manejando errores.
 void		create_env_vars(t_minishell *shell, char **env);	// Crea una lista de variables de entorno desde el entorno del sistema.

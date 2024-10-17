@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_char.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 17:49:52 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 12:42:02 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 18:51:26 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 /*VERIFICAR SI EL CARACTER ES UN CARACTER ESPECIAL (PIPES, REDIRECCIONES, ETC.)
 	EN LA SINTAXIS DE SHELL (MINISHELL), */

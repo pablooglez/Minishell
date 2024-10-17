@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 12:42:36 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 18:52:02 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 /*
    Libera el array de tokens que fue creado durante la tokenización.
    - tokens: es un array de cadenas (strings) que representa los tokens generados

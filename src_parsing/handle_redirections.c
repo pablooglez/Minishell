@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:57:47 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 12:48:58 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 18:51:42 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 
 /* La función se encarga de identificar qué tipo de redirección es, es decir, si
