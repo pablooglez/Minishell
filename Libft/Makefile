@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+         #
+#    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 18:24:23 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/04 18:38:24 by pablogon         ###   ########.fr        #
+#    Updated: 2024/10/17 20:40:29 by albelope         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ all: $(NAME)
 $(NAME):$(OFILES) $(INCLUDE)
 	@$(LIB) $(NAME) $(OFILES)
 	@echo "$(GREEN) $(BOLD)"
-	@echo "COMPILING LIBFT + GET_NEXT_LINE...$(END) $(GREEN)"
+	@echo "COMPILING LIBFT $(END) $(GREEN)"
 	@echo "✦ ---------------------- ✦"
 
 bonus: $(NAME) $(BOFILES) $(INCLUDE)

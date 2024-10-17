@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
+#    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/17 19:41:04 by pabloglez        ###   ########.fr        #
+#    Updated: 2024/10/17 20:39:58 by albelope         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,6 @@ SRCS	:= src/env.c \
 			src/free_utils.c \
 			src/main.c \
 			src/utils.c \
-
 
 SRCS_EXEC = src_exec/built-ins/built-ins.c\
 			src_exec/built-ins/cd.c \
