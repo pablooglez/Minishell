@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:57:47 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/16 16:37:27 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 12:48:58 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ int	get_redirection_type(char *token)
 	if (!token)
 		return (-1);
 	if (ft_strncmp(token, ">", 1) == 0 && ft_strlen(token) == 1)
-		return (REDIR_OUT);
+		return (OUTFILE);
 	else if (ft_strncmp(token, ">>", 2) == 0 && ft_strlen(token) == 2)
-		return (REDIR_APPEND);
+		return (APPEND);
 	else if (ft_strncmp(token, "<", 1) == 0 && ft_strlen(token) == 1)
-		return (REDIR_IN);
+		return (INFILE);
 	else if (ft_strncmp(token, "<<", 2) == 0 && ft_strlen(token) == 2)
-		return (REDIR_HEREDOC);
+		return (HEREDOC);
 	return (-1);
 }
 /*
@@ -56,8 +56,8 @@ int	create_and_add_redirection(t_cmd *cmd, int type, char *file)
 	if (!new_redir)
 		return (-1);
 	new_redir->type = type;
-	new_redir->ruta = ft_strdup(file);
-	if (!new_redir->ruta)
+	new_redir->file = ft_strdup(file);
+	if (!new_redir->file)
 	{
 		free(new_redir);
 		return (-1);
@@ -121,7 +121,7 @@ void	free_redirections(t_redir *redir)
 	{
 		temp = redir;
 		redir = redir->next;
-		free(temp->ruta);
+		free(temp->file);
 		free(temp);
 	}
 }

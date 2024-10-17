@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 17:49:52 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/14 13:48:35 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 12:42:02 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int handle_special_char(char *input, int i, char **tokens, int *j)
         temp = ft_substr(input, i, 2);
         if (!temp)
         {
-            free_tokens(tokens);
+            free_tokens_parse(tokens);
             return (-1);
         }
         tokens[*j] = temp;
@@ -53,7 +53,7 @@ int handle_special_char(char *input, int i, char **tokens, int *j)
     temp = ft_substr(input, i, 1);
     if (!temp)
     {
-        free_tokens(tokens);
+        free_tokens_parse(tokens);
         return (-1);
     }
     tokens[*j] = temp;

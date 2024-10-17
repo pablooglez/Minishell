@@ -6,72 +6,82 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/16 12:42:34 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 12:49:30 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*ft_safe_malloc(t_minishell *shell, size_t size)
-{
-	void * tmp;
+volatile sig_atomic_t	g_signal;
 
-	tmp = malloc(size);
-	if (!tmp)
-		ft_error(shell, MEMORY, NULL, 1);
-	return (tmp);
+void	exit_shell(t_minishell *shell)							//Función que se encarga de liberar recursos y salir del shell.
+{
+	int	status;
+
+	status = shell->exit_status;								// Guarda el estado de salida del shell.
+	printf("exit\n");											// Muestra el mensaje "exit" en la terminal.
+	if(shell->tokens)											// Si existen tokens creados durante la ejecución...
+		free_tokens(&shell->tokens);							// ...los libera de memoria.
+	free_shell(&shell);											// Libera la estructura del shell.
+	exit(status);												// Sale del programa con el código de estado almacenado en "status".
 }
 
-/*void	create_env_vars(t_minishell *shell, char **env)
+void	init_minishell(t_minishell *shell, char **env)			// Inicializa la estructura del shell con el entorno.
 {
-	int	i;
-	i = 0;
-	
-	while (env && env[i] != NULL)
-	{
-		t_env *node;
+	ft_memset(shell, 0, sizeof(t_minishell));					// Limpia la memoria de la estructura "shell" para evitar valores basura.
+	create_env_vars(shell, env);								// Inicializa las variables de entorno para el shell.
+	shell->running = 1;											// Establece el flag "running" en 1, indicando que el shell está activo.
+}
 
-		node = safe_malloc(shell, sizeof(t_env));
-		i++;
-	}
+/*static char	*read_input(void)									// Función que se encarga de leer la entrada del usuario.
+{
+	char	*input;
+
+	input = readline("\033[1;35mminishell ➜\033[0m ");			// Muestra un prompt personalizado (en color) y lee la entrada del usuario con readline.
+	if (input && input[0] != '\0')								// Si la entrada no es nula y no está vacía...
+		add_history(input);										// ...se añade la entrada a la historia de comandos para poder recuperarla luego con las teclas de flecha.
+	return(input);												// Retorna la entrada del usuario.
 }*/
 
-/*void	init_minishell(t_minishell *shell, char **env)
+int main(int argc, char **argv, char **env)						// Función principal del programa.
 {
-	ft_memset(shell, 0, sizeof(t_minishell));
-	create_env_vars(shell, env);
-	shell->running = 1;
-}*/
-
-int main(int argc, char **argv, char **env) 
-{
-	t_minishell		shell;
+	t_minishell		shell;											// Define la estructura "shell" donde se almacenarán los datos del shell.
 	char			*input;
 	t_cmd			*command;
-	
-	(void)argc;
-	(void)argv;
-	(void)env;
-	
-	// init_minishell(&shell, env);
-	shell.running = 1;
-	while (shell.running)
+
+	(void)argc;												// Evita advertencias por no usar el argumento "argc".
+	(void)argv;												// Evita advertencias por no usar el argumento "argv".
+	init_minishell(&shell, env);								// Llama a la función que inicializa el shell con las variables de entorno.
+	/*while (true)												// Bucle infinito para mantener el shell ejecutándose continuamente.
 	{
-		input = read_input();
-		if (!input)
-			break ;
-		command = parse_input(input, &shell);
-		if (!command)
+		input = read_input();									// Llama a la función "read_input" para obtener la entrada del usuario.
+		if (!input)												// Si no se recibe ninguna entrada (posible EOF)...
+			exit_shell(&shell);									// ...se llama a "exit_shell" para liberar recursos y salir del shell.
+		else if (input[0] != '\0')								// Si la entrada no está vacía...
+		{
+			parse_input(ft_strdup(input), &shell);				// Llama a la función de parseo (implementada por ALBELOPE).
+			if (shell.tokens)									// Si hay tokens después del parseo...
+				execute_command(&shell);						// ...llama a la función de ejecución de comandos (implementada por PABLOGON).
+		}
+		free(input);											// Libera la memoria ocupada por la entrada del usuario después de procesarla.
+	}*/
+	while (shell.running)										// Bucle para mantener el shell en ejecución
+	{
+		input = read_input();									// Lee la entrada del usuario
+		if (!input)												// Si no se recibe entrada (EOF)...
+			exit_shell(&shell);									// ...libera recursos y sale del shell.
+		command = parse_input(input, &shell);					// Parsear la entrada del usuario
+		if (!command)											// Si no se puede parsear el comando...
 		{
 			free(input);
-			continue;
+			continue;											// ...continúa con la siguiente iteración.
 		}
-	// 	if (execute_command(command, &shell) == -1)
-	// 		ft_error(&shell, 1, NULL)
-		free(input);
+		//if (execute_command(command, &shell) == -1)				// Ejecuta el comando y verifica errores
+		//	ft_error(&shell, 1, NULL, 1);						// Maneja cualquier error de ejecución
+		free(input);											// Libera la memoria de la entrada
 		free(command->path);
-		free_tokens(command->arguments);
-		free(command);
+		free_tokens_parse(command->arguments);
+		free(command);											// Libera el comando después de la ejecución
 	}
-	return (0);
+	return (0);													// Retorna 0 para indicar que el programa terminó correctamente.
 }

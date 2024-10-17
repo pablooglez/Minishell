@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/16 16:38:53 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 12:42:36 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
    La función recorre el array de tokens y libera cada cadena individualmente,
    luego libera el array completo para evitar fugas de memoria.
 */
-void	free_tokens(char **tokens)
+void	free_tokens_parse(char **tokens)
 {
 	int i;
 	
@@ -56,7 +56,7 @@ int	handle_token(char *input, int i, char **tokens, int *j)
 	tokens[*j] = ft_substr(input, start, i - start);
 	if (!tokens[*j])
 	{
-		free_tokens(tokens);
+		free_tokens_parse(tokens);
 		return (-1);
 	}
 	(*j)++;
@@ -128,7 +128,7 @@ char	**tokenize_input(char *input)
             i++;
         if (process_token(input, &i, tokens, &j) == -1)
         {
-            free_tokens(tokens);
+            free_tokens_parse(tokens);
             return NULL;
         }
         while (input[i] == ' ')

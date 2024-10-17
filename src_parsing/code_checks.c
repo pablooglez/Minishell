@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:16:23 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/16 14:11:12 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 12:47:39 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ void display_commands(t_cmd *cmd)
         if (current->redir)
         {
             printf("Redirection: ");
-            if (current->redir->type == REDIR_OUT)
+            if (current->redir->type == OUTFILE)
                 printf(">\n");
-            else if (current->redir->type == REDIR_APPEND)
+            else if (current->redir->type == APPEND)
                 printf(">>\n");
-            else if (current->redir->type == REDIR_IN)
+            else if (current->redir->type == INFILE)
                 printf("<\n");
-            else if (current->redir->type == REDIR_HEREDOC)
+            else if (current->redir->type == HEREDOC)
                 printf("<<\n");
-            printf("File: %s\n", current->redir->ruta);
+            printf("File: %s\n", current->redir->file);
         }
         current = current->next;
     }

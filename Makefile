@@ -6,7 +6,7 @@
 #    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/16 12:11:25 by albelope         ###   ########.fr        #
+#    Updated: 2024/10/17 12:29:41 by albelope         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,11 @@ HEADERS := -I include -I$(LIBFT_DIR) ## CAMBIADO A LIBFT_DIR PARA QUE COJA LA LI
 ##                              SOURCE AND OBJECTS                            ##
 ################################################################################
 
-SRCS	:= src/main.c \
+SRCS	:= src/env.c \
 			src/error.c \
+			src/free_utils.c \
+			src/main.c \
+			src/utils.c \
 
 SRCS_PARSER =src_parsing/read_input.c src_parsing/tokenize.c \
 				src_parsing/parse_input.c src_parsing/handle_quotes.c \
@@ -67,7 +70,7 @@ all: libft $(NAME)
 
 head:
 	@echo "$(GREEN)$(BOLD)"
-	@echo "\t███    ███ ██ ███    ██ ██ ███████ ██   ██ ███████ ██             "
+	@echo "\t███    ███ ██ ███    ██ ██ ███████ ██   ██ ███████ ██      ██      "
 	@echo "\t████  ████ ██ ████   ██ ██ ██      ██   ██ ██      ██      ██      "
 	@echo "\t██ ████ ██ ██ ██ ██  ██ ██ ███████ ███████ █████   ██      ██      "
 	@echo "\t██  ██  ██ ██ ██  ██ ██ ██      ██ ██   ██ ██      ██      ██      "
@@ -96,13 +99,13 @@ line:
 	@echo "✦ ---------------------- ✦"
 
 clean:
-	@echo "\n$(YELLOW) 🗑 Removing objects...$(END)"
+	@echo "\n$(YELLOW) 🗑  Removing objects...$(END)"
 	@$(RM) $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC)
 	@echo "$(GREEN)\r✓ $(RED)Removed objects from $(NAME) $(END)"
 	@make clean -s -C $(LIBFT_DIR)
 	
 fclean: clean
-	@echo "\n$(YELLOW) 🗑 Removing... $(NAME) $(END)"
+	@echo "\n$(YELLOW) 🗑  Removing $(NAME)...$(END)"
 	@$(RM) $(NAME)
 	@make fclean -s -C $(LIBFT_DIR)
 	@echo "$(GREEN)\r✓ $(RED)Removed $(NAME) $(END)\n"
