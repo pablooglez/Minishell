@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 12:42:18 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 22:18:59 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ t_cmd *parse_input(char *input_line, t_minishell *shell)
         free_tokens_parse(tokens);
         return (NULL);
     }
+    expand_tokens(cmd, shell);
     free_tokens_parse(tokens);
     display_commands(cmd);
     return (cmd); 

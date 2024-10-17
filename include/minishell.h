@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/17 12:43:49 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 22:14:21 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ int    		process_arguments(char **tokens, int *i, t_cmd *cmd);  // Declaración 
 void		display_commands(t_cmd *cmd);
 int			process_redirection(char **tokens, int *i, t_cmd *cmd);
 int			get_redirection_type(char *token);
+void		expand_tokens(t_cmd *cmd, t_minishell *shell);
 
 //--------------FUNCIONES EXECUTION------------//
 int			heardoc(t_minishell *shell);

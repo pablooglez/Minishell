@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/17 12:49:30 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/17 22:12:28 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	init_minishell(t_minishell *shell, char **env)			// Inicializa la estructur
 {
 	ft_memset(shell, 0, sizeof(t_minishell));					// Limpia la memoria de la estructura "shell" para evitar valores basura.
 	create_env_vars(shell, env);								// Inicializa las variables de entorno para el shell.
-	shell->running = 1;											// Establece el flag "running" en 1, indicando que el shell está activo.
+	shell->running = 1;
+	shell->exit_status = 0;										// Establece el flag "running" en 1, indicando que el shell está activo.
 }
 
 /*static char	*read_input(void)									// Función que se encarga de leer la entrada del usuario.
@@ -75,6 +76,10 @@ int main(int argc, char **argv, char **env)						// Función principal del progr
 		{
 			free(input);
 			continue;											// ...continúa con la siguiente iteración.
+		}
+		if (command)
+		{
+			expand_tokens(command, &shell);
 		}
 		//if (execute_command(command, &shell) == -1)				// Ejecuta el comando y verifica errores
 		//	ft_error(&shell, 1, NULL, 1);						// Maneja cualquier error de ejecución
