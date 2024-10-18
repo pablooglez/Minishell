@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:16:23 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 12:47:39 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/18 20:08:34 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void display_commands(t_cmd *cmd)
 {
     t_cmd *current;
+    t_redir *redir;
     int i;
 
     current = cmd;
@@ -27,20 +28,26 @@ void display_commands(t_cmd *cmd)
             printf("Argument %d: %s\n", i, current->arguments[i]);
             i++;
         }
-        if (current->redir)
+        // Recorrer todas las redirecciones
+        redir = current->redir;
+        while (redir)
         {
             printf("Redirection: ");
-            if (current->redir->type == OUTFILE)
+            if (redir->type == OUTFILE)
                 printf(">\n");
-            else if (current->redir->type == APPEND)
+            else if (redir->type == APPEND)
                 printf(">>\n");
-            else if (current->redir->type == INFILE)
+            else if (redir->type == INFILE)
                 printf("<\n");
-            else if (current->redir->type == HEREDOC)
+            else if (redir->type == HEREDOC)
                 printf("<<\n");
-            printf("File: %s\n", current->redir->file);
+            printf("File: %s\n", redir->file);
+            redir = redir->next;
         }
+        // Separación entre comandos para mayor claridad
+        printf("\n---\n");
         current = current->next;
     }
 }
+
 

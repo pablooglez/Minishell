@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:02:04 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 22:25:19 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/18 20:38:09 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,12 @@ char *expand_variable(char *token, int last_exit_status)
 
     if (ft_strncmp(token, "$?", 2) == 0)
         return (ft_itoa(last_exit_status)); 
-    if (token[0] == '$')
+    else if (token[0] == '$' && ft_strlen(token) > 1)
     {
-
         value = getenv(token + 1);
-        if (value != NULL)
+        if (value)
             return (ft_strdup(value));
-		else
-            return (ft_strdup(""));
+		return (ft_strdup(""));
     }
     return (ft_strdup(token));
 }

@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:57:47 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 12:48:58 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/18 20:24:23 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,15 @@ int	process_redirection(char **tokens, int *i, t_cmd *cmd)
 	type = get_redirection_type(tokens[*i]);
 	if (type == -1)
 		return (1);  // No es una redirección válida
+	if (*i > 0 && get_redirection_type(tokens[*i - 1]) != -1)
+    {
+        printf("Erroraso primo!: falta comando antes de la redirección.\n");
+        return (-1);
+    }
 	(*i)++;
 	if (!tokens[*i])
 	{
-		printf("Error: falta archivo de redirección.\n");
+		printf("Erroraso ZUPri!: falta archivo de redirección.\n");
 		return (-1);
 	}
 	if (create_and_add_redirection(cmd, type, tokens[*i]) == -1)

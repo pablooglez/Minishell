@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 22:18:59 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/18 20:29:27 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ t_cmd *parse_input(char *input_line, t_minishell *shell)
     char    **tokens;
     t_cmd   *cmd;
 
+    if (contains_invalid_characters(input_line))
+        return (NULL); // Devolver NULL y no continuar con el parseo
     tokens = tokenize_input(input_line);   // Tokenizamos la entrada
     if (!tokens || !tokens[0])
         return (NULL);

@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 17:49:52 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 12:42:02 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/18 20:28:51 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,25 @@
 
 int	is_special_char(char c)
 {
-	return (c == '|' || c == '>' || c == '<' || c == ';');
+	return (c == '|' || c == '>' || c == '<');
 }
+
+bool contains_invalid_characters(char *input)
+{
+    int i = 0;
+    
+    while (input[i])
+    {
+        if (input[i] == ';' || input[i] == '\\')
+        {
+            printf("Erroritos: uso de caracteres especiales no permitidos (%c).\n", input[i]);
+            return true;
+        }
+        i++;
+    }
+    return false;
+}
+
 
 /* MANEJAR LA TOKENIZACION DE CARACTERES ESPECIALES-- INCLUYENDO REDIRECCIONES
 	SIMPLES Y DOBLES.
