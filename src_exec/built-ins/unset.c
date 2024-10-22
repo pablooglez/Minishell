@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:48 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/22 20:02:37 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/22 20:33:31 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_unset(t_minishell *shell, char **arg)								//Función auxiliar para el
 	if (!arg[1])																//Si no se proporciona ningún argumento, no hace nada
 		return;
 
-	while (arg && arg[i])																//Recorre todos los argumentos proporcionados
+	while (arg && arg[i])														//Recorre todos los argumentos proporcionados
 	{
 		if (is_valid_identifier(arg[i]))										//Verifica si el argumento es un identificador válido
 			delete_env_var(&(shell->env_vars), arg[i]);							//Llama a la función para eliminar la variable de entorno
