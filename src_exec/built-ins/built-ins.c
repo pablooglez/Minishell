@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built-ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:15:09 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/17 20:20:13 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/22 17:10:50 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	handle_builtin(t_cmd *cmd, t_minishell *shell)
 		ft_pwd(shell);												//Llama a la función personalizada para "pwd"
 		return (1);													//Retorna 1 para indicar que es un comando builtin
 	}
-	/*else if(ft_strncmp(cmd->arguments[0], "export", 7) == 0)		//Comprobamos si el comando es "export"
+	else if(ft_strncmp(cmd->arguments[0], "export", 7) == 0)		//Comprobamos si el comando es "export"
 	{
 		ft_export(shell, cmd->arguments);							//Llama a la función personalizada para "export"
 		return (1);													//Retorna 1 para indicar que es un comando builtin
@@ -40,7 +40,7 @@ int	handle_builtin(t_cmd *cmd, t_minishell *shell)
 	{
 		ft_unset(shell, cmd->arguments);							//Llama a la función personalizada para "unset"
 		return (1);													//Retorna 1 para indicar que es un comando builtin
-	}*/
+	}
 	else if (ft_strncmp(cmd->arguments[0], "env", 4) == 0)			//Comprobamos si el comando es "env"
 	{
 		ft_env(shell);												//Llama a la función personalizada para "env"

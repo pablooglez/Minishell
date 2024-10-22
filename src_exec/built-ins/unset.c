@@ -6,8 +6,50 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:48 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/17 19:10:23 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/22 17:35:41 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	delete_env_var(t_env **env_list, const char *key)
+{
+	t_env *current_env = *env_list;
+
+	while (current_env)
+	{
+		if (ft_strncmp(current_env->key, key, ft_strlen(key) + 1) == 0)
+		{
+			if (current_env->prev)
+				current_env->prev->next = current_env->next;
+			if (current_env->next)
+				current_env->next->prev = current_env->prev;
+			if (current_env == *env_list)
+				*env_list = current_env->next;
+			free(current_env->key);
+			free(current_env->value);
+			free(current_env);
+			return;
+		}
+		current_env = current_env->next;
+	}
+}
+
+void	ft_unset(t_minishell *shell, char **arg)
+{
+	int	i;
+	
+	i = 1;
+
+	if (!arg[1])
+		return;
+
+	while (arg[i])
+	{
+		if (is_valid_identifier(arg[i]))
+			delete_env_var(&(shell->env_vars), arg[i]);
+		else
+			ft_error(shell, CMD_NOT_FOUND, "unset: not a valid identifier", 0);
+		i++;
+	}
+}

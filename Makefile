@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
+#    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/17 20:39:58 by albelope         ###   ########.fr        #
+#    Updated: 2024/10/22 17:33:40 by pabloglez        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,8 +41,11 @@ SRCS_EXEC = src_exec/built-ins/built-ins.c\
 			src_exec/built-ins/cd.c \
 			src_exec/built-ins/echo.c \
 			src_exec/built-ins/env.c \
+			src_exec/built-ins/export.c \
 			src_exec/built-ins/pwd.c \
+			src_exec/built-ins/unset.c \
 			src_exec/execute.c \
+			src_exec/utils.c \
 
 SRCS_PARSER = src_parsing/read_input.c src_parsing/tokenize.c \
 				src_parsing/parse_input.c src_parsing/handle_quotes.c \

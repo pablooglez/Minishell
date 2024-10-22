@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/17 18:43:37 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/22 17:31:38 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,8 +197,11 @@ void		ft_echo(t_minishell *shell, char **arg);
 //------------------PWD----------------//
 void		ft_pwd(t_minishell *shell);
 //------------------EXPORT-------------//
+int			is_valid_identifier(const char *str);
+void		print_env_vars(t_env *env_list);
 void		ft_export(t_minishell *shell, char **arg);
 //------------------UNSET--------------//
+void		delete_env_var(t_env **env_list, const char *key);
 void		ft_unset(t_minishell *shell, char **arg);
 //------------------ENV----------------//
 void		ft_env(t_minishell *shell);
