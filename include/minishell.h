@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/22 17:31:38 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/22 18:12:27 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,12 +182,11 @@ t_cmd		*parse_input(char *input_line, t_minishell *shell); // Función para sepa
 //--------------FUNCIONES EXECUTION-------------//
 int			heardoc(t_minishell *shell);						// Implementación del heredoc para redirección.
 int			execute_command(t_minishell *shell);				// Ejecuta un comando individual.
-int			handle_builtin(t_cmd *cmd, t_minishell *shell);		// Maneja la ejecución de comandos internos (builtins).
 void		handle_redirection(t_cmd *cmd);						// Maneja las redirecciones de entrada y salida.
-void		handle_pipes(t_cmd *cmd);							// Maneja la ejecución de comandos conectados por pipes.
 void		signal_handler(int signal);							// Función para manejar señales del sistema como Ctrl+C o Ctrl+D.
 
 //--------------BUILT-INS----------------------//
+int			handle_builtin(t_cmd *cmd, t_minishell *shell);		// Maneja la ejecución de comandos internos (builtins).
 //------------------CD---------------//
 char		*get_env_value(t_env *env_list, char *key);
 void		update_env_var(t_env **env_list, char *key, char *value);
@@ -207,5 +206,8 @@ void		ft_unset(t_minishell *shell, char **arg);
 void		ft_env(t_minishell *shell);
 //------------------EXIT---------------//
 void		ft_exit(t_minishell *shell);
+
+//--------------PIPES----------------------//
+void		handle_pipes(t_cmd *cmd);							// Maneja la ejecución de comandos conectados por pipes.
 
 #endif

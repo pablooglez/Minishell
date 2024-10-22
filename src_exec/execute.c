@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/17 15:22:29 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/22 17:42:21 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	execute_command(t_minishell *shell)
 			printf("(EXECUTE_COMMAND())     Ejecutando built-in:     %s\n", cmd->path);
 			return (0);														//Si es un comando interno, sale de la función sin terminar
 		}
-		//if (cmd->next && cmd->next->type == PIPE)							//Comprueba si existe luego un comando y si es un PIPE
-		//	handle_pipes(cmd);												//Maneja la ejecución de comandos conectados por pipes
+		/*if (cmd->next && cmd->next->type == PIPE)							//Comprueba si existe luego un comando y si es un PIPE
+			handle_pipes(cmd);*/												//Maneja la ejecución de comandos conectados por pipes
 		else																//Si no hay pipe después del comando actual...
 		{
 			pid_t pid = fork();												//Creamos un nuevo proceso hijo usando fork()
