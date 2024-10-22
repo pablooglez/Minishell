@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:54:51 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/17 20:49:07 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/22 20:20:48 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	ft_cd(t_minishell *shell, char **arg)										//Función para manejar el c
 		dir = get_env_value(shell->env_vars, "HOME");														//Obtener el valor de la variable de entorno HOME.
 		if (!dir)																	//Si no encuentra la variable HOME...
 		{
+			shell->exit_status = 1;
 			ft_error(shell, CMD_NOT_FOUND, "cd: HOME not set", 0);					//Mostrar un error indicando que HOME no está configurado.
 			return;																	//Salir de la función.
 		}
@@ -75,6 +76,9 @@ void	ft_cd(t_minishell *shell, char **arg)										//Función para manejar el c
 	}
 	if (getcwd(cwd, sizeof(cwd)) != NULL)											//Obtener el directorio actual y almacenarlo en cwd.
 		update_env_var(&(shell->env_vars), "PWD", cwd);								//Actualizar la variable de entorno PWD en la lista de variables.
-	else
+	else 
+	{
+		shell->exit_status = 1;
 		ft_error(shell, CMD_NOT_FOUND, "cd: failed to get current directory", 0);	//Mostrar un error si falla getcwd().
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:48:22 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/17 13:04:57 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/22 19:45:19 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void *free_shell(t_minishell **shell)
 
 	close((*shell)->original_stdin);		// Cierra el descriptor del `stdin` original.
 	close((*shell)->original_stdout);		// Cierra el descriptor del `stdout` original.
-	free(*shell);							// Libera la estructura `shell`.
 	return (NULL);							// Retorna NULL como buena práctica al liberar memoria.
 }
 

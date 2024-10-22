@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:11 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/22 17:18:02 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/22 20:13:05 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_export(t_minishell *shell, char **arg)
 		return;																				//Sale de la función después de imprimir
 	}
 
-	while (arg[i])																			//Bucle para recorrer los argumentos que siguen al comando "export"
+	while (arg && arg[i])																			//Bucle para recorrer los argumentos que siguen al comando "export"
 	{
 		char *equal_sign = ft_strchr(arg[i], '=');											//Busca el simbolo '=' en el argumento actual
 
@@ -55,9 +55,9 @@ void	ft_export(t_minishell *shell, char **arg)
 		}
 		else																				//Si no hay un '=', es solo un nombre de variable sin valor
 		{
-			if (is_valid_identifier(arg[i]))												//Verifica si es un identificador válido (ejemplo: solo letras y guiones bajos)
+			if (is_valid_identifier(arg[i])) {												//Verifica si es un identificador válido (ejemplo: solo letras y guiones bajos)
 				update_env_var(&(shell->env_vars), arg[i], NULL);							//Añade la variable sin valor asociado (se establece a NULL)
-			else
+		} else
 				ft_error(shell, CMD_NOT_FOUND, "export: not a valid identifier", 0);		//Muestra un error si el identificador no es válido
 		}
 		i++;																				//Avanza al siguiente argumento en la lista

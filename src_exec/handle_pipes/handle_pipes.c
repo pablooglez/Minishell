@@ -6,18 +6,52 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 18:02:33 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/22 18:43:31 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/22 19:59:01 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_command_path(char *command, char **env)
+char	*get_command_path(char *cmd, t_minishell *shell)
 {
-	
+	char	*path_env;
+	char	**paths;
+	char	*full_path;
+	char	*temp_path;
+	int		i;
+
+	path_env = get_env_value(shell->env_vars, "PATH");
+	if (!path_env)
+		return (NULL);
+
+	paths = ft_split(path_env, ':');
+	if (!paths)
+		return (NULL);
+
+	i = 0;
+
+	while (paths[i])
+	{
+		temp_path = ft_strjoin(paths[i], "/");
+		if (!temp_path)
+		{
+			free_array(&paths);
+			return (NULL);
+		}
+		full_path = ft_strjoin(temp_path, cmd);
+		free(temp_path);
+
+		if (access(full_path, X_OK) == 0)
+		{
+			free_array(&paths);
+			return (full_path);
+		}
+		free(full_path);
+		i++;
+	}
+	free_array(&paths);
+	return (NULL);
 }
-
-
 
 void	handle_pipes(t_cmd *cmd, t_minishell *shell)
 {
@@ -51,7 +85,7 @@ void	handle_pipes(t_cmd *cmd, t_minishell *shell)
 
 		close(pipe_fds[1]);
 		
-		command_path = get_command_path(cmd->arguments[0], shell->env);
+		command_path = get_command_path(cmd->arguments[0], shell);
 
 		if (execve(command_path, cmd->arguments, shell->env) == -1)
 		{

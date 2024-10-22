@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/22 17:42:21 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/22 19:50:37 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	execute_command(t_minishell *shell)
 			printf("(EXECUTE_COMMAND())     Ejecutando built-in:     %s\n", cmd->path);
 			return (0);														//Si es un comando interno, sale de la función sin terminar
 		}
-		/*if (cmd->next && cmd->next->type == PIPE)							//Comprueba si existe luego un comando y si es un PIPE
-			handle_pipes(cmd);*/												//Maneja la ejecución de comandos conectados por pipes
+		if (cmd->next && cmd->next->type == PIPE)							//Comprueba si existe luego un comando y si es un PIPE
+			handle_pipes(cmd, shell);												//Maneja la ejecución de comandos conectados por pipes
 		else																//Si no hay pipe después del comando actual...
 		{
 			pid_t pid = fork();												//Creamos un nuevo proceso hijo usando fork()
@@ -40,7 +40,11 @@ int	execute_command(t_minishell *shell)
 			else if (pid < 0)												//Verifica sin hubo un error al crear el proceso
 				ft_error(shell, MEMORY, NULL, 0);							//Maneja el error de memoria si falla fork()
 			else
-				waitpid(pid, NULL, 0);										//Esperar a que el proceso hijo termine
+				waitpid(pid, &shell->exit_status, 0);										//Esperar a que el proceso hijo termine
+			if (WIFEXITED(shell->exit_status))										//Verificar si el proceso terminó normalmente
+					shell->exit_status = WEXITSTATUS(shell->exit_status);					//Obtener el código de salida
+				else if (WIFSIGNALED(shell->exit_status))								//Verificar si el proceso fue terminado por una señal
+					shell->exit_status = 128 + WTERMSIG(shell->exit_status);					//Obtener el número de la señal
 		}
 		cmd = cmd->next;													//Avanza al siguiente comando en la lista
 	}
