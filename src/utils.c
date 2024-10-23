@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 18:06:01 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/17 13:06:12 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/23 18:10:41 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,16 @@ char *ft_strncpy(char *dest, const char *src, size_t n)
 char *ft_strndup(const char *s, size_t n)
 {
 	size_t len = ft_strlen(s);						// Obtiene la longitud de la cadena original
-	if (len > n)								// Si la longitud es mayor que n, ajusta la longitud a n
+	if (len > n)									// Si la longitud es mayor que n, ajusta la longitud a n
 		len = n;
 
-	char *dup = (char *)malloc(len + 1);		// Asigna memoria para la nueva cadena (incluyendo el carácter nulo)
-	if (!dup)									// Si la asignación de memoria falla
-		return NULL;							// Retorna NULL
+	char *dup = (char *)malloc(len + 1);			// Asigna memoria para la nueva cadena (incluyendo el carácter nulo)
+	if (!dup)										// Si la asignación de memoria falla
+		return NULL;								// Retorna NULL
 
-												// Copia los caracteres de la cadena original a la nueva cadena
+													// Copia los caracteres de la cadena original a la nueva cadena
 	ft_strncpy(dup, s, len);						// Copia hasta n caracteres
-	dup[len] = '\0';							// Asegúrate de que la cadena esté terminada con un carácter nulo
+	dup[len] = '\0';								// Asegúrate de que la cadena esté terminada con un carácter nulo
 
-	return dup;									// Retorna la nueva cadena duplicada
+	return dup;										// Retorna la nueva cadena duplicada
 }

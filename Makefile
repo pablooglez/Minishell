@@ -6,7 +6,7 @@
 #    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/22 18:15:19 by pabloglez        ###   ########.fr        #
+#    Updated: 2024/10/23 20:09:47 by pabloglez        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRCS	:= src/env.c \
 			src/error.c \
 			src/free_utils.c \
 			src/main.c \
+			src/signals.c \
 			src/utils.c \
 
 SRCS_EXEC = src_exec/built-ins/built-ins.c\
@@ -52,7 +53,7 @@ SRCS_PARSER = src_parsing/read_input.c src_parsing/tokenize.c \
 				src_parsing/parse_input.c src_parsing/handle_quotes.c \
 				src_parsing/handle_char.c src_parsing/handle_pipes.c \
 				src_parsing/command_utils.c src_parsing/code_checks.c \
-				src_parsing/handle_redirections.c
+				src_parsing/handle_redirections.c \
 
 OBJS		:= ${SRCS:.c=.o}
 OBJS_PARSER	:= ${SRCS_PARSER:.c=.o}

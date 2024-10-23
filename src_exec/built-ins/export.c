@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:11 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/22 20:13:05 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/23 18:09:33 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_export(t_minishell *shell, char **arg)
 		return;																				//Sale de la función después de imprimir
 	}
 
-	while (arg && arg[i])																			//Bucle para recorrer los argumentos que siguen al comando "export"
+	while (arg && arg[i])																	//Bucle para recorrer los argumentos que siguen al comando "export"
 	{
 		char *equal_sign = ft_strchr(arg[i], '=');											//Busca el simbolo '=' en el argumento actual
 

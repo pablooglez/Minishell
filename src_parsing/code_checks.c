@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   code_checks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:16:23 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 20:20:25 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/23 20:21:21 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
