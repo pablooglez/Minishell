@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 19:22:39 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/14 13:58:31 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/25 13:14:04 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,19 @@
 
 char	*read_input(void)
 {
-	char	*input;
+	char	*input;                                                                             // Variable para almacenar la entrada del usuario
 
-	input = readline(CYAN "Minishell>" WHITE);
-	if (!input)
+	input = readline(CYAN "Minishell>" WHITE);                                                   // Muestra el prompt y captura la entrada del usuario
+	if (!input)                                                                                  // Verifica si la entrada es NULL (EOF o Ctrl+D)
 	{
-		printf("Exit....\n");
-		return (NULL);
+		printf("Exit....\n");                                                                    // Muestra el mensaje "Exit...."
+		return (NULL);                                                                           // Retorna NULL para indicar que no hay más entrada
 	}
-	if (*input != '\0')
-		add_history(input);
-	return (input);
+	if (*input != '\0')                                                                          // Verifica si la entrada no está vacía
+		add_history(input);                                                                      // Agrega la entrada al historial de comandos
+	return (input);                                                                              // Devuelve la cadena de entrada capturada
 }
+
 
 
 // PRUEBAS FUTURAS PARA MANEJAR SI EL ULTIMA CARACTER DE LINEA ES UN BACKSLASH //

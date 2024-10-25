@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:16:23 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/18 20:08:34 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/25 11:21:55 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ void display_commands(t_cmd *cmd)
     current = cmd;
     while (current)
     {
-        printf("Command: %s\n", current->path);
+        printf("CommanDC: %s\n", current->path);
         i = 0;
         while (current->arguments && current->arguments[i])
         {
-            printf("Argument %d: %s\n", i, current->arguments[i]);
+            printf("ArgumentDC %d: %s\n", i, current->arguments[i]);
             i++;
         }
         // Recorrer todas las redirecciones
