@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/23 20:06:50 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/25 18:01:45 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,7 @@ int main(int argc, char **argv, char **env)													// Función principal de
 			{
 				t_cmd *cmd = shell.tokens;
 				while (cmd)
-				{
 					cmd = cmd->next;
-				}
 				execute_command(&shell);													//Ejecuta el comando (implementado por PABLOGON)
 			}
 			else

@@ -6,11 +6,11 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/23 20:10:20 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/25 20:45:01 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 int	execute_command(t_minishell *shell)
 {
@@ -38,7 +38,7 @@ int	execute_command(t_minishell *shell)
 			
 			if (pid == 0)																	// Verifica si el proceso actual es el hijo (pid == 0 significa proceso hijo)
 			{
-				//handle_redirection(cmd);													// Maneja las redirecciones de entrada y salida si las hay
+				handle_redirection(cmd);													// Maneja las redirecciones de entrada y salida si las hay
 
 																							// Obtiene la ruta completa del comando (ejemplo: "/bin/ls" si el comando es "ls")
 				command_path = get_command_path(cmd->arguments[0], shell);					// Llama a get_command_path para buscar el comando en los directorios de PATH
