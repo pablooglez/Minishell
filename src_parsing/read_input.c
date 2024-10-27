@@ -6,11 +6,11 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 19:22:39 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/25 13:14:04 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/26 13:20:52 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
 /* 
    Función que se encarga de leer la entrada del usuario en el prompt de Minishell.

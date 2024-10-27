@@ -1,0 +1,93 @@
+1. Heredoc
+Problema: La Minishell no procesa correctamente el delimitador de Heredoc ni lo muestra como Delimiter. En cambio, aparece como File.
+Pruebas afectadas: 18, 55, 56, 71, 85, 86, 87.
+Ejemplo:
+bash
+Copiar código
+Comando ejecutado: cat << STOP
+Esperado:
+CommanDC: cat
+ArgumentDC 0: cat
+Redirection: <<
+Delimiter: STOP
+Obtenido:
+CommanDC: cat
+ArgumentDC 0: cat
+Redirection: <<
+File: STOP
+Sugerencia: Asegurarse de distinguir entre File y Delimiter al procesar Heredoc.
+2. Expansión de variables en contextos complejos
+Problema: La expansión de variables funciona en casos básicos, pero falla en contextos de redirección, concatenación, y con variables en comillas.
+Pruebas afectadas: 16, 20, 27, 46, 47, 49, 57, 60, 64, 65, 72, 91.
+Ejemplo:
+bash
+Copiar código
+Comando ejecutado: echo Hola > $USER.txt
+Esperado:
+File: israel.txt
+Obtenido:
+File: $USER.txt
+Sugerencia: Implementar un procesamiento de expansiones en redirección para expandir variables en nombre de archivo.
+3. Escape de caracteres especiales
+Problema: El manejo de \ no está completamente implementado, y esto causa errores en casos de escape de $, comillas dobles y caracteres dentro de strings.
+Pruebas afectadas: 15, 77, 78, 96, 97.
+Ejemplo:
+bash
+Copiar código
+Comando ejecutado: echo "Esto cuesta \$5"
+Esperado:
+ArgumentDC 1: Esto cuesta $5
+Obtenido:
+Erroritos: uso de caracteres especiales no permitidos (\).
+Sugerencia: Implementar un manejo robusto de \ que interprete los escapes en comillas.
+4. Errores de sintaxis en redirección y pipes sin comando
+Problema: Los errores de redirección y pipes sin comandos anteriores o posteriores no devuelven mensajes claros.
+Pruebas afectadas: 66, 67, 68, 95.
+Ejemplo:
+bash
+Copiar código
+Comando ejecutado: > output.txt
+Esperado:
+Error: redirección sin comando previo.
+Obtenido:
+CommanDC: (null)
+Redirection: >
+File: output.txt
+Sugerencia: Agregar validaciones de sintaxis en redirecciones y pipes para verificar comandos antes o después.
+5. Concatenación de variables y texto intermedio
+Problema: La concatenación de variables con strings intermedios o varias expansiones falla en algunos casos.
+Pruebas afectadas: 24, 43, 54, 65, 88.
+Ejemplo:
+bash
+Copiar código
+Comando ejecutado: echo $USER-test-$SHELL
+Esperado:
+ArgumentDC 1: israel-test-<shell>
+Obtenido:
+ArgumentDC 1: israel-test-/bin/bash
+Sugerencia: Mejorar el parser para manejar concatenaciones de múltiples variables con strings intermedios.
+6. Diferencias en delimitadores y redirección en secuencias complejas
+Problema: Las secuencias que combinan pipes, redirecciones y expansiones generan inconsistencias en los delimitadores y en el orden.
+Pruebas afectadas: 80, 94, 98.
+Ejemplo:
+bash
+Copiar código
+Comando ejecutado: grep test < input.txt | sort > output.txt
+Esperado:
+CommanDC: grep
+ArgumentDC 1: test
+Redirection: <
+File: input.txt
+CommanDC: sort
+Redirection: >
+File: output.txt
+Obtenido:
+CommanDC: grep
+ArgumentDC 1: test
+Redirection: <
+File: input.txt
+ArgumentDC 0: sort
+Redirection: >
+File: output.txt
+Sugerencia: Revisar el orden y delimitación en el manejo de pipes y redirecciones consecutivas.
+Con estos ajustes y mejoras, podrás abordar los problemas detectados en tu Minishell y mejorar su precisión en la interpretación de comandos y estructuras complejas. Si necesitas ejemplos específicos para implementar estos cambios, ¡puedo ayudarte a elaborarlos!

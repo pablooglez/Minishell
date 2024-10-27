@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:02:04 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/25 13:23:23 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/27 13:59:44 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static char	*get_expanded_value(const char *variable, int last_exit_status)
 ** Identifica variables de entorno a partir del símbolo `$` y realiza la expansión,
 ** manejando el caso especial de `$?` para el código de salida del último comando.
 */
-static char	*expand_var_or_char(const char *str, int *i, t_minishell *shell)
+/*static char	*expand_var_or_char(const char *str, int *i, t_minishell *shell)
 {
 	char	*expanded;
 	int		start;
@@ -60,70 +60,181 @@ static char	*expand_var_or_char(const char *str, int *i, t_minishell *shell)
 		(*i)++;                                                                           // Avanza el índice
 	}
 	return (expanded);                                                                    // Devuelve el valor expandido o el carácter
+}*/
+/*static char *expand_var_or_char(const char *str, int *i, t_minishell *shell)
+{
+    char *expanded;
+    int start;
+
+    if (str[*i] == '$')
+    {
+        if (str[*i + 1] == '?')
+        {
+            expanded = get_expanded_value("?", shell->exit_status);
+            *i += 2;
+        }
+        else if (ft_isalpha(str[*i + 1]) || str[*i + 1] == '_')
+        {
+            start = *i + 1;
+            while (str[start] && (ft_isalnum(str[start]) || str[start] == '_'))
+                start++;
+            char *var_name = ft_substr(str, *i + 1, start - (*i + 1));
+            expanded = get_expanded_value(var_name, shell->exit_status);
+            free(var_name);
+            *i = start;
+        }
+        else
+        {
+            expanded = ft_strdup("$");
+            (*i)++;
+        }
+    }
+    else
+    {
+        expanded = ft_substr(str, *i, 1);
+        (*i)++;
+    }
+    return (expanded);
+}*/
+#include "../include/minishell.h"
+
+/*
+** Expande la variable de entorno o devuelve el carácter literal si no corresponde a una expansión válida.
+** Soporta caracteres de escape `\$` para devolver `$` literal y expande `$?` al estado de salida.
+*/
+static char	*expand_var_or_char(const char *str, int *i, t_minishell *shell)
+{
+	char	*expanded;
+	char	*var_name;
+	int		start;
+
+	if (str[*i] == '\\' && str[*i + 1] == '$')
+	{
+		expanded = ft_strdup("$");
+		*i += 2;
+	}
+	else if (str[*i] == '$')
+	{
+		if (str[*i + 1] == '?')
+		{
+			expanded = get_expanded_value("?", shell->exit_status);
+			*i += 2;
+		}
+		else if (ft_isalpha(str[*i + 1]) || str[*i + 1] == '_')
+		{
+			start = *i + 1;
+			while (str[start] && (ft_isalnum(str[start]) || str[start] == '_'))
+				start++;
+			var_name = ft_substr(str, *i + 1, start - (*i + 1));
+			expanded = get_expanded_value(var_name, shell->exit_status);
+			free(var_name);
+			*i = start;
+		}
+		else
+		{
+			expanded = ft_strdup("$");
+			(*i)++;
+		}
+	}
+	else
+	{
+		expanded = ft_substr(str, *i, 1);
+		(*i)++;
+	}
+	return (expanded);
 }
+
+
 
 /*
 ** Expande la cadena completa procesando cada parte y reemplazando variables de entorno.
 ** Concatena las expansiones y devuelve el resultado final.
 */
-static char	*expand_string(const char *str, t_minishell *shell)
+static char *expand_string(const char *str, t_minishell *shell)
 {
-	char	*result;
-	char	*temp;
-	char	*expanded;
-	int		i;
+    char *result;
+    char *temp;
+    char *expanded;
+    int i;
 
-	result = ft_strdup("");                                                               // Inicializa un string vacío para el resultado
-	i = 0;                                                                                // Comienza a procesar desde el inicio de la cadena
-	while (str[i] != '\0')                                                                // Recorre la cadena completa
-	{
-		expanded = expand_var_or_char(str, &i, shell);                                    // Expande cada variable o carácter
-		temp = ft_strjoin(result, expanded);                                              // Concatena al resultado acumulado
-		free(result);                                                                     // Libera la cadena anterior
-		free(expanded);                                                                   // Libera el valor expandido temporal
-		result = temp;                                                                    // Actualiza el resultado con la nueva cadena
-	}
-	return (result);                                                                      // Devuelve la cadena completa expandida
+    result = ft_strdup("");
+    if (!result)
+        return (NULL);
+    i = 0;
+    while (str[i] != '\0')
+    {
+        expanded = expand_var_or_char(str, &i, shell);
+        if (!expanded)
+        {
+            free(result);
+            return (NULL);
+        }
+        temp = ft_strjoin(result, expanded);
+        free(result);
+        free(expanded);
+        if (!temp)
+            return (NULL);
+        result = temp;
+    }
+    return (result);
 }
+
 
 /*
 ** Expande un argumento individual, si está entre comillas simples, lo deja intacto.
 ** En caso contrario, expande las variables de entorno contenidas en él.
 */
-static char	*expand_argument(const char *arg, t_minishell *shell)
+static char *remove_quotes(const char *arg)
 {
-	if (ft_strlen(arg) >= 2 && arg[0] == '\'' && arg[ft_strlen(arg) - 1] == '\'')          // Verifica si el argumento está entre comillas simples
-	{
-		return (ft_strdup(arg));                                                          // Devuelve el argumento sin expandir
-	}
-	return (expand_string(arg, shell));                                                   // Expande el argumento y devuelve el resultado
+    size_t len;
+
+    len = ft_strlen(arg);
+    if ((arg[0] == '\'' && arg[len - 1] == '\'') ||
+        (arg[0] == '\"' && arg[len - 1] == '\"'))
+        return (ft_substr(arg, 1, len - 2));
+    return (ft_strdup(arg));
 }
+
+static char *expand_argument(const char *arg, t_minishell *shell)
+{
+    char *unquoted;
+    char *expanded;
+
+    if ((arg[0] == '\'' && arg[ft_strlen(arg) - 1] == '\''))
+    {
+        unquoted = remove_quotes(arg);
+        return (unquoted); // En comillas simples, no se expande
+    }
+    else if (arg[0] == '\"' && arg[ft_strlen(arg) - 1] == '\"')
+    {
+        unquoted = remove_quotes(arg);
+        expanded = expand_string(unquoted, shell);
+        free(unquoted);
+        return (expanded);
+    }
+    else
+    {
+        return (expand_string(arg, shell));
+    }
+}
+
 
 /*
 ** Expande todos los tokens de la lista de argumentos de un comando.
 ** Si el argumento está entre comillas simples, no se expande.
 ** Los argumentos expandidos reemplazan a los originales.
 */
-void	expand_tokens(t_cmd *cmd, t_minishell *shell)
+void expand_tokens(t_cmd *cmd, t_minishell *shell)
 {
-	int		i;
-	char	*expanded;
+    int i;
+    char *expanded;
 
-	i = 0;                                                                                // Inicializa el índice
-	while (cmd->arguments && cmd->arguments[i] != NULL)                                   // Recorre todos los argumentos del comando
-	{
-		if (ft_strlen(cmd->arguments[i]) >= 2 &&                                          // Verifica si el argumento está entre comillas simples
-			cmd->arguments[i][0] == '\'' && 
-			cmd->arguments[i][ft_strlen(cmd->arguments[i]) - 1] == '\'')
-		{
-			// Argumento literal, no se expande
-		}
-		else                                                                              // Si no está entre comillas simples, se expande
-		{
-			expanded = expand_argument(cmd->arguments[i], shell);                         // Expande el argumento
-			free(cmd->arguments[i]);                                                      // Libera el argumento original
-			cmd->arguments[i] = expanded;                                                 // Reemplaza con el argumento expandido
-		}
-		i++;                                                                              // Avanza al siguiente argumento
-	}
+    i = 0;
+    while (cmd->arguments && cmd->arguments[i] != NULL)
+    {
+        expanded = expand_argument(cmd->arguments[i], shell);
+        free(cmd->arguments[i]);
+        cmd->arguments[i] = expanded;
+        i++;
+    }
 }

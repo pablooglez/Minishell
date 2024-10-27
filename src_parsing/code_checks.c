@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:16:23 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/25 11:21:55 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/26 13:35:35 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ void display_commands(t_cmd *cmd)
             printf("File: %s\n", redir->file);
             redir = redir->next;
         }
-        // Separación entre comandos para mayor claridad
-        printf("\n---\n");
         current = current->next;
     }
 }

@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:43:54 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/25 13:21:24 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/27 13:33:51 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,18 @@ int	check_pipe_errors(char **tokens, int *i)
 {
 	if (*i == 0)                                                                            // Si el pipe es el primer token (sin comando antes)
 	{
-		printf("Erroraso: falta un comando antes del pipe.\n");                             // Imprime mensaje de error
+		printf("Error: falta un comando antes del pipe.\n");                             // Imprime mensaje de error
 		return (-1);                                                                        // Retorna -1 indicando un error
 	}
 	(*i)++;                                                                                 // Avanza al siguiente token después del pipe
 	if (!tokens[*i])                                                                       // Verifica si no hay más tokens después del pipe
 	{
-		printf("Errorsito: falta un comando después del pipe.\n");                          // Imprime mensaje de error
+		printf("Error: falta un comando después del pipe.\n");                          // Imprime mensaje de error
 		return (-1);                                                                        // Retorna -1 indicando un error
 	}
 	if (ft_strncmp(tokens[*i], "|", 2) == 0)                                                // Si el siguiente token también es un pipe
 	{
-		printf("Errorsito: falta un comando entre los pipes.\n");                           // Imprime mensaje de error
+		printf("Error: falta un comando entre los pipes.\n");                           // Imprime mensaje de error
 		return (-1);                                                                        // Retorna -1 indicando un error
 	}
 	return (0);                                                                             // Retorna 0 si no hay errores con el pipe

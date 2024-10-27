@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 17:49:52 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/25 13:22:15 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/27 13:53:24 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,16 @@ bool	contains_invalid_characters(char *input)
 	i = 0;                                                                                  // Inicializa el índice para recorrer la cadena
 	while (input[i])                                                                       // Recorre la cadena hasta el final
 	{
-		if (input[i] == ';' || input[i] == '\\')                                            // Verifica si el carácter es ';' o '\\'
+		if (input[i] == ';')                                            // Verifica si el carácter es ';' o '\\'
 		{
-			printf("Erroritos: uso de caracteres especiales no permitidos (%c).\n",        // Imprime un mensaje de error si se detecta un carácter inválido
+			printf("Error: uso de caracteres especiales no permitidos (%c).\n",        // Imprime un mensaje de error si se detecta un carácter inválido
 				   input[i]);
 			return (true);                                                                 // Retorna true indicando que hay caracteres no permitidos
+		}
+		else if (input[i] == '\\' && input[i + 1] != '$')
+		{
+			printf("Error: uso de caracteres especiales no permitidos (%c).\n", input[i]);
+			return (true);
 		}
 		i++;                                                                               // Avanza al siguiente carácter
 	}
