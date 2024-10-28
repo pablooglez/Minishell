@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/25 18:01:45 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/28 18:38:51 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	exit_shell(t_minishell *shell)														//Función que se encarga de li
 	int	status;
 
 	status = shell->exit_status;															// Guarda el estado de salida del shell.
-	printf("exit\n");																		// Muestra el mensaje "exit" en la terminal.
 	if(shell->tokens)																		// Si existen tokens creados durante la ejecución...
 		free_tokens(&shell->tokens);														// ...los libera de memoria.
 	free_shell(&shell);																		// Libera la estructura del shell.
