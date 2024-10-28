@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/28 16:58:25 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/28 19:27:19 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,7 @@ int	execute_command(t_minishell *shell)
 				free(command_path);															// Libera la memoria de command_path si execve se ejecuta correctamente
 			}
 			else if (pid < 0)																// Si fork() falla, verifica que pid sea menor que 0 (indica un error)
-			{
 				ft_error(shell, MEMORY, NULL, 0);											// Si hubo un error al crear el proceso, maneja el error de memoria
-			}
 			else																			// Si estamos en el proceso padre (pid > 0)
 			{
 				waitpid(pid, &shell->exit_status, 0);										// Espera a que el proceso hijo termine su ejecución
