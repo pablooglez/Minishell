@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:54:51 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/22 22:31:00 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/28 18:53:37 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_cd(t_minishell *shell, char **arg)										//Función para manejar el c
 
 	if (!arg[1])																	//Si no se proporciona un argumento (es decir, el usuario solo escribió 'cd')...
 	{
-		dir = get_env_value(shell->env_vars, "HOME");														//Obtener el valor de la variable de entorno HOME.
+		dir = get_env_value(shell->env_vars, "HOME");								//Obtener el valor de la variable de entorno HOME.
 		if (!dir)																	//Si no encuentra la variable HOME...
 		{
 			shell->exit_status = 1;

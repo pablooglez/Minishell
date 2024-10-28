@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/25 20:45:23 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/28 18:53:04 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,8 +165,8 @@ void		init_minishell(t_minishell *shell, char **env);									// Inicializa el s
 void		signal_handler(int signal);														//Gestion de señales (Ctrl+C , Ctrl + D, Ctrl + \)
 
 //-------------------UTILS---------------------//
-char		*ft_strncpy(char *dest, const char *src, size_t n);
-char		*ft_strndup(const char *s, size_t n);
+char		*ft_strncpy(char *dest, const char *src, size_t n);								// Copia hasta n caracteres de la cadena src a dest
+char		*ft_strndup(const char *s, size_t n);											// Duplica hasta n caracteres de la cadena s y devuelve un nuevo puntero a la copia.
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -177,25 +177,25 @@ void		handle_pipes(t_cmd *cmd, t_minishell *shell);									// Maneja la ejecuci
 void		handle_redirection(t_cmd *cmd);													// Maneja las redirecciones de entrada y salida.
 
 //---------------------UTILS-------------------//
-char		*get_command_path(char *cmd, t_minishell *shell);
+char		*get_command_path(char *cmd, t_minishell *shell);								//Obtiene la ruta del comando proporcionado
 
 //------------------BUILTIN-CD---------------//
-char		*get_env_value(t_env *env_list, char *key);
-void		update_env_var(t_env **env_list, char *key, char *value);
-void		ft_cd(t_minishell *shell, char **arg);
+char		*get_env_value(t_env *env_list, char *key);										//Obtiene el valor de una variable de entorno
+void		update_env_var(t_env **env_list, char *key, char *value);						//Actualiza el valor de una variable de entorno
+void		ft_cd(t_minishell *shell, char **arg);											//Cambia el directorio de trabajo actual
 //------------------BUILTIN-ECHO---------------//
-void		ft_echo(t_minishell *shell, char **arg);
+void		ft_echo(t_minishell *shell, char **arg);										//Imprime argumentos en la salida estándar
 //------------------BUILTIN-PWD----------------//
-void		ft_pwd(t_minishell *shell);
+void		ft_pwd(t_minishell *shell);														//Imprime el directorio de trabajo actual
 //------------------BUILTIN-EXPORT-------------//
-int			is_valid_identifier(const char *str);
-void		print_env_vars(t_env *env_list);
-void		ft_export(t_minishell *shell, char **arg);
+int			is_valid_identifier(const char *str);											//Verifica si la cadena es un identificador válido para variables de entorno
+void		print_env_vars(t_env *env_list);												//Imprime todas las variables de entorno
+void		ft_export(t_minishell *shell, char **arg);										//Añade o actualiza variables de entorno
 //------------------BUILTIN-UNSET--------------//
-void		delete_env_var(t_env **env_list, const char *key);
-void		ft_unset(t_minishell *shell, char **arg);
+void		delete_env_var(t_env **env_list, const char *key);								//Elimina una variable de entorno
+void		ft_unset(t_minishell *shell, char **arg);										//Elimina variables de entorno específicas
 //------------------BUILTIN-ENV----------------//
-void		ft_env(t_minishell *shell);
+void		ft_env(t_minishell *shell);														//Imprime las variables de entorno actuales
 
 
 #endif

@@ -6,67 +6,67 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/28 18:38:51 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/28 18:54:16 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_signal;															//Variable para manejar las señales
+volatile sig_atomic_t	g_signal;											//Variable para manejar las señales
 
-void	exit_shell(t_minishell *shell)														//Función que se encarga de liberar recursos y salir del shell.
+void	exit_shell(t_minishell *shell)										//Función que se encarga de liberar recursos y salir del shell.
 {
 	int	status;
 
-	status = shell->exit_status;															// Guarda el estado de salida del shell.
-	if(shell->tokens)																		// Si existen tokens creados durante la ejecución...
-		free_tokens(&shell->tokens);														// ...los libera de memoria.
-	free_shell(&shell);																		// Libera la estructura del shell.
-	exit(status);																			// Sale del programa con el código de estado almacenado en "status".
+	status = shell->exit_status;											// Guarda el estado de salida del shell.
+	if(shell->tokens)														// Si existen tokens creados durante la ejecución...
+		free_tokens(&shell->tokens);										// ...los libera de memoria.
+	free_shell(&shell);														// Libera la estructura del shell.
+	exit(status);															// Sale del programa con el código de estado almacenado en "status".
 }
 
-void	init_minishell(t_minishell *shell, char **env)										// Inicializa la estructura del shell con el entorno.
+void	init_minishell(t_minishell *shell, char **env)						// Inicializa la estructura del shell con el entorno.
 {
-	ft_memset(shell, 0, sizeof(t_minishell));												// Limpia la memoria de la estructura "shell" para evitar valores basura.
-	create_env_vars(shell, env);															// Inicializa las variables de entorno para el shell.
-	shell->running = 1;																		// Establece el flag "running" en 1, indicando que el shell está activo.
-	signal(SIGINT, signal_handler);															// Configura el manejador de señal para SIGINT
-	signal(SIGQUIT, SIG_IGN);																//Ignora SIGQUIT para que no termine el shell
+	ft_memset(shell, 0, sizeof(t_minishell));								// Limpia la memoria de la estructura "shell" para evitar valores basura.
+	create_env_vars(shell, env);											// Inicializa las variables de entorno para el shell.
+	shell->running = 1;														// Establece el flag "running" en 1, indicando que el shell está activo.
+	signal(SIGINT, signal_handler);											// Configura el manejador de señal para SIGINT
+	signal(SIGQUIT, SIG_IGN);												//Ignora SIGQUIT para que no termine el shell
 }
 
-int main(int argc, char **argv, char **env)													// Función principal del programa.
+int main(int argc, char **argv, char **env)									// Función principal del programa.
 {
-	t_minishell	shell;																		// Define la estructura "shell" donde se almacenarán los datos del shell.
+	t_minishell	shell;														// Define la estructura "shell" donde se almacenarán los datos del shell.
 	char	*input;
 
-	(void) argc;																			// Evita advertencias por no usar el argumento "argc".
-	(void) argv;																			// Evita advertencias por no usar el argumento "argv".
+	(void) argc;															// Evita advertencias por no usar el argumento "argc".
+	(void) argv;															// Evita advertencias por no usar el argumento "argv".
 	
-	init_minishell(&shell, env);															// Llama a la función que inicializa el shell con las variables de entorno.
+	init_minishell(&shell, env);											// Llama a la función que inicializa el shell con las variables de entorno.
 
 	while (true)
 	{
-		if (g_signal)																		//Si se recibió SIGINT
-			g_signal = 0;																	//Restablece la señal
-		input = read_input();																// Llama a la función "read_input" para obtener la entrada del usuario.
-		if (!input)																			// Si no se recibe ninguna entrada (posible EOF)...
-			exit_shell(&shell);																// ...se llama a "exit_shell" para liberar recursos y salir del shell.
-		else if (input[0] != '\0')															// Si la entrada no está vacía...
+		if (g_signal)														//Si se recibió SIGINT
+			g_signal = 0;													//Restablece la señal
+		input = read_input();												// Llama a la función "read_input" para obtener la entrada del usuario.
+		if (!input)															// Si no se recibe ninguna entrada (posible EOF)...
+			exit_shell(&shell);												// ...se llama a "exit_shell" para liberar recursos y salir del shell.
+		else if (input[0] != '\0')											// Si la entrada no está vacía...
 		{ 
-			shell.tokens = parse_input(ft_strdup(input), &shell);							// Llama a la función de parseo (implementada por ALBELOPE).
+			shell.tokens = parse_input(ft_strdup(input), &shell);			// Llama a la función de parseo (implementada por ALBELOPE).
 			if (shell.tokens)
 			{
 				t_cmd *cmd = shell.tokens;
 				while (cmd)
 					cmd = cmd->next;
-				execute_command(&shell);													//Ejecuta el comando (implementado por PABLOGON)
+				execute_command(&shell);									//Ejecuta el comando (implementado por PABLOGON)
 			}
 			else
 			{
 				printf("(MAIN.c)ERROR: shell.tokens no esta asignado\n");
 			}
 		}
-		free(input);																		// Libera la memoria ocupada por la entrada del usuario después de procesarla.
+		free(input);														// Libera la memoria ocupada por la entrada del usuario después de procesarla.
 	}
-	return (0);																				// Retorna 0 para indicar que el programa terminó correctamente.
+	return (0);																// Retorna 0 para indicar que el programa terminó correctamente.
 }
