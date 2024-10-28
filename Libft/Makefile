@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
+#    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 18:24:23 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/17 20:40:29 by albelope         ###   ########.fr        #
+#    Updated: 2024/10/28 17:44:51 by pabloglez        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,23 +61,26 @@ WHITE=\033[37m
 
 all: $(NAME)
 
-$(NAME):$(OFILES) $(INCLUDE)
+$(NAME): $(OFILES) $(INCLUDE)
 	@$(LIB) $(NAME) $(OFILES)
-	@echo "$(GREEN) $(BOLD)"
-	@echo "COMPILING LIBFT $(END) $(GREEN)"
-	@echo "✦ ---------------------- ✦"
+	@echo "$(GREEN)$(BOLD)✓ Successfully compiled Libft!$(END)"
 
 bonus: $(NAME) $(BOFILES) $(INCLUDE)
-	$(LIB) $(NAME) $(BOFILES) 
+	@$(LIB) $(NAME) $(BOFILES)
+	@echo "$(GREEN)✓ Bonus files compiled!$(END)"
+
 .c.o:
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) $(OFILES)
+	@$(RM) $(OFILES)
+	@echo "$(RED)✓ Removed object files$(END)"
 
 fclean: clean
-	$(RM) $(NAME)
+	@$(RM) $(NAME)
+	@echo "$(RED)✓ Removed $(NAME)$(END)"
 
 re: fclean all
 
-.PHONY: all clean fclean re ar bonus
+.PHONY: all clean fclean re bonus
+

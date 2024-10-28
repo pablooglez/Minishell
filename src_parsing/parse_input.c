@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 20:20:33 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/28 16:57:14 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,22 +68,22 @@ int process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
 {
     int i = 0;
 
-    printf("(PROCESS_TOKENS())  	Procesando tokens...\n");
+    //printf("(PROCESS_TOKENS())  	Procesando tokens...\n");
     while (tokens[i]) {
-        printf("(PROCESS_TOKENS())  	Procesando token: 	%s\n", tokens[i]);
+       // printf("(PROCESS_TOKENS())  	Procesando token: 	%s\n", tokens[i]);
 
         if (process_token_pipe(tokens, &i, &current_cmd, shell) == -1) {
-            printf("(PROCESS_TOKENS())  Error: Fallo en process_token_pipe\n");
+            //printf("(PROCESS_TOKENS())  Error: Fallo en process_token_pipe\n");
             return (-1);
         }
 
         if (process_redirection(tokens, &i, current_cmd) == 0) {
-            printf("(PROCESS_TOKENS())  Redirección detectada: %s\n", tokens[i]);
+            //printf("(PROCESS_TOKENS())  Redirección detectada: %s\n", tokens[i]);
             continue;
         }
 
         if (process_arguments(tokens, &i, current_cmd) == -1) {
-            printf("(PROCESS_TOKENS())  Error: Fallo en process_arguments\n");
+            //printf("(PROCESS_TOKENS())  Error: Fallo en process_arguments\n");
             return (-1);
         }
 
@@ -106,7 +106,7 @@ t_cmd *parse_input(char *input_line, t_minishell *shell)
     t_cmd   *cmd;
     int     i;
 
-    printf("(PARSE_INPUT())					%s\n", input_line);  // Depuración
+    //printf("(PARSE_INPUT())					%s\n", input_line);  // Depuración
 
     tokens = tokenize_input(input_line);   // Tokenizamos la entrada
     if (!tokens || !tokens[0]) {
@@ -115,18 +115,18 @@ t_cmd *parse_input(char *input_line, t_minishell *shell)
     }
     i = 0;
     while (tokens[i]) {
-        printf("(PARSE_INPUT())     	Token %d:		%s\n", i, tokens[i]);  // Imprime los tokens
+        //printf("(PARSE_INPUT())     	Token %d:		%s\n", i, tokens[i]);  // Imprime los tokens
         i++;
     }
 
     cmd = initialize_first_command(shell);
     if (!cmd) {
-        printf("(PARSE_INPUT()) Error: No se pudo inicializar el primer comando\n");
+        //printf("(PARSE_INPUT()) Error: No se pudo inicializar el primer comando\n");
         return (NULL);
     }
 
     if (process_tokens(tokens, cmd, shell) == -1) {
-        printf("(PARSE_INPUT()) Error: Fallo en process_tokens\n");
+        //printf("(PARSE_INPUT()) Error: Fallo en process_tokens\n");
         free_tokens_parse(tokens);
         return (NULL);
     }

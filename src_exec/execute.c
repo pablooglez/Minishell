@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/25 20:45:01 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/28 16:58:25 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ int	execute_command(t_minishell *shell)
 	
 	while (cmd)																				// Comienza un bucle que continúa mientras haya comandos para procesar
 	{
-		printf("(EXECUTE_COMMAND())	Comando a ejecutar: 	%s\n", cmd->arguments[0]);		// Imprime el comando que se va a ejecutar
+		//printf("(EXECUTE_COMMAND())	Comando a ejecutar: 	%s\n", cmd->arguments[0]);		// Imprime el comando que se va a ejecutar
 
 		if (handle_builtin(cmd, shell))														// Verifica si el comando es un built-in (comandos internos como echo, cd, etc.)
 		{ 									
-			printf("(EXECUTE_COMMAND())     Ejecutando built-in:     %s\n", cmd->path);		// Si es un built-in, imprime que está ejecutando un built-in
+			//printf("(EXECUTE_COMMAND())     Ejecutando built-in:     %s\n", cmd->path);		// Si es un built-in, imprime que está ejecutando un built-in
 			return (0);																		// Sale de la función si se ejecuta un comando built-in
 		}
 
@@ -39,7 +39,6 @@ int	execute_command(t_minishell *shell)
 			if (pid == 0)																	// Verifica si el proceso actual es el hijo (pid == 0 significa proceso hijo)
 			{
 				handle_redirection(cmd);													// Maneja las redirecciones de entrada y salida si las hay
-
 																							// Obtiene la ruta completa del comando (ejemplo: "/bin/ls" si el comando es "ls")
 				command_path = get_command_path(cmd->arguments[0], shell);					// Llama a get_command_path para buscar el comando en los directorios de PATH
 				

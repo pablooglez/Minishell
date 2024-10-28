@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 17:59:21 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/25 20:44:17 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/28 16:43:26 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,59 +14,59 @@
 
 void	handle_redirection(t_cmd *cmd)
 {
-	t_redir *redir = cmd->redir;
-	int	fd;
+	t_redir *redir = cmd->redir;												// Inicializa un puntero 'redir' apuntando a la primera redirección en la lista de redirecciones del comando actual.
+	int	fd;																		// Declaración de una variable para almacenar el descriptor de archivo que se abrirá para redirección.
 
-	while (redir)
+	while (redir)																// Itera a través de cada redirección en la lista de redirecciones del comando.
 	{
-		if (redir->type == INFILE)
+		if (redir->type == INFILE)												// Si el tipo de redirección es INFILE (redirección de entrada)...
 		{
-			fd = open(redir->file, O_RDONLY);
-			if (fd == -1)
+			fd = open(redir->file, O_RDONLY);									// Intenta abrir el archivo en modo lectura.
+			if (fd == -1)														// Si la apertura falla...
 			{
-				perror("Error abriendo archivo de entrada");
-				exit(EXIT_FAILURE);
+				perror("Error abriendo archivo de entrada");					// Imprime un mensaje de error.
+				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
-			if (dup2(fd, STDIN_FILENO) == -1)
+			if (dup2(fd, STDIN_FILENO) == -1)									// Redirige la entrada estándar (STDIN) al descriptor de archivo recién abierto.
 			{
-				perror("Error en redirección de entrada");
-				close(fd);
-				exit(EXIT_FAILURE);
+				perror("Error en redirección de entrada");						// Imprime un mensaje de error si dup2 falla.
+				close(fd);														// Cierra el descriptor de archivo abierto.
+				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
-			close(fd);
+			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
 		}
-		else if (redir->type == OUTFILE)
+		else if (redir->type == OUTFILE)										// Si el tipo de redirección es OUTFILE (redirección de salida)...
 		{
-			fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (fd == -1)
+			fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644); 		// Abre el archivo en modo escritura, truncándolo o creándolo si no existe.
+			if (fd == -1)														// Si la apertura falla...
 			{
-				perror("Error abriendo archivo de salida");
-				exit(EXIT_FAILURE);
+				perror("Error abriendo archivo de salida");						// Imprime un mensaje de error.
+				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
-			if (dup2(fd, STDOUT_FILENO) == -1)
+			if (dup2(fd, STDOUT_FILENO) == -1)									// Redirige la salida estándar (STDOUT) al descriptor de archivo abierto.
 			{
-				perror("Error en redirección de salida");
-				close(fd);
-				exit(EXIT_FAILURE);
+				perror("Error en redirección de salida");						// Imprime un mensaje de error si dup2 falla.
+				close(fd);														// Cierra el descriptor de archivo abierto.
+				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
-			close(fd);
+			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
 		}
-		else if (redir->type == APPEND)
+		else if (redir->type == APPEND)											// Si el tipo de redirección es APPEND (redirección de salida en modo append)...
 		{
-			fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (fd == -1)
+			fd = open(redir->file, O_WRONLY | O_CREAT | O_APPEND, 0644); 		// Abre el archivo en modo append, creándolo si no existe.
+			if (fd == -1)														// Si la apertura falla...
 			{
-				perror("Error abriendo archivo para append");
-				exit(EXIT_FAILURE);
+				perror("Error abriendo archivo para append");					// Imprime un mensaje de error.
+				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
-			if (dup2(fd, STDOUT_FILENO) == -1)
+			if (dup2(fd, STDOUT_FILENO) == -1)									// Redirige la salida estándar (STDOUT) al descriptor de archivo abierto en modo append.
 			{
-				perror("Error en redirección de salida(append)");
-				close(fd);
-				exit(EXIT_FAILURE);
+				perror("Error en redirección de salida(append)"); 				// Imprime un mensaje de error si dup2 falla.
+				close(fd);														// Cierra el descriptor de archivo abierto.
+				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
-			close(fd);
+			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
 		}
-		redir = redir->next;
+		redir = redir->next;													// Avanza al siguiente elemento en la lista de redirecciones.
 	}
 }

@@ -6,7 +6,7 @@
 #    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/25 20:46:54 by pabloglez        ###   ########.fr        #
+#    Updated: 2024/10/28 17:44:28 by pabloglez        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,46 +82,48 @@ all: head libft $(NAME)
 
 head:
 	@echo "$(CYAN)$(BOLD)"
-	@echo "\t███    ███ ██ ███    ██ ██ ███████ ██   ██ ███████ ██      ██      "
-	@echo "\t████  ████ ██ ████   ██ ██ ██      ██   ██ ██      ██      ██      "
-	@echo "\t██ ████ ██ ██ ██ ██  ██ ██ ███████ ███████ █████   ██      ██      "
-	@echo "\t██  ██  ██ ██ ██  ██ ██ ██      ██ ██   ██ ██      ██      ██      "
-	@echo "\t██      ██ ██ ██   ████ ██ ███████ ██   ██ ███████ ███████ ███████ "
+	@echo "\t███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗     "
+	@echo "\t████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     "
+	@echo "\t██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║     "
+	@echo "\t██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║     "
+	@echo "\t██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗"
+	@echo "\t╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝"
 	@echo "$(END)"
-	@echo "$(BOLD)\t        42MLG: by pablogon && albelope$(END)"
-	@echo "\tProyect: $(CYAN)minishell$(END)"
-	@echo "\tCommands: $(CYAN)all clean fclean re $(END)"
-	@echo "$(BLUE)\t🛠 Compiler: $(BOLD)$(CC)$(END)\n"
-
+	@echo "$(YELLOW)$(BOLD)\t🛠️ 42MLG: $(END)$(WHITE)pablogon & albelope$(END)"
+	@echo "$(PURPLE)\t📂 Project:$(END) $(CYAN)minishell$(END)"
+	@echo "$(GREEN)\t🔹 Commands: $(BOLD)all clean fclean re$(END)"
+	@echo "$(BLUE)\t🧰 Compiler: $(BOLD)$(CC)$(END)\n"
 
 libft:
+	@echo "$(CYAN)🔧 Building Libft...$(END)"
 	@make -s -C $(LIBFT_DIR)
 
 $(NAME): line $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC)
-	@echo "✦ ---------------------- ✦$(END)"
+	@echo "$(BLUE)✦ ---------------------- ✦$(END)"
 	@$(CC) $(CFLAGS) $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC) $(LIBFT) $(HEADERS) $(LINK) -lreadline -o $(NAME)
+	@echo "$(GREEN)✓ $(NAME) built successfully!$(END)"
 
 %.o: %.c $(MINISHELL)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
-	@echo "$(GREEN) ✓ Compiled: $(notdir $<)"
+	@echo "$(GREEN) ✓ Compiled: $(notdir $<)$(END)" 
 
 line:
-	@echo "$(GREEN) $(BOLD)"
-	@echo " COMPILING MINSHELL...$(END) $(GREEN)"
-	@echo "✦ ---------------------- ✦"
+	@echo "$(GREEN)$(BOLD)"
+	@echo " 🚀 COMPILING MINISHELL...$(END) $(GREEN)"
+	@echo "✦ ---------------------- ✦$(END)"
 
 clean:
-	@echo "\n$(YELLOW) 🗑  Removing objects...$(END)"
+	@echo "\n$(YELLOW)🧹 Cleaning up object files...$(END)"
 	@$(RM) $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC)
-	@echo "$(GREEN)\r✓ $(RED)Removed objects from $(NAME) $(END)"
+	@echo "$(RED)✓ Removed objects from $(NAME)$(END)"
 	@make clean -s -C $(LIBFT_DIR)
-	
+
 fclean: clean
-	@echo "\n$(YELLOW) 🗑  Removing $(NAME)...$(END)"
+	@echo "\n$(YELLOW)🗑️ Full cleanup: removing $(NAME) executable...$(END)"
 	@$(RM) $(NAME)
 	@make fclean -s -C $(LIBFT_DIR)
-	@echo "$(GREEN)\r✓ $(RED)Removed $(NAME) $(END)\n"
+	@echo "$(RED)✓ Removed $(NAME) executable$(END)\n"
 
 re: fclean all
 
-.PHONY: all, clean, fclean, re, libft
+.PHONY: all clean fclean re libft

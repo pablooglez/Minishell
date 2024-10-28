@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:15:09 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/23 18:09:16 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/28 16:59:35 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	handle_builtin(t_cmd *cmd, t_minishell *shell)
 {
-	printf("(HANDLE_BUILTIN())	Checking builtin:	%s\n", cmd->path);
 	if (ft_strncmp(cmd->arguments[0], "echo", 5) == 0)						//Comprobamos si el comando es "echo"
 	{
 		ft_echo(shell, cmd->arguments);										//Llama a la función personalizada para "echo"
@@ -22,7 +21,6 @@ int	handle_builtin(t_cmd *cmd, t_minishell *shell)
 	}
 	else if (ft_strncmp(cmd->arguments[0], "cd", 3) == 0)					//Comprobamos si el comando es "cd"
 	{
-		printf("(HANDLE_BUILTIN())	Prueba butilitn cd\n");
 		ft_cd(shell, cmd->arguments);										//Llama a la función personalizada para "cd"
 		return (1);															//Retorna 1 para indicar que es un comando builtin
 	}
