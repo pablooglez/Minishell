@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/18 20:31:04 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/29 22:02:26 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,18 @@ int			process_redirection(char **tokens, int *i, t_cmd *cmd);
 int			get_redirection_type(char *token);
 void		expand_tokens(t_cmd *cmd, t_minishell *shell);
 bool		contains_invalid_characters(char *input);
+t_token 	get_special_token_type(char c);
+char 		*get_expanded_value(const char *variable, t_minishell *shell);
+
+char    	*expand_string(const char *str, t_minishell *shell);
+char    	*expand_argument(const char *arg, t_minishell *shell);
+void    	expand_tokens(t_cmd *cmd, t_minishell *shell);
+char   	 	*handle_escaped_dollar(int *i);
+char    	*handle_dollar_sign(const char *str, int *i, t_minishell *shell);
+char    	*handle_regular_char(const char *str, int *i);
+char    	*remove_quotes(const char *arg);
+char		*expand_entire_input(const char *input, t_minishell *shell);
+void		free_command(t_cmd *cmd);
 
 //--------------FUNCIONES EXECUTION------------//
 int			heardoc(t_minishell *shell);

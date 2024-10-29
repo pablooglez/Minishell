@@ -6,16 +6,13 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:43:54 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/27 13:33:51 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/29 22:19:44 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-/*
-** Verifica si el pipe esta bien, si no hay comando antes del pipe (i = 0) o después.
-** También verifica si hay dos pipes consecutivos sin un comando en medio.
-*/
+/* 
 int	check_pipe_errors(char **tokens, int *i)
 {
 	if (*i == 0)                                                                            // Si el pipe es el primer token (sin comando antes)
@@ -37,11 +34,6 @@ int	check_pipe_errors(char **tokens, int *i)
 	return (0);                                                                             // Retorna 0 si no hay errores con el pipe
 }
 
-/*
-** Crea un nuevo comando en la lista doblemente enlazada cuando se encuentra un pipe.
-** Actualiza el puntero `cmd` para apuntar al nuevo comando.
-** Devuelve -1 si ocurre un error en la creación del comando, 0 si todo está bien.
-*/
 int	create_next_command(t_cmd **cmd, t_minishell *shell)
 {
 	(*cmd)->next = create_new_command(shell);                                               // Crea un nuevo nodo `t_cmd` para el siguiente comando
@@ -52,14 +44,6 @@ int	create_next_command(t_cmd **cmd, t_minishell *shell)
 	return (0);                                                                             // Retorna 0 si se creó correctamente el nuevo comando
 }
 
-/*
-** Procesa un token de pipe ('|') en la cadena de tokens.
-** Si encuentra un pipe, verifica si está correctamente colocado y crea un nuevo comando.
-** Devuelve:
-** -1 en caso de error.
-**  0 si encuentra un pipe y todo está bien.
-**  1 si el token actual no es un pipe, para que se continúe con otros tokens.
-*/
 int	process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell)
 {
 	if (ft_strncmp(tokens[*i], "|", 2) == 0)                                                // Verifica si el token actual es un pipe ('|')
@@ -72,5 +56,40 @@ int	process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell)
 	}
 	return (1);                                                                             // Retorna 1 si el token no es un pipe
 }
+*/
 
-// QUEDA MANEJAR QUE SE LIBERE LA MEMORIA CORRECTAMENTE Y VER LA MODULARIDAD DEL CODIGO AUN
+
+
+int	check_pipe_errors(char **tokens, int *i)
+{
+	if (*i == 0 || !tokens[*i + 1] || ft_strncmp(tokens[*i + 1], "|", 2) == 0)
+	{
+		printf("Error: Pipe mal posicionado.\n");
+		return (-1);
+	}
+	(*i)++;
+	return (0);
+}
+
+int	create_next_command(t_cmd **cmd, t_minishell *shell)
+{
+	(*cmd)->next = create_new_command(shell);
+	if (!(*cmd)->next)
+		return (-1);
+	(*cmd)->next->prev = *cmd;
+	*cmd = (*cmd)->next;
+	return (0);
+}
+
+int	process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell)
+{
+	if (ft_strncmp(tokens[*i], "|", 2) == 0)
+	{
+		if (check_pipe_errors(tokens, i) == -1)
+			return (-1);
+		if (create_next_command(cmd, shell) == -1)
+			return (-1);
+		return (0);
+	}
+	return (1);
+}

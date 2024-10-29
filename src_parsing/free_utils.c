@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 13:30:05 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/25 13:34:22 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/29 20:56:25 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void free_arguments(char **args)
     }
 }
 
-void free_redirections(t_redir *redir)
+void free_redirections_prueba(t_redir *redir)
 {
     t_redir *temp;
 
@@ -51,7 +51,7 @@ void free_command(t_cmd *cmd)
         if (cmd->arguments)
             free_arguments(cmd->arguments);
         if (cmd->redir)
-            free_redirections(cmd->redir);
+            free_redirections_prueba(cmd->redir);
         free(cmd);
     }
 }

@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/25 13:15:22 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/29 21:07:45 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,20 +109,32 @@ t_cmd *parse_input(char *input_line, t_minishell *shell)
     if (contains_invalid_characters(input_line))                                               // Verifica si la entrada contiene caracteres no permitidos
         return (NULL);                                                                         // Devuelve NULL y no continúa si hay caracteres inválidos
     tokens = tokenize_input(input_line);                                                       // Tokenizamos la entrada
-    if (!tokens || !tokens[0])                                                                 // Verifica si no se pudieron generar tokens
-        return (NULL);                                                                         // Retorna NULL si hubo un error en la tokenización
-    //printf("Lista de tokens generados en `parse_input`:\n");                                 // Mensaje de depuración para mostrar tokens generados
-    for (int k = 0; tokens[k]; k++)                                                             // Recorre y muestra cada token (para depuración)
+    if (!tokens || !tokens[0])
     {
-        //printf("Token[%d]: '%s'\n", k, tokens[k]);                                           // Mostrar cada token
+        free_tokens_parse(tokens);                                                              // Verifica si no se pudieron generar tokens
+        return (NULL);                                                                         // Retorna NULL si hubo un error en la tokenización
     }
+    //printf("Lista de tokens generados en `parse_input`:\n");                                 // Mensaje de depuración para mostrar tokens generados
+    //for (int k = 0; tokens[k]; k++)                                                             // Recorre y muestra cada token (para depuración)
+    //{
+        //printf("Token[%d]: '%s'\n", k, tokens[k]);                                           // Mostrar cada token
+    //}
     cmd = initialize_first_command(shell);                                                     // Inicializa el primer comando de la lista
-    if (!cmd)                                                                                  // Verifica si hubo error al inicializar el comando
+    if (!cmd)
+    {
+        free_tokens_parse(tokens);                                                                                   // Verifica si hubo error al inicializar el comando
         return (NULL);                                                                         // Retorna NULL si no se pudo crear el comando
+    }
+    if (tokens[0][0] == '$') // Detecta si el primer token es una variable
+    {
+       // printf("Detectado variable al inicio, utilizando echo como comando\n");
+        cmd->path = ft_strdup("echo");  // Usa "echo" como comando predeterminado
+    }
     if (process_tokens(tokens, cmd, shell) == -1)                                              // Procesa los tokens para crear la lista de comandos
     {
         //printf("Error al procesar tokens en `parse_input`.\n");                              // Mensaje de error en caso de falla
-        free_tokens_parse(tokens);                                                             // Libera los tokens si hubo un error
+        free_tokens_parse(tokens);
+        free_command(cmd);                                                             // Libera los tokens si hubo un error
         return (NULL);                                                                         // Retorna NULL
     }
     expand_tokens(cmd, shell);                                                                 // Expande variables y reemplazos en los tokens

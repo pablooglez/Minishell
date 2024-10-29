@@ -6,7 +6,7 @@
 #    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/17 22:16:55 by albelope         ###   ########.fr        #
+#    Updated: 2024/10/29 20:54:42 by albelope         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS_PARSER =src_parsing/read_input.c src_parsing/tokenize.c \
 				src_parsing/handle_char.c src_parsing/handle_pipes.c \
 				src_parsing/command_utils.c src_parsing/code_checks.c \
 				src_parsing/handle_redirections.c src_parsing/expand_variables.c \
+				src_parsing/expand_variables_utils.c src_parsing/free_utils.c \
 ##SRCS_EXEC = 
 
 OBJS		:= ${SRCS:.c=.o}

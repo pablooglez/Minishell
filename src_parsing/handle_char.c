@@ -6,25 +6,18 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 17:49:52 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/27 13:53:24 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/29 22:19:56 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-/*
-** Verificar si el carácter es un carácter especial (pipes, redirecciones, etc.)
-** en la sintaxis de shell (Minishell).
-*/
-int	is_special_char(char c)
+
+/*int	is_special_char(char c)
 {
 	return (c == '|' || c == '>' || c == '<');                                              // Devuelve true si el carácter es un pipe o redirección
 }
 
-/*
-** Verifica si la cadena de entrada contiene caracteres inválidos para el shell.
-** Retorna true si encuentra ';' o '\\', que no son permitidos en Minishell.
-*/
 bool	contains_invalid_characters(char *input)
 {
 	int	i;
@@ -48,20 +41,6 @@ bool	contains_invalid_characters(char *input)
 	return (false);                                                                        // Retorna false si no hay caracteres no permitidos
 }
 
-/*
-** Manejar la tokenización de caracteres especiales -- incluyendo redirecciones
-** simples y dobles.
-** Recibe la cadena que el usuario introduce (input), el índice actual de la cadena `i`,
-** el array `tokens` donde se almacenarán los tokens generados y `*j` el índice actual
-** en el array de tokens (la posición donde se almacenará el siguiente token).
-** 
-** Usa un puntero temporal `temp` para almacenar el token que representa el carácter
-** especial. Verifica si es una redirección simple o doble y extrae 1 o 2 caracteres
-** con `ft_substr`. Almacena el contenido en `tokens[*j]` y avanza `*j++` para asegurar
-** que el siguiente token se almacene en la siguiente posición vacía del array.
-** 
-** Devuelve `i + 1` o `i + 2` para saltar los caracteres que ya hemos procesado.
-*/
 int	handle_special_char(char *input, int i, char **tokens, int *j)
 {
 	char	*temp;
@@ -88,4 +67,56 @@ int	handle_special_char(char *input, int i, char **tokens, int *j)
 	tokens[*j] = temp;                                                                    // Asigna el token extraído al array de tokens
 	(*j)++;                                                                               // Incrementa el índice para el próximo token
 	return (i + 1);                                                                       // Avanza una posición en la cadena `input`
+}*/
+
+#include "../include/minishell.h"
+
+t_token	get_special_token_type(char c)
+{
+	if (c == '|')
+		return (PIPE);
+	if (c == '>')
+		return (REDIR);
+	if (c == '<')
+		return (REDIR);
+	return (UNKNOWN);
+}
+
+bool	contains_invalid_characters(char *input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == ';' || (input[i] == '\\' && input[i + 1] != '$'))
+		{
+			printf("Error: uso de caracteres especiales no permitidos (%c).\n", input[i]);
+			return (true);
+		}
+		i++;
+	}
+	return (false);
+}
+
+int	handle_special_char(char *input, int i, char **tokens, int *j)
+{
+	char	*temp;
+
+	temp = NULL;
+	if ((input[i] == '>' && input[i + 1] == '>') || (input[i] == '<' && input[i + 1] == '<'))
+	{
+		temp = ft_substr(input, i, 2);
+		if (!temp)
+			return (-1);
+		tokens[*j] = temp;
+		(*j)++;
+		return (i + 2);
+	}
+	temp = ft_substr(input, i, 1);
+	if (!temp)
+		return (-1);
+	tokens[*j] = temp;
+	(*j)++;
+	return (i + 1);
 }
