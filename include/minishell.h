@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/29 22:02:26 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/29 22:33:33 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void		*ft_safe_malloc(t_minishell *shell, size_t size);
 //-------------FUNCIONES MAIN------------------//
 void		exit_shell(t_minishell *shell);						// Función para salir del shell limpiamente.
 void		init_minishell(t_minishell *shell, char **env);		// Inicializa el shell con las variables de entorno.
-void			add_history(const char *);							//Añade un comando al historial
+
 
 //---------------------ENV-------------------------//
 void		*safe_malloc(t_minishell *shell, size_t size);		// Asigna memoria de forma segura, manejando errores.
