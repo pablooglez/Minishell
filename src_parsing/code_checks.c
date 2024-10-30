@@ -6,15 +6,13 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:16:23 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/29 23:29:20 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/30 22:20:42 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-
-// Función auxiliar para mostrar redirecciones
-void display_redirections(t_redir *redir)
+/*void display_redirections(t_redir *redir)
 {
     while (redir)
     {
@@ -31,8 +29,6 @@ void display_redirections(t_redir *redir)
         redir = redir->next;
     }
 }
-
-// Función auxiliar para mostrar argumentos
 void display_arguments(char **arguments)
 {
     int i = 0;
@@ -53,13 +49,49 @@ void display_commands(t_cmd *cmd)
         //if (is_expanded_command)
             //printf("Expanded CommanDC: %s\n", current->path);
        // else
-            printf("CommanDC: %s\n", current->path);
+        printf("CommanDC: %s\n", current->path);
 
         display_arguments(current->arguments);
         display_redirections(current->redir);
         current = current->next;
     }
+}*/
+
+void	print_command(t_cmd *cmd)
+{
+	int		i;
+	t_redir	*redir;
+
+	while (cmd)
+	{
+		printf("Comando: %s\n", cmd->path); // Imprime solo el comando principal
+		i = 0;
+		while (cmd->arguments && cmd->arguments[i])
+		{
+			printf("  Argumento %d: %s\n", i, cmd->arguments[i]); // Imprime solo los argumentos
+			i++;
+		}
+		redir = cmd->redir;
+		while (redir)
+		{
+			printf("  Redirección: ");
+			if (redir->type == INFILE)
+				printf("entrada ");
+			else if (redir->type == OUTFILE)
+				printf("salida ");
+			else if (redir->type == APPEND)
+				printf("append ");
+			else if (redir->type == HEREDOC)
+				printf("heredoc ");
+			printf("a archivo: %s\n", redir->file);
+			redir = redir->next;
+		}
+		cmd = cmd->next;
+	}
 }
+
+
+
 
 
 

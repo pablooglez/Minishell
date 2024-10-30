@@ -6,24 +6,18 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:03:33 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/29 21:34:10 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/30 20:08:11 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-/*
-** Maneja el caso de un dólar escapado (\$) devolviendo un '$' literal.
-*/
 char	*handle_escaped_dollar(int *i)
 {
 	*i += 2;
 	return (ft_strdup("$"));
 }
 
-/*
-** Maneja variables de entorno y el caso especial de '$?'.
-*/
 char	*handle_dollar_sign(const char *str, int *i, t_minishell *shell)
 {
 	char	*expanded;
@@ -50,9 +44,6 @@ char	*handle_dollar_sign(const char *str, int *i, t_minishell *shell)
 	return (expanded);
 }
 
-/*
-** Maneja caracteres regulares no relacionados con variables.
-*/
 char	*handle_regular_char(const char *str, int *i)
 {
 	char	*expanded;
@@ -62,9 +53,7 @@ char	*handle_regular_char(const char *str, int *i)
 	return (expanded);
 }
 
-/*
-** Elimina las comillas iniciales y finales de un argumento si las tiene.
-*/
+
 char	*remove_quotes(const char *arg)
 {
 	size_t	len;
@@ -76,9 +65,6 @@ char	*remove_quotes(const char *arg)
 	return (ft_strdup(arg));
 }
 
-/*
-** Expande un argumento individual, manejando las comillas y variables.
-*/
 char	*expand_argument(const char *arg, t_minishell *shell)
 {
 	char	*unquoted;

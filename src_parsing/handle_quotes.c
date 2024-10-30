@@ -6,27 +6,17 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:32:11 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/25 13:20:07 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/30 20:09:22 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-
-/* 
-** Verifica si un carácter es una comilla simple o doble.
-** Retorna true si es cualquiera de las dos.
-*/
 bool	is_quote(char c)
 {
 	return (c == '\'' || c == '\"');                                                          // Devuelve true si el carácter es una comilla simple o doble
 }
 
-/* 
-** Maneja los caracteres escapados dentro de las comillas dobles.
-** Permite escaparse de `"`, `$`, y `\`. Otros caracteres no serán escapados 
-** y tratarán el backslash como literal.
-*/
 int	handle_escape(char *input, int i, char *temp, int *k)
 {
 	i++;                                                                                     // Avanza al carácter después del backslash
@@ -40,11 +30,6 @@ int	handle_escape(char *input, int i, char *temp, int *k)
 	return (i);                                                                             // Devuelve el índice actualizado
 }
 
-/* 
-** Maneja el contenido entre comillas simples.
-** Copia todo el contenido literal sin interpretación ni expansión.
-** Incluye las comillas simples en el token.
-*/
 int	handle_single_quotes(char *input, int i, char **tokens, int *j)
 {
 	int		start;
@@ -73,11 +58,6 @@ int	handle_single_quotes(char *input, int i, char **tokens, int *j)
 	return (i + 1);                                                                         // Avanza más allá de la comilla de cierre y devuelve el índice
 }
 
-/* 
-** Maneja el contenido entre comillas dobles.
-** Permite escapes válidos de `"`, `$` y `\`, usando handle_escape.
-** Incluye las comillas dobles en el token.
-*/
 int	handle_double_quotes(char *input, int i, char **tokens, int *j)
 {
 	char	temp[1024];                                                                     // Buffer temporal para almacenar el contenido procesado
@@ -106,11 +86,6 @@ int	handle_double_quotes(char *input, int i, char **tokens, int *j)
 	return (i);                                                                             // Devuelve el índice actualizado
 }
 
-/* 
-** Detecta si el carácter actual es una comilla simple o doble, 
-** y llama a la función correspondiente para manejar el contenido.
-** Retorna el índice actualizado después de procesar las comillas.
-*/
 int	handle_quotes(char *input, int i, char **tokens, int *j)
 {
 	char	quote_char;
