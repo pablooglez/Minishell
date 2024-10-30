@@ -6,30 +6,12 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:02:04 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/29 21:42:58 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/29 23:08:52 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   expand_variables.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/17 22:02:04 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/29 21:37:25 by albelope         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../include/minishell.h"
-
-/*
-** Busca el valor de una variable de entorno en `t_env`.
-** Devuelve el valor si la encuentra, o NULL si no existe.
-*/
 char	*find_env_value(t_env *env_vars, const char *key)
 {
 	while (env_vars)
@@ -41,11 +23,6 @@ char	*find_env_value(t_env *env_vars, const char *key)
 	return (NULL);
 }
 
-/*
-** Obtiene el valor expandido de una variable de entorno.
-** Si la variable es "$?", devuelve el código de salida del último comando ejecutado.
-** Si la variable está en el entorno, devuelve su valor expandido.
-*/
 char	*get_expanded_value(const char *variable, t_minishell *shell)
 {
 	char	*value;
@@ -59,10 +36,6 @@ char	*get_expanded_value(const char *variable, t_minishell *shell)
 	return (ft_strdup(""));
 }
 
-/*
-** Expande variables o caracteres individuales.
-** Divide la función en casos más pequeños para cumplir con las normas.
-*/
 char	*expand_var_or_char(const char *str, int *i, t_minishell *shell)
 {
 	char	*expanded;
@@ -76,9 +49,6 @@ char	*expand_var_or_char(const char *str, int *i, t_minishell *shell)
 	return (expanded);
 }
 
-/*
-** Expande la cadena completa procesando cada parte y reemplazando variables de entorno.
-*/
 char	*expand_string(const char *str, t_minishell *shell)
 {
 	char	*result;
@@ -108,9 +78,6 @@ char	*expand_string(const char *str, t_minishell *shell)
 	return (result);
 }
 
-/*
-** Expande todo el input si es solo una concatenación de variables.
-*/
 char	*expand_entire_input(const char *input, t_minishell *shell)
 {
 	char	*expanded;
@@ -122,10 +89,6 @@ char	*expand_entire_input(const char *input, t_minishell *shell)
 	return (NULL);
 }
 
-/*
-** Expande todos los tokens de la lista de argumentos de un comando.
-** Los argumentos expandidos reemplazan a los originales.
-*/
 void	expand_tokens(t_cmd *cmd, t_minishell *shell)
 {
 	int		i;

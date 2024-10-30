@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/29 21:07:45 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/30 15:40:17 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
             //printf("Error al procesar pipe en token[%d]: '%s'\n", i, tokens[i]); // Depuración // Mensaje de error si falla el procesamiento del pipe
             return (-1);                                                                       // Retorna -1 si hubo un error
         }
-        if (process_redirection(tokens, &i, current_cmd) == 0)                                 // Procesa redirecciones (>, <, >>, <<)
+        if (process_redirection(tokens, &i, current_cmd, shell) == 0)                                 // Procesa redirecciones (>, <, >>, <<)
         {
             //printf("Redirección procesada en token[%d]: '%s'\n", i, tokens[i]); // Depuración  // Depuración para mostrar redirección procesada
             continue;                                                                          // Salta al siguiente token si se procesó una redirección

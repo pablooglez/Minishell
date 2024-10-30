@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:57:47 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/25 13:17:06 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/29 23:14:14 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ y asociarla al comando. Si la creación falla, devuelve `-1`.
 Finalmente, avanza el índice para continuar procesando el resto del input y
 devuelve `0` si todo fue correctamente procesado.
 */
-int	process_redirection(char **tokens, int *i, t_cmd *cmd)
+/*int	process_redirection(char **tokens, int *i, t_cmd *cmd)
 {
 	int		type;                                                                            // Variable para almacenar el tipo de redirección
 
@@ -111,7 +111,44 @@ int	process_redirection(char **tokens, int *i, t_cmd *cmd)
 		return (-1);                                                                         // Retorna -1 si hubo error al crear la redirección
 	(*i)++;                                                                                  // Avanza el índice para continuar procesando tokens
 	return (0);                                                                              // Retorna 0 si todo fue correctamente procesado
+}*/
+
+int	process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
+{
+	int		type;
+	char	*expanded_filename;
+
+	type = get_redirection_type(tokens[*i]);
+	if (type == NOT_REDIR)
+		return (1);
+	if (*i > 0 && get_redirection_type(tokens[*i - 1]) != NOT_REDIR)
+	{
+		printf("Error: falta comando antes de la redirección.\n");
+		return (-1);
+	}
+	(*i)++;
+	if (!tokens[*i])
+	{
+		printf("Error: falta archivo de redirección.\n");
+		return (-1);
+	}
+	// Expande variables en el nombre del archivo antes de crear la redirección
+	expanded_filename = expand_string(tokens[*i], shell);
+	if (!expanded_filename)
+	{
+		printf("Error: expansión fallida en el nombre del archivo.\n");
+		return (-1);
+	}
+	if (create_and_add_redirection(cmd, type, expanded_filename) == -1)
+	{
+		free(expanded_filename);
+		return (-1);
+	}
+	free(expanded_filename);
+	(*i)++;
+	return (0);
 }
+
 
 /*
 POR SI ACASO HICIERA FALTA LIBERAR O PROBLEMAS DE MEMORIA CON LAS REDIRECCIONES

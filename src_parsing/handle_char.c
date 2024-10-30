@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 17:49:52 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/29 22:19:56 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/29 22:37:31 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ bool	contains_invalid_characters(char *input)
 	return (false);
 }
 
-int	handle_special_char(char *input, int i, char **tokens, int *j)
+/*int	handle_special_char(char *input, int i, char **tokens, int *j)
 {
 	char	*temp;
 
@@ -119,4 +119,31 @@ int	handle_special_char(char *input, int i, char **tokens, int *j)
 	tokens[*j] = temp;
 	(*j)++;
 	return (i + 1);
+}*/
+int	handle_special_char(char *input, int i, char **tokens, int *j)
+{
+	char	*temp;
+	t_token	type;
+
+	type = get_special_token_type(input[i]);
+	temp = NULL;
+	if ((input[i] == '>' && input[i + 1] == '>') || (input[i] == '<' && input[i + 1] == '<'))
+	{
+		temp = ft_substr(input, i, 2);
+		if (!temp)
+			return (-1);
+		tokens[*j] = temp;
+		(*j)++;
+		return (i + 2);
+	}
+	else if (type != UNKNOWN)
+	{
+		temp = ft_substr(input, i, 1);
+		if (!temp)
+			return (-1);
+		tokens[*j] = temp;
+		(*j)++;
+		return (i + 1);
+	}
+	return (-1);
 }

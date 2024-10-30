@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/29 22:33:33 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/29 23:14:41 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ t_cmd   	*create_new_command(t_minishell *shell);  				// Declaración de create
 int    		process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell); // Declaración de process_token_pipe
 int    		process_arguments(char **tokens, int *i, t_cmd *cmd);  // Declaración de process_arguments
 void		display_commands(t_cmd *cmd);
-int			process_redirection(char **tokens, int *i, t_cmd *cmd);
+int			process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell);
 int			get_redirection_type(char *token);
 void		expand_tokens(t_cmd *cmd, t_minishell *shell);
 bool		contains_invalid_characters(char *input);

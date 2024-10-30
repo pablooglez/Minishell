@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:16:23 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/29 20:29:52 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/29 23:29:20 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ void display_arguments(char **arguments)
 void display_commands(t_cmd *cmd)
 {
     t_cmd *current = cmd;
-    int is_expanded_command = (current && current->path && current->path[0] == '$');
+    //int is_expanded_command = (current && current->path && current->path[0] == '$');
 
     while (current)
     {
-        if (is_expanded_command)
-            printf("Expanded CommanDC: %s\n", current->path);
-        else
+        //if (is_expanded_command)
+            //printf("Expanded CommanDC: %s\n", current->path);
+       // else
             printf("CommanDC: %s\n", current->path);
 
         display_arguments(current->arguments);
