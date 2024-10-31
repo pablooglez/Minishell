@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
+#    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/10/28 18:57:12 by pabloglez        ###   ########.fr        #
+#    Updated: 2024/10/31 21:31:22 by albelope         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,9 @@ SRCS_PARSER = src_parsing/read_input.c src_parsing/tokenize.c \
 				src_parsing/handle_char.c src_parsing/handle_pipes.c \
 				src_parsing/command_utils.c src_parsing/code_checks.c \
 				src_parsing/handle_redirections.c \
+				src_parsing/expand_variables.c src_parsing/free_utils.c \
+				src_parsing/expand_variables_utils.c \
+				src_parsing/expand_variables_helpers.c \
 
 OBJS		:= ${SRCS:.c=.o}
 OBJS_PARSER	:= ${SRCS_PARSER:.c=.o}

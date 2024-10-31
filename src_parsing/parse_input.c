@@ -3,141 +3,156 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/28 16:57:14 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/31 22:12:15 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
-/* Inicializa el primer comando y crea la lista de comandos.
-Lo que hago aquí es crear la estructura del primer comando con la función
-create_new_command` y la devuelvo para empezar a construir la lista de comandos.
-Si algo falla al crear el comando, devuelvo NULL para indicar un error. */
-t_cmd *initialize_first_command(t_minishell *shell)
+
+t_cmd	*initialize_first_command(t_minishell *shell)
 {
-    t_cmd *cmd;
+	t_cmd	*cmd;
 
-    cmd = create_new_command(shell);
-    if (!cmd)
-        return (NULL);
-    return (cmd);
+	cmd = create_new_command(shell);
+	if (!cmd)
+		return (NULL);
+	return (cmd);
 }
-/* Procesa los argumentos de un comando y los asigna a la estructura t_cmd.
-   Esta función toma los tokens que son argumentos 
-   (todo lo que no sea un pipe o redirección) y los almacena en la estructura 
-   del comando (`t_cmd`). Primero, si aún no hemos asignado el path del comando, 
-   lo hacemos aquí. Luego, cuento cuántos argumentos hay hasta el próximo 
-   pipe o redirección, y los guardo en `cmd->arguments`. 
-   Avanzo en el array de tokens para procesar el resto después de los argumentos. */
-int process_arguments(char **tokens, int *i, t_cmd *cmd)
-{
-    int arg_count;
-    int j;
 
-    if (!cmd->path)  // Si el comando principal aún no se ha asignado
-        cmd->path = ft_strdup(tokens[*i]);  // Asignar comando principal (path)
-    arg_count = 0;
-    while (tokens[*i + arg_count]
-            && get_redirection_type(tokens[*i + arg_count]) == -1
-            && ft_strncmp(tokens[*i + arg_count], "|", 2) != 0)
-        arg_count++;  // Contar el número de argumentos hasta encontrar un pipe
-    cmd->arguments = ft_calloc(arg_count + 1, sizeof(char *));  // Reservar espacio para los argumentos
-    if (!cmd->arguments)
+int	initialize_arguments(char **tokens, int *i, t_cmd *cmd)
+{
+	if (!cmd->path)
+	{
+		cmd->path = ft_strdup(tokens[*i]);
+		if (!cmd->path)
+			return (-1);
+		(*i)++;
+	}
+	cmd->arguments = ft_calloc(100, sizeof(char *));
+	if (!cmd->arguments)
+		return (-1);
+	return (0);
+}
+
+int	add_argument(char *token, int arg_index, t_cmd *cmd)
+{
+	cmd->arguments[arg_index] = ft_strdup(token);
+	if (!cmd->arguments[arg_index])
+		return (-1);
+	return (0);
+}
+
+/*int	process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
+{
+	int	arg_index;
+	int	ret;
+
+	if (initialize_arguments(tokens, i, cmd) == -1)
+		return (-1);
+	arg_index = 0;
+	while (tokens[*i] && ft_strncmp(tokens[*i], "|", 2) != 0)
+	{
+		if (get_redirection_type(tokens[*i]) != NOT_REDIR)
+		{
+			ret = process_redirection(tokens, i, cmd, shell);
+			if (ret == -1)
+				return (-1);
+		}
+		else
+		{
+			if (add_argument(tokens[*i], arg_index, cmd) == -1)
+				return (-1);
+			arg_index++;
+			(*i)++;
+		}
+	}
+	cmd->arguments[arg_index] = NULL;
+	return (0);
+}*/
+int	process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
+{
+    int	arg_index;
+    int	ret;
+
+    if (initialize_arguments(tokens, i, cmd) == -1)
         return (-1);
-    j = 0;
-    while (j < arg_count)  // Copiar argumentos
+    arg_index = 0;
+    cmd->arguments[arg_index] = ft_strdup(cmd->path);
+    if (!cmd->arguments[arg_index])
+        return (-1);
+    
+    arg_index++;
+    while (tokens[*i] && ft_strncmp(tokens[*i], "|", 2) != 0)
     {
-        cmd->arguments[j] = ft_strdup(tokens[*i + j]);
-        j++;
+        if (get_redirection_type(tokens[*i]) != NOT_REDIR)
+        {
+            ret = process_redirection(tokens, i, cmd, shell);
+            if (ret == -1)
+                return (-1);
+        }
+        else
+        {
+            if (add_argument(tokens[*i], arg_index, cmd) == -1)
+                return (-1);
+            
+            arg_index++;
+            (*i)++;
+        }
     }
-    cmd->arguments[j] = NULL;  // Terminar la lista de argumentos
-    *i += arg_count;  // Avanzar en el array de tokens
+    cmd->arguments[arg_index] = NULL;
     return (0);
 }
 
-/* Procesa los tokens y crea la lista de comandos.
-   En esta función, recorro todos los tokens que obtuve de la línea de input 
-   del usuario. Por cada token, reviso si es un pipe o una redirección.
-   Si es un pipe, proceso el pipe creando un nuevo comando. Si es una redirección,
-   la proceso y la añado al comando actual. Si es un argumento normal, 
-   llamo a `process_arguments` para almacenarlo en el comando. */
-int process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
+int	process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
 {
-    int i = 0;
+	int	i;
 
-    //printf("(PROCESS_TOKENS())  	Procesando tokens...\n");
-    while (tokens[i]) {
-       // printf("(PROCESS_TOKENS())  	Procesando token: 	%s\n", tokens[i]);
-
-        if (process_token_pipe(tokens, &i, &current_cmd, shell) == -1) {
-            //printf("(PROCESS_TOKENS())  Error: Fallo en process_token_pipe\n");
-            return (-1);
-        }
-
-        if (process_redirection(tokens, &i, current_cmd) == 0) {
-            //printf("(PROCESS_TOKENS())  Redirección detectada: %s\n", tokens[i]);
-            continue;
-        }
-
-        if (process_arguments(tokens, &i, current_cmd) == -1) {
-            //printf("(PROCESS_TOKENS())  Error: Fallo en process_arguments\n");
-            return (-1);
-        }
-
-        i++;
-    }
-    return (0);
+	i = 0;
+	while (tokens[i])
+	{
+		if (process_token_pipe(tokens, &i, &current_cmd, shell) == -1)
+			return (-1);
+		if (process_arguments(tokens, &i, current_cmd, shell) == -1)
+			return (-1);
+	}
+	return (0);
 }
 
-
-/* Tokeniza la entrada y estructura los comandos en una lista doblemente enlazada.
-   Esta función es el punto de partida. Toma la línea de input que el usuario
-   escribe y la divide en tokens con `tokenize_input`. 
-   Luego inicializo el primer comando con `initialize_first_command`, y si todo va bien,
-   proceso esos tokens para crear una lista de comandos.
-   Si algo falla en algún punto, libero la memoria de los tokens y devuelvo NULL.
-Al final, devuelvo la lista de comandos que se ha creado. */
-t_cmd *parse_input(char *input_line, t_minishell *shell)
+t_cmd	*parse_input(char *input_line, t_minishell *shell)
 {
-    char    **tokens;
-    t_cmd   *cmd;
-    int     i;
+	char	**tokens;
+	t_cmd	*cmd;
 
-    //printf("(PARSE_INPUT())					%s\n", input_line);  // Depuración
-
-    tokens = tokenize_input(input_line);   // Tokenizamos la entrada
-    if (!tokens || !tokens[0]) {
-        printf("Error: No se encontraron tokens\n");
+	if (is_empty_or_whitespace(input_line))
         return (NULL);
-    }
-    i = 0;
-    while (tokens[i]) {
-        //printf("(PARSE_INPUT())     	Token %d:		%s\n", i, tokens[i]);  // Imprime los tokens
-        i++;
-    }
-
-    cmd = initialize_first_command(shell);
-    if (!cmd) {
-        //printf("(PARSE_INPUT()) Error: No se pudo inicializar el primer comando\n");
-        return (NULL);
-    }
-
-    if (process_tokens(tokens, cmd, shell) == -1) {
-        //printf("(PARSE_INPUT()) Error: Fallo en process_tokens\n");
-        free_tokens_parse(tokens);
-        return (NULL);
-    }
-
-    free_tokens_parse(tokens);
-    display_commands(cmd);  // Verifica que los comandos estén bien formados
-    return (cmd);
+	if (contains_invalid_characters(input_line))
+		return (NULL);
+	tokens = tokenize_input(input_line);
+	if (!tokens || !tokens[0])
+	{
+		free_tokens_parse(tokens);
+		return (NULL);
+	}
+	cmd = initialize_first_command(shell);
+	if (!cmd)
+	{
+		free_tokens_parse(tokens);
+		return (NULL);
+	}
+	if (tokens[0][0] == '$')
+		cmd->path = ft_strdup("echo");
+	if (process_tokens(tokens, cmd, shell) == -1)
+	{
+		free_tokens_parse(tokens);
+		free_command(cmd);
+		return (NULL);
+	}
+	expand_tokens(cmd, shell);
+	free_tokens_parse(tokens);
+	//print_command(cmd);
+	return (cmd);
 }
-
-
-
-
-
-//completar liberacion en caso de error // freees a saco //

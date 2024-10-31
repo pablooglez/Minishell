@@ -3,68 +3,103 @@
 /*                                                        :::      ::::::::   */
 /*   handle_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:32:11 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/17 18:51:35 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/31 16:10:31 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/minishell.h"
 
-/*sencilla. Solo revisa si un carácter es una comilla simple o comilla doble. 
- ayuda a identificar cuándo comienza y cuándo termina una cadena que está 
- entre comillas. Todo lo que este entre comillas se trata como un token.*/ 
 bool	is_quote(char c)
 {
-	return (c == '\'' || c == '\"');
+	return (c == '\'' || c == '\"');                                                          // Devuelve true si el carácter es una comilla simple o doble
 }
-/*MANEJAMOS	los caracteres escapados dentro de las comillas, cuando algun mamon
-mete un backslash en el input, significa que el seguiente char se trata literalmente.
-ej. \" quiero que el backslash se ignore y que la comilla " se trate como parte
-del texto y no como el cierre de una cadena.*/
+
 int	handle_escape(char *input, int i, char *temp, int *k)
 {
-	i++; // Salta el backslash del input metido por algun mamon
-    if (input[i])
-	    temp[(*k)++] = input[i++];
-	return (i);
-}
-/*Para gestionar todo lo que el usuario mete entre comillas, ya sea simples o dobles
-para que se trate como un token.
-Detectar si es comilla simple o doble, y la almacenamos en quoute_char. con i++ para
-saber que hay en el next caracter dentro de las comillas.
-Ejecuta el bluce hasta el final del input y no se haya encontrado comilla de cierre.
--- si encontramos backslash debe tratarse como habndle escape. SI no es un backslash, lo 
-copiamos en el buffer temporal, incrementamos i y k.
--- si falta comillas de cierre. dveolvemos error
--- añadimos caracter nuelo para cerrar la cadena.
-usamos ft_strdup para duplicar el contenido y guardarlo en tokens[*j], donde guardamos
-los tokens, luego avanzamos j++ para guardar en la siguiente posicion disponible en el 
-array de tokens.
-devolvermos i + 1  que es la posicion en el input despues de la comilla de cierrte
-*/
-
-int handle_quotes(char *input, int i, char **tokens, int *j)
-{
-	char quote_char;
-	char temp[1024]; // Un tamaño fijo para minishell mejor que dinámico? por tema de memoria depues(frees);
-	int k;
-
-	k = 0;
-	quote_char = input[i++];
-	while (input[i] && input[i] != quote_char)
+	i++;                                                                                     // Avanza al carácter después del backslash
+	if (input[i] == '"' || input[i] == '$' || input[i] == '\\')                              // Permite escapes de `"`, `$`, y `\`
+		temp[(*k)++] = input[i++];                                                           // Copia el carácter escapado en `temp` y avanza el índice `i`
+	else
 	{
-		if (input[i] == '\\')
-			i = handle_escape(input, i, temp, &k);
-		else
-			temp[k++] = input[i++];
+		temp[(*k)++] = '\\';                                                                // Copia el backslash literal en `temp`
+		temp[(*k)++] = input[i++];                                                          // Copia el siguiente carácter en `temp` y avanza `i`
 	}
-	if (input[i] != quote_char)
-		return (-1);
-	temp[k] = '\0';
-	tokens[*j] = ft_strdup(temp);
-	(*j)++;
-	return (i + 1);
+	return (i);                                                                             // Devuelve el índice actualizado
 }
 
+int	handle_single_quotes(char *input, int i, char **tokens, int *j)
+{
+	int		start;
+	char	*token_content;
+	char	*token_with_quotes;
+	char	*final_token;
+
+	start = i + 1;                                                                          // Marca el inicio del contenido dentro de las comillas simples
+	i++;                                                                                    // Avanza más allá de la comilla inicial
+	while (input[i] && input[i] != '\'')                                                    // Recorre hasta encontrar la comilla de cierre
+		i++;
+	if (input[i] != '\'')
+	{
+		printf("Error: comila simple sin cerrar\n");                                                                  // Verifica si no hay comilla de cierre
+		return (-1);                                                                        // Retorna -1 para indicar error
+	}
+	token_content = ft_substr(input, start, i - start);                                     // Extrae el contenido entre comillas
+	if (!token_content)                                                                     // Verifica si hubo un error al crear el token
+	{
+		free_tokens_parse(tokens);                                                          // Libera tokens en caso de error
+		return (-1);                                                                        // Retorna -1 para indicar error
+	}
+	token_with_quotes = ft_strjoin("'", token_content);                                     // Añade la comilla inicial al contenido extraído
+	final_token = ft_strjoin(token_with_quotes, "'");                                       // Añade la comilla final al contenido completo
+	free(token_content);                                                                    // Libera memoria temporal de `token_content`
+	free(token_with_quotes);                                                                // Libera memoria temporal de `token_with_quotes`
+	tokens[*j] = final_token;                                                               // Asigna el token finalizado al array de tokens
+	(*j)++;                                                                                 // Incrementa el índice para el próximo token
+	return (i + 1);                                                                         // Avanza más allá de la comilla de cierre y devuelve el índice
+}
+
+int	handle_double_quotes(char *input, int i, char **tokens, int *j)
+{
+	char	temp[1024];                                                                     // Buffer temporal para almacenar el contenido procesado
+	int		k;
+
+	k = 0;                                                                                  // Inicializa el índice del buffer `temp`
+	i++;                                                                                    // Avanza más allá de la comilla inicial
+	while (input[i] && input[i] != '"')                                                     // Recorre hasta encontrar la comilla de cierre
+	{
+		if (input[i] == '\\')                                                               // Si encuentra un backslash
+			i = handle_escape(input, i, temp, &k);                                          // Llama a `handle_escape` para procesar el escape
+		else
+			temp[k++] = input[i++];                                                         // Copia el carácter actual a `temp` y avanza `i`
+	}
+	if (input[i] != '"')
+	{
+		printf("Error: comilla doble sin cerrar\n");                                                                     // Verifica si no hay comilla de cierre
+		return (-1);                                                                        // Retorna -1 para indicar error
+	}
+	i++;                                                                                    // Avanza más allá de la comilla de cierre
+	temp[k] = '\0';                                                                         // Termina el contenido del buffer con un carácter nulo
+	tokens[*j] = ft_strdup(temp);                                                           // Crea una copia del contenido de `temp` y la almacena en tokens
+	if (!tokens[*j])                                                                       // Verifica si hubo un error al asignar el token
+	{
+		free_tokens_parse(tokens);                                                          // Libera tokens en caso de error
+		return (-1);                                                                        // Retorna -1 para indicar error
+	}
+	(*j)++;                                                                                 // Incrementa el índice para el próximo token
+	return (i);                                                                             // Devuelve el índice actualizado
+}
+
+int	handle_quotes(char *input, int i, char **tokens, int *j)
+{
+	char	quote_char;
+
+	quote_char = input[i];                                                                  // Almacena el carácter de comilla detectado
+	if (quote_char == '\'')                                                                 // Si es una comilla simple
+		return (handle_single_quotes(input, i, tokens, j));                                 // Llama a `handle_single_quotes` para procesarlo
+	else if (quote_char == '"')                                                             // Si es una comilla doble
+		return (handle_double_quotes(input, i, tokens, j));                                 // Llama a `handle_double_quotes` para procesarlo
+	return (-1);                                                                           // Retorna -1 si no se reconoce el tipo de comilla
+}

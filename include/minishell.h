@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/28 18:53:04 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/10/31 20:38:32 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,25 @@ int			handle_special_char(char *input, int i, char **tokens, int *j);
 int			is_special_char(char c);
 t_cmd   	*create_new_command(t_minishell *shell);  										// Declaración de create_new_command
 int    		process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell);		// Declaración de process_token_pipe
-int    		process_arguments(char **tokens, int *i, t_cmd *cmd);							// Declaración de process_arguments
+int			process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell);						// Declaración de process_arguments
 void		display_commands(t_cmd *cmd);
-int			process_redirection(char **tokens, int *i, t_cmd *cmd);
+int			process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell);
 int			get_redirection_type(char *token);
+bool		contains_invalid_characters(char *input);
+t_token 	get_special_token_type(char c);
+char 		*get_expanded_value(const char *variable, t_minishell *shell);
+void		print_command(t_cmd *cmd);
+char    	*expand_string(const char *str, t_minishell *shell);
+char    	*expand_argument(const char *arg, t_minishell *shell);
+void    	expand_tokens(t_cmd *cmd, t_minishell *shell);
+char   	 	*handle_escaped_dollar(int *i);
+char    	*handle_dollar_sign(const char *str, int *i, t_minishell *shell);
+char    	*handle_regular_char(const char *str, int *i);
+char    	*remove_quotes(const char *arg);
+char		*expand_entire_input(const char *input, t_minishell *shell);
+void		free_command(t_cmd *cmd);
+char		*expand_var_or_char(const char *str, int *i, t_minishell *shell);
+int			is_empty_or_whitespace(char *str);
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------//
 
