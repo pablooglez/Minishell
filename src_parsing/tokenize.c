@@ -6,11 +6,23 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/30 20:10:13 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:19:12 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+t_token	classify_special_token(char c)
+{
+	if (c == '|')
+		return (PIPE);
+	if (c == '>')
+		return (REDIR);
+	if (c == '<')
+		return (REDIR);
+	return (UNKNOWN);
+}
+
 
 void	free_tokens_parse(char **tokens)
 {

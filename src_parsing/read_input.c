@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 19:22:39 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/30 20:10:01 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/31 15:44:34 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,6 @@ char	*read_input(void)
 		add_history(input);                                                                      // Agrega la entrada al historial de comandos
 	return (input);                                                                              // Devuelve la cadena de entrada capturada
 }
+
+
 

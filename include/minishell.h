@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/30 21:55:59 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:27:33 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int			handle_special_char(char *input, int i, char **tokens, int *j);
 int			is_special_char(char c);
 t_cmd   	*create_new_command(t_minishell *shell);  				// Declaración de create_new_command
 int    		process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell); // Declaración de process_token_pipe
-int     process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell);
+int    		 process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell);
 void		display_commands(t_cmd *cmd);
 int			process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell);
 int			get_redirection_type(char *token);
@@ -150,6 +150,8 @@ char    	*handle_regular_char(const char *str, int *i);
 char    	*remove_quotes(const char *arg);
 char		*expand_entire_input(const char *input, t_minishell *shell);
 void		free_command(t_cmd *cmd);
+char		*expand_var_or_char(const char *str, int *i, t_minishell *shell);
+int			is_empty_or_whitespace(char *str);
 
 //--------------FUNCIONES EXECUTION------------//
 int			heardoc(t_minishell *shell);

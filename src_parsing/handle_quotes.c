@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:32:11 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/30 20:09:22 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:10:31 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,11 @@ int	handle_single_quotes(char *input, int i, char **tokens, int *j)
 	i++;                                                                                    // Avanza más allá de la comilla inicial
 	while (input[i] && input[i] != '\'')                                                    // Recorre hasta encontrar la comilla de cierre
 		i++;
-	if (input[i] != '\'')                                                                   // Verifica si no hay comilla de cierre
+	if (input[i] != '\'')
+	{
+		printf("Error: comila simple sin cerrar\n");                                                                  // Verifica si no hay comilla de cierre
 		return (-1);                                                                        // Retorna -1 para indicar error
+	}
 	token_content = ft_substr(input, start, i - start);                                     // Extrae el contenido entre comillas
 	if (!token_content)                                                                     // Verifica si hubo un error al crear el token
 	{
@@ -72,8 +75,11 @@ int	handle_double_quotes(char *input, int i, char **tokens, int *j)
 		else
 			temp[k++] = input[i++];                                                         // Copia el carácter actual a `temp` y avanza `i`
 	}
-	if (input[i] != '"')                                                                    // Verifica si no hay comilla de cierre
+	if (input[i] != '"')
+	{
+		printf("Error: comilla doble sin cerrar\n");                                                                     // Verifica si no hay comilla de cierre
 		return (-1);                                                                        // Retorna -1 para indicar error
+	}
 	i++;                                                                                    // Avanza más allá de la comilla de cierre
 	temp[k] = '\0';                                                                         // Termina el contenido del buffer con un carácter nulo
 	tokens[*j] = ft_strdup(temp);                                                           // Crea una copia del contenido de `temp` y la almacena en tokens

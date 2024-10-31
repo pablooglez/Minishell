@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/30 21:59:01 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:25:36 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	initialize_arguments(char **tokens, int *i, t_cmd *cmd)
 			return (-1);
 		(*i)++;
 	}
-	cmd->arguments = ft_calloc(100, sizeof(char *)); // Adjust size as needed
+	cmd->arguments = ft_calloc(100, sizeof(char *));
 	if (!cmd->arguments)
 		return (-1);
 	return (0);
@@ -94,6 +94,8 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 	char	**tokens;
 	t_cmd	*cmd;
 
+	if (is_empty_or_whitespace(input_line))
+        return (NULL);
 	if (contains_invalid_characters(input_line))
 		return (NULL);
 	tokens = tokenize_input(input_line);

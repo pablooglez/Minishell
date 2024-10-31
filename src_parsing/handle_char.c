@@ -6,11 +6,12 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 17:49:52 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/30 20:08:50 by albelope         ###   ########.fr       */
+/*   Updated: 2024/10/31 15:45:42 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
 
 t_token	get_special_token_type(char c)
 {
