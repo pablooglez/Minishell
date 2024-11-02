@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/02 16:27:01 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/02 16:47:01 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,17 @@ int	execute_command(t_minishell *shell)
 		}
 		else																				// Si no hay un pipe después del comando actual
 		{
+			printf("(DEBUG) Iniciando fork para comando sin pipe: '%s'\n", cmd->arguments[0]);
 			pid = fork();																	// Crea un nuevo proceso hijo con fork()	
 			if (pid == 0)																	// Verifica si el proceso actual es el hijo (pid == 0 significa proceso hijo)
 			{
+				printf("(DEBUG - HIJO) Proceso hijo iniciado para comando: '%s'\n", cmd->arguments[0]);
 				handle_redirection(cmd);													// Maneja las redirecciones de entrada y salida si las hay																					// Obtiene la ruta completa del comando (ejemplo: "/bin/ls" si el comando es "ls")
+				printf("(DEBUG - HIJO) Redirecciones manejadas\n");
 				command_path = get_command_path(cmd->arguments[0], shell);					// Llama a get_command_path para buscar el comando en los directorios de PATH
 				if (!command_path)															// Si el comando no se encuentra, maneja el error
 				{
+					printf("(DEBUG - HIJO) Comando no encontrado: '%s'\n", cmd->arguments[0]);
 					ft_error(shell, CMD_NOT_FOUND, cmd->arguments[0], 1);					// Imprime un error indicando que el comando no se encuentra
 					exit(EXIT_FAILURE);														// Sale del proceso hijo con un código de error
 				}																// Ejecuta el comando usando execve, que reemplaza el proceso actual con el nuevo programa
@@ -56,11 +60,13 @@ int	execute_command(t_minishell *shell)
 				ft_error(shell, MEMORY, NULL, 0);											// Si hubo un error al crear el proceso, maneja el error de memoria
 			else																			// Si estamos en el proceso padre (pid > 0)
 			{
+				printf("(DEBUG - PADRE) Proceso padre esperando al hijo con pid %d\n", pid);
 				waitpid(pid, &shell->exit_status, 0);										// Espera a que el proceso hijo termine su ejecución																			// Comprueba el estado de salida del proceso hijo
 				if (WIFEXITED(shell->exit_status))											// Si el proceso terminó normalmente (sin señal)
 					shell->exit_status = WEXITSTATUS(shell->exit_status);					// Obtiene el código de salida del proceso hijo
 				else if (WIFSIGNALED(shell->exit_status))									// Si el proceso terminó debido a una señal
 					shell->exit_status = 128 + WTERMSIG(shell->exit_status);				// Obtiene el número de la señal que lo finalizó
+				printf("(DEBUG - PADRE) Proceso hijo con pid %d terminado con estado %d\n", pid, shell->exit_status);
 			}
 		}
 		cmd = cmd->next;																	// Avanza al siguiente comando en la lista de comandos

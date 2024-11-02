@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 18:02:33 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/02 16:24:38 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/02 16:43:25 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void handle_pipes(t_cmd *cmd, t_minishell *shell)
 
 	if (pid == 0)														// Código que ejecuta el proceso hijo.
 	{
+		printf("(DEBUG - HIJO) Proceso hijo iniciado para comando: '%s'\n", cmd->arguments[0]);
 		close(pipe_fds[0]);												// Cierra el extremo de lectura de la tubería (solo escribirá en ella).
 		
 		if (dup2(pipe_fds[1], STDOUT_FILENO) == -1)						// Redirige la salida estándar (STDOUT) hacia la tubería (pipe_fds[1]).
@@ -41,7 +42,7 @@ void handle_pipes(t_cmd *cmd, t_minishell *shell)
 			perror("dup2");
 			exit(EXIT_FAILURE);
 		}
-
+		printf("(DEBUG - HIJO) Redirección de STDOUT completada para '%s'\n", cmd->arguments[0]);
 		close(pipe_fds[1]);												// Cierra el extremo de escritura de la tubería una vez redirigida la salida.
 
 		command_path = get_command_path(cmd->arguments[0], shell);		// Obtiene la ruta completa del comando a ejecutar.
@@ -55,6 +56,7 @@ void handle_pipes(t_cmd *cmd, t_minishell *shell)
 	}
 	else																// Código que ejecuta el proceso padre.
 	{
+		printf("(DEBUG - PADRE) Proceso padre esperando al hijo con pid %d\n", pid);
 		close(pipe_fds[1]);												// Cierra el extremo de escritura de la tubería (solo leerá de ella).
 		
 		if (dup2(pipe_fds[0], STDIN_FILENO) == -1)						// Redirige la entrada estándar (STDIN) hacia la tubería (pipe_fds[0]).
@@ -62,8 +64,10 @@ void handle_pipes(t_cmd *cmd, t_minishell *shell)
 			perror("dup2");
 			exit(EXIT_FAILURE);
 		}
+		printf("(DEBUG - PADRE) Redirección de STDIN completada\n");
 		close(pipe_fds[0]);												// Cierra el extremo de lectura de la tubería una vez redirigida la entrada.
 
 		waitpid(pid, NULL, 0);											// El proceso padre espera a que termine el proceso hijo.
+		printf("(DEBUG - PADRE) Proceso hijo con pid %d terminado\n", pid);
 	}
 }
