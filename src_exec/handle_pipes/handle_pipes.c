@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 18:02:33 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/23 19:08:48 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/02 16:24:38 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ void handle_pipes(t_cmd *cmd, t_minishell *shell)
 	pid_t	pid;														// Variable para almacenar el ID del proceso hijo creado con fork().
 	char	*command_path;												// Variable para almacenar la ruta completa del comando que se va a ejecutar.
 
+	printf("(DEBUG) Entrando a handle_pipes para comando: '%s'\n", cmd->arguments[0]);
 	if (pipe(pipe_fds) == -1)											// Crea una tubería. Si falla, imprime un error y sale del programa.
 	{
 		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
-
+	printf("(DEBUG) Pipe creado correctamente: fd[0]=%d, fd[1]=%d\n", cmd->pipe[0], cmd->pipe[1]);
 	pid = fork();														// Crea un nuevo proceso hijo.
 	if (pid == -1)														// Si la llamada a fork falla, imprime un error y sale del programa.
 	{

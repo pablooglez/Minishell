@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:43:54 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/31 22:15:44 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/02 16:23:09 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	create_next_command(t_cmd **cmd, t_minishell *shell)
 
 int	process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell)
 {
+	printf("(DEBUG) Entrando a process_token_pipe con token: '%s'\n", tokens[*i]);
 	if (ft_strncmp(tokens[*i], "|", 2) == 0)
 	{
 		printf("(PIPE DETECTED) Pipe found at token %d: '%s'\n", *i, tokens[*i]);
@@ -43,6 +44,7 @@ int	process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell)
 			return (-1);
 		if (create_next_command(cmd, shell) == -1)
 			return (-1);
+		printf("(DEBUG) Nuevo comando creado después del pipe.\n");
 		return (0);
 	}
 	return (1);

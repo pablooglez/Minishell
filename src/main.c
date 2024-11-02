@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/28 18:54:16 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/02 16:10:54 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	exit_shell(t_minishell *shell)										//Función que se encarga de libera
 	status = shell->exit_status;											// Guarda el estado de salida del shell.
 	if(shell->tokens)														// Si existen tokens creados durante la ejecución...
 		free_tokens(&shell->tokens);										// ...los libera de memoria.
-	free_shell(&shell);														// Libera la estructura del shell.
+	free_shell(&shell);	
+	rl_clear_history();													
 	exit(status);															// Sale del programa con el código de estado almacenado en "status".
 }
 
@@ -34,39 +35,46 @@ void	init_minishell(t_minishell *shell, char **env)						// Inicializa la estruc
 	signal(SIGQUIT, SIG_IGN);												//Ignora SIGQUIT para que no termine el shell
 }
 
-int main(int argc, char **argv, char **env)									// Función principal del programa.
+int main(int argc, char **argv, char **env)
 {
-	t_minishell	shell;														// Define la estructura "shell" donde se almacenarán los datos del shell.
-	char	*input;
+    t_minishell shell;
+    char *input;
 
-	(void) argc;															// Evita advertencias por no usar el argumento "argc".
-	(void) argv;															// Evita advertencias por no usar el argumento "argv".
-	
-	init_minishell(&shell, env);											// Llama a la función que inicializa el shell con las variables de entorno.
+    (void)argc;
+    (void)argv;
+    init_minishell(&shell, env);
+    while (1)
+    {
+        if (g_signal)
+            g_signal = 0;
 
-	while (true)
-	{
-		if (g_signal)														//Si se recibió SIGINT
-			g_signal = 0;													//Restablece la señal
-		input = read_input();												// Llama a la función "read_input" para obtener la entrada del usuario.
-		if (!input)															// Si no se recibe ninguna entrada (posible EOF)...
-			exit_shell(&shell);												// ...se llama a "exit_shell" para liberar recursos y salir del shell.
-		else if (input[0] != '\0')											// Si la entrada no está vacía...
-		{ 
-			shell.tokens = parse_input(ft_strdup(input), &shell);			// Llama a la función de parseo (implementada por ALBELOPE).
-			if (shell.tokens)
-			{
-				t_cmd *cmd = shell.tokens;
-				while (cmd)
-					cmd = cmd->next;
-				execute_command(&shell);									//Ejecuta el comando (implementado por PABLOGON)
-			}
-			else
-			{
-				printf("(MAIN.c)ERROR: shell.tokens no esta asignado\n");
-			}
-		}
-		free(input);														// Libera la memoria ocupada por la entrada del usuario después de procesarla.
-	}
-	return (0);																// Retorna 0 para indicar que el programa terminó correctamente.
+        input = read_input();
+		if (!input)
+        {
+            printf("Salida detectada (EOF).\n");
+            exit_shell(&shell);
+        }
+        else if (input[0] == '\0')
+        {
+            free(input);
+            continue;
+        }
+        else
+        {
+            shell.tokens = parse_input(input, &shell);
+            if (shell.tokens)
+            {
+                execute_command(&shell);
+                free_command_list(shell.tokens);
+                shell.tokens = NULL;
+            }
+            else
+            {
+                printf("(MAIN.c)ERROR: shell.tokens no est\xE1 asignado\n");
+            }
+        }
+        free(input);
+    }
+    return (0);
 }
+

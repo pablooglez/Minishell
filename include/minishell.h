@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/31 20:38:32 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/01 21:36:53 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ char		*expand_entire_input(const char *input, t_minishell *shell);
 void		free_command(t_cmd *cmd);
 char		*expand_var_or_char(const char *str, int *i, t_minishell *shell);
 int			is_empty_or_whitespace(char *str);
+void 		free_command_list(t_cmd *cmd);
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------//
 

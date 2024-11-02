@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/31 22:08:25 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/02 16:27:01 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,17 @@ int	execute_command(t_minishell *shell)
 	
 	while (cmd)																				// Comienza un bucle que continúa mientras haya comandos para procesar
 	{ 
+		printf("(DEBUG) Procesando comando: '%s'\n", cmd->arguments[0]);
 		if (handle_builtin(cmd, shell))														// Verifica si el comando es un built-in (comandos internos como echo, cd, etc.)
 		{ 									
 			return (0);																		// Sale de la función si se ejecuta un comando built-in
 		}
 		if (cmd->next && cmd->next->type == PIPE)											// Comprueba si el siguiente comando en la lista es un pipe
+		{ 
+			printf("(DEBUG) Pipe detectado después del comando: '%s'\n", cmd->arguments[0]);
 			handle_pipes(cmd, shell);														// Si es un pipe, llama a la función handle_pipes para manejarlo
+			printf("(DEBUG) Comando siguiente después del pipe: '%s'\n", cmd->next ? cmd->next->arguments[0] : "NULL");
+		}
 		else																				// Si no hay un pipe después del comando actual
 		{
 			pid = fork();																	// Crea un nuevo proceso hijo con fork()	

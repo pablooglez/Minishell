@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 13:30:05 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/29 20:56:25 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/01 21:34:58 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,20 @@ void free_command(t_cmd *cmd)
         free(cmd);
     }
 }
+
+
+void free_command_list(t_cmd *cmd)
+{
+    t_cmd *temp;
+
+    while (cmd)
+    {
+        temp = cmd->next;  // Guarda el puntero al siguiente nodo
+        free_command(cmd); // Usa tu función existente para liberar un solo comando
+        cmd = temp;        // Avanza al siguiente nodo
+    }
+}
+
 
 
 
