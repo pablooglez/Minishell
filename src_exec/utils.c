@@ -3,16 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 17:17:32 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/28 18:56:43 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/04 14:25:20 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Ruta absoluta  checkeando si es necesaria//
+char	*check_absolute_or_relative_path(char *cmd)
+{
+    
+    if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/') || (cmd[0] == '.' && cmd[1] == '.' && cmd[2] == '/'))
+	{
+        if (access(cmd, X_OK) == 0)
+            return ft_strdup(cmd);
+		else
+		{
+            fprintf(stderr, "Error: Command not found or not executable: %s\n", cmd);
+            return (NULL);
+        }
+    }
+    return (NULL); 
+}
+
 char *get_command_path(char *cmd, t_minishell *shell)
+{
+    char    *path_env;
+    char    **paths;
+    char    *full_path;
+    char    *temp_path;
+    int     i;
+
+    full_path = check_absolute_or_relative_path(cmd);
+    if (full_path)
+        return (full_path);
+    path_env = get_env_value(shell->env_vars, "PATH");
+    if (!path_env)
+        return (NULL);
+    paths = ft_split(path_env, ':');
+    if (!paths)
+        return (NULL);
+    i = 0;
+    while (paths[i])
+    {
+        temp_path = ft_strjoin(paths[i], "/");
+        if (!temp_path)
+        {
+            free_array(&paths);
+            return (NULL);
+        }
+        full_path = ft_strjoin(temp_path, cmd);
+        free(temp_path);
+        if (access(full_path, X_OK) == 0)
+        {
+            free_array(&paths);
+            return (full_path);
+        }
+        free(full_path);
+        i++;
+    }
+    free_array(&paths);
+    return (NULL);
+}
+
+
+/*char *get_command_path(char *cmd, t_minishell *shell)
 {
 	char	*path_env;													// Variable para almacenar el valor de la variable de entorno PATH.
 	char	**paths;													// Array de cadenas que contendrá las diferentes rutas en PATH.
@@ -51,7 +109,7 @@ char *get_command_path(char *cmd, t_minishell *shell)
 	}
 	free_array(&paths);													// Si no se encuentra el ejecutable en ninguna de las rutas, libera paths.
 	return (NULL);														// Devuelve NULL si no se encuentra el comando en las rutas de PATH.
-}
+}*/
 
 char	*get_env_value(t_env *env_list, char *key)						//Función para buscar una variable de entorno de la lista
 {
@@ -105,3 +163,6 @@ int	is_valid_identifier(const char *str)
 	}
 	return (1);															//Si todos los caracteres son válidos, retorna 1 (verdadero)
 }
+
+
+
