@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/28 19:27:19 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/05 20:22:12 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,19 @@ int	execute_command(t_minishell *shell)
 	
 	while (cmd)																				// Comienza un bucle que continúa mientras haya comandos para procesar
 	{
-		//printf("(EXECUTE_COMMAND())	Comando a ejecutar: 	%s\n", cmd->arguments[0]);		// Imprime el comando que se va a ejecutar
-
 		if (handle_builtin(cmd, shell))														// Verifica si el comando es un built-in (comandos internos como echo, cd, etc.)
-		{ 									
-			//printf("(EXECUTE_COMMAND())     Ejecutando built-in:     %s\n", cmd->path);		// Si es un built-in, imprime que está ejecutando un built-in
 			return (0);																		// Sale de la función si se ejecuta un comando built-in
-		}
-
 		if (cmd->next && cmd->next->type == PIPE)											// Comprueba si el siguiente comando en la lista es un pipe
 			handle_pipes(cmd, shell);														// Si es un pipe, llama a la función handle_pipes para manejarlo
 		else																				// Si no hay un pipe después del comando actual
 		{
 			pid = fork();																	// Crea un nuevo proceso hijo con fork()
-			
 			if (pid == 0)																	// Verifica si el proceso actual es el hijo (pid == 0 significa proceso hijo)
 			{
 				handle_redirection(cmd);													// Maneja las redirecciones de entrada y salida si las hay
+				dup2(0,cmd->intfd);															// Redirige la entrada estándar según el descriptor de archivo de entrada del comando
+				dup2(1,cmd->outfd);															// Redirige la salida estándar según el descriptor de archivo de salida del comando
+
 																							// Obtiene la ruta completa del comando (ejemplo: "/bin/ls" si el comando es "ls")
 				command_path = get_command_path(cmd->arguments[0], shell);					// Llama a get_command_path para buscar el comando en los directorios de PATH
 				

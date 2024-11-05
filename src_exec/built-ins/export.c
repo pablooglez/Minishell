@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:11 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/23 18:09:33 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/05 20:35:57 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,29 @@ void	ft_export(t_minishell *shell, char **arg)
 	while (arg && arg[i])																	//Bucle para recorrer los argumentos que siguen al comando "export"
 	{
 		char *equal_sign = ft_strchr(arg[i], '=');											//Busca el simbolo '=' en el argumento actual
-
+		write(1,arg[1],ft_strlen(arg[1]));
 		if (equal_sign)																		//Si encuentra un '=' en el argumento, significa que es el tipo "KEY=VALUE"
 		{
 			char *key = ft_strndup(arg[i], equal_sign - arg[i]);							//Extrae la clave (lo que está antes del '=')
 			char *value = ft_strdup(equal_sign + 1);										//Extrae el valor (lo que está después del '=')
+			if (!is_valid_identifier(key))
+			{
+				ft_error(shell, CMD_NOT_FOUND, "export: not a valid identifier", 0);
+				free(key);
+				free(value);
+				return;
+			}
 			update_env_var(&(shell->env_vars), key, value);									//Actualiza o añade la variable de entorno con clave y valor
 			free(key);																		//Libera la memoria asignada a la clave
 			free(value);																	//Libera la memoria asignada al valor
 		}
 		else																				//Si no hay un '=', es solo un nombre de variable sin valor
 		{
-			if (is_valid_identifier(arg[i])) {												//Verifica si es un identificador válido (ejemplo: solo letras y guiones bajos)
-				update_env_var(&(shell->env_vars), arg[i], NULL);							//Añade la variable sin valor asociado (se establece a NULL)
-		} else
+			if (is_valid_identifier(arg[i]))												//Verifica si es un identificador válido (ejemplo: solo letras y guiones bajos)
+				update_env_var(&(shell->env_vars), arg[i], "");								//Añade la variable sin valor asociado (se establece a NULL)
+		else
 				ft_error(shell, CMD_NOT_FOUND, "export: not a valid identifier", 0);		//Muestra un error si el identificador no es válido
+				return;
 		}
 		i++;																				//Avanza al siguiente argumento en la lista
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/01 21:36:53 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/04 20:14:43 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <term.h> 																			//tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # include <readline/readline.h> 															// readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay, add_history
 # include <readline/history.h>
+
 # include "../Libft/libft.h"
 # include <limits.h>
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/02 16:10:54 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/04 20:12:25 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	exit_shell(t_minishell *shell)										//Función que se encarga de libera
 	if(shell->tokens)														// Si existen tokens creados durante la ejecución...
 		free_tokens(&shell->tokens);										// ...los libera de memoria.
 	free_shell(&shell);	
-	rl_clear_history();													
+	//rl_clear_history();													
 	exit(status);															// Sale del programa con el código de estado almacenado en "status".
 }
 

@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:55:18 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/28 18:54:35 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/05 18:19:22 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,12 @@ void	ft_error(t_minishell *shell, int code, char *value, int should_exit)	// Fun
 {
 	fatal(code, value);															// Llama a la función fatal para imprimir el mensaje de error adecuado.
 
-	if (value) 																	// Si se ha pasado un valor no nulo, libera la memoria asignada a 'value'.
+	if (code != CMD_NOT_FOUND && value)											// No liberar 'value' si es parte de 'cmd->arguments'
 		free(value);
+	
+	/*if (value)																// Si se ha pasado un valor no nulo, libera la memoria asignada a 'value'.
+		free(value);*/
+	
 	if (should_exit) 															// Si el indicador should_exit está activado, termina el programa con el código de salida que tiene el shell.
 		exit(shell->exit_status);												//Termina el programa con el código de salida almacenado en shell.
 }

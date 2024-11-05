@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:54:51 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/28 18:53:37 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/05 20:35:13 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ void	ft_cd(t_minishell *shell, char **arg)										//Función para manejar el c
 	char	*dir;																	//Variable para almacenar el directorio al que se desea cambiar.
 	char	cwd[PATH_MAX];															//Buffer para almacenar el directorio actual. INLCUIR LIMITS.H?
 
-	if (!arg[1])																	//Si no se proporciona un argumento (es decir, el usuario solo escribió 'cd')...
+	if (arg[2])																		// Si hay más de un argumento después de 'cd' (es decir, 'cd' seguido de más de un parámetro)...
+		ft_error(shell, CMD_NOT_FOUND, "cd : too many arguments", 0);				// Muestra un error diciendo "cd: too many arguments".
+	
+	if (!arg[1] || ft_strlen(arg[1]) == 0)											//Si no se proporciona un argumento (es decir, el usuario solo escribió 'cd') o el argumento es una cadena vacía...
 	{
 		dir = get_env_value(shell->env_vars, "HOME");								//Obtener el valor de la variable de entorno HOME.
 		if (!dir)																	//Si no encuentra la variable HOME...

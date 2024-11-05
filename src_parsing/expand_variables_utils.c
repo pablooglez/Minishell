@@ -3,39 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variables_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:03:33 by albelope          #+#    #+#             */
-/*   Updated: 2024/10/31 15:47:08 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/04 19:12:07 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minishell.h"
 
-
-char	*expand_argument(const char *arg, t_minishell *shell)
+char *expand_argument(const char *arg, t_minishell *shell)
 {
 	char	*unquoted;
 	char	*expanded;
 
-	if (arg[0] == '$')
+	if (arg[0] == '$')												// Si el argumento comienza con '$'
 	{
-		expanded = expand_entire_input(arg, shell);
+		expanded = expand_entire_input(arg, shell);					// Expande todo el argumento como una variable
 		if (expanded)
-			return expanded;
+			return expanded;										// Si se expande correctamente, retorna el resultado
 	}
-	if (arg[0] == '\'' && arg[ft_strlen(arg) - 1] == '\'')
+	if (arg[0] == '\'' && arg[ft_strlen(arg) - 1] == '\'')			// Si el argumento está entre comillas simples
 	{
-		unquoted = remove_quotes(arg);
-		return (unquoted); // En comillas simples, no se expande
+		unquoted = remove_quotes(arg);								// Remueve las comillas simples
+		return (unquoted);											// Retorna la cadena sin expandir, ya que no se expande entre comillas simples
 	}
-	else if (arg[0] == '\"' && arg[ft_strlen(arg) - 1] == '\"')
+	else if (arg[0] == '\"' && arg[ft_strlen(arg) - 1] == '\"')		// Si el argumento está entre comillas dobles
 	{
-		unquoted = remove_quotes(arg);
-		expanded = expand_string(unquoted, shell);
-		free(unquoted);
-		return (expanded);
+		unquoted = remove_quotes(arg);								// Remueve las comillas dobles
+		expanded = expand_string(unquoted, shell);					// Expande la cadena sin las comillas
+		free(unquoted);												// Libera la memoria de la cadena sin comillas
+		return (expanded);											// Retorna la cadena expandida
 	}
 	else
-		return (expand_string(arg, shell));
+		return (expand_string(arg, shell));							// Si no hay comillas, expande directamente el argumento
 }
+

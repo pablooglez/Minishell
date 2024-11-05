@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 17:59:21 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/28 16:43:26 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/05 20:24:48 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	handle_redirection(t_cmd *cmd)
 				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
 			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
+			cmd->intfd=fd;
 		}
 		else if (redir->type == OUTFILE)										// Si el tipo de redirección es OUTFILE (redirección de salida)...
 		{
@@ -50,6 +51,7 @@ void	handle_redirection(t_cmd *cmd)
 				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
 			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
+			cmd->outfd = fd;													// Guarda el descriptor de archivo en el campo 'intfd' de 'cmd' para el seguimiento de la redirección de entrada.
 		}
 		else if (redir->type == APPEND)											// Si el tipo de redirección es APPEND (redirección de salida en modo append)...
 		{
@@ -66,6 +68,7 @@ void	handle_redirection(t_cmd *cmd)
 				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
 			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
+			cmd->outfd = fd;													// Guarda el descriptor de archivo en el campo 'outfd' de 'cmd' para el seguimiento de la redirección de salida.
 		}
 		redir = redir->next;													// Avanza al siguiente elemento en la lista de redirecciones.
 	}
