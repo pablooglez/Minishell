@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/12 17:48:43 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/12 19:11:46 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,13 +122,9 @@ typedef struct s_minishell
 	struct s_cmd	*tokens;																// Lista de comandos o tokens actuales
 }	t_minishell;
 
-
-//------------------------------------------------------------------------------------------------------------------------------------------------------//
-//                                       									PROJECT MINISHELL                                                           //
 //------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 //--------------FUNCIONES PARSING---------------//
-
 int         add_argument(char *token, int arg_index, t_cmd *cmd);                                 // Añade un argumento al comando actual
 bool        contains_invalid_characters(char *input);                                             // Verifica si la entrada contiene caracteres inválidos
 t_cmd       *create_new_command(t_minishell *shell);                                              // Crea una nueva estructura de comando
@@ -168,9 +164,10 @@ char        *remove_quotes(const char *arg);                                    
 void        free_command(t_cmd *cmd);                                                             // Libera la memoria de la estructura de comando
 void        free_command_list(t_cmd *cmd);                                                        // Libera la memoria de la lista de comandos
 void        free_redirections(t_redir *redir);                                                    // Libera la memoria de las redirecciones
-void        free_tokens_parse(char **tokens);                                                     // Libera la memoria de los tokens parseados                                                   
+void        free_tokens_parse(char **tokens);                                                     // Libera la memoria de los tokens parseados
 char        **tokenize_input(char *input);                                                        // Divide la entrada en tokens
 
+//------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 //---------------------ENV-------------------------//
 void		*safe_malloc(t_minishell *shell, size_t size);									// Asigna memoria de forma segura, manejando errores.
