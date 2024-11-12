@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 23:22:18 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/12 20:45:18 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/12 20:58:05 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*handle_dollar_sign(const char *str, int *i, t_minishell *shell)
 	if (str[*i] == '?')
 	{
 		expanded = get_expanded_value("?", shell);
-		printf("[DEBUG]-->HANDLE_DOLLAR[0.1]==> Expanded:           [%s]\n", expanded);
+		printf("[DEBUG]-->HANDLE_DOLLAR[0.1]==> Expanded:                  [%s]\n", expanded);
 		(*i)++;
 	}
 	else if (ft_isalpha(str[*i]) || str[*i] == '_')
