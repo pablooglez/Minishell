@@ -3,69 +3,83 @@
 /*                                                        :::      ::::::::   */
 /*   handle_char.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 17:49:52 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/04 19:43:11 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/12 16:47:16 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token get_special_token_type(char c)
+
+t_token	get_special_token_type(char c)
 {
 	if (c == '|')
-		return (PIPE);																			// Retorna PIPE si el carácter es '|'
+		return (PIPE);
 	if (c == '>')
-		return (REDIR);																			// Retorna REDIR si el carácter es '>'
+		return (REDIR);
 	if (c == '<')
-		return (REDIR);																			// Retorna REDIR si el carácter es '<'
-	return (UNKNOWN);																			// Retorna UNKNOWN si no coincide con ningún carácter especial
+		return (REDIR);
+	return (UNKNOWN);
 }
 
-bool contains_invalid_characters(char *input)
+bool	contains_invalid_characters(char *input)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while (input[i])																			// Recorre cada carácter en la cadena input
+	while (input[i])
 	{
-		if (input[i] == ';' || (input[i] == '\\' && input[i + 1] != '$'))						// Verifica si el carácter es ';' o un '\' que no escapa '$'
+		if (input[i] == '\0')
 		{
-			printf("Error: uso de caracteres especiales no permitidos (%c).\n", input[i]);		// Imprime un mensaje de error
-			return (true);																		// Retorna true si se encuentra un carácter inválido
+			printf("[DEBUG]-->CONTAINS_INVALID[0.1]==> Carácter nulo detected: [%c]\n", input[i]);
+			return (true);
 		}
 		i++;
 	}
-	return (false);																				// Retorna false si no hay caracteres inválidos
+	return (false);
 }
 
-int handle_special_char(char *input, int i, char **tokens, int *j)
+int	handle_special_char(char *input, int i, char **tokens, int *j)
 {
 	char	*temp;
 	t_token	type;
 
-	type = get_special_token_type(input[i]);													// Determina el tipo de token especial para el carácter actual
+	type = get_special_token_type(input[i]);
 	temp = NULL;
-
-	if ((input[i] == '>' && input[i + 1] == '>') || (input[i] == '<' && input[i + 1] == '<'))	// Verifica si el carácter es una redirección doble
+	printf("[DEBUG]-->HANDLE_SPECIAL[0.1]==> Carácter especial detectado: [%c]\n", input[i]);
+	if ((input[i] == '>' && input[i + 1] == '>') || (input[i] == '<' && input[i + 1] == '<'))
 	{
-		temp = ft_substr(input, i, 2);															// Extrae dos caracteres como un solo token
+		printf("[DEBUG]-->HANDLE_SPECIAL[0.2]==> Redirección doble detectada: [%c%c]\n", input[i], input[i + 1]);
+		temp = ft_substr(input, i, 2);
 		if (!temp)
-			return (-1);																		// Retorna -1 si falla la asignación de memoria
-		tokens[*j] = temp;																		// Almacena el token en tokens
-		(*j)++;																					// Incrementa el índice de tokens
-		return (i + 2);																			// Avanza dos posiciones en la cadena
+		{
+			printf("[ERROR]-->HANDLE_SPECIAL[0.3]==> Error al asignar memoria para redirección doble\n");
+			return (-1);
+		}
+		tokens[*j] = temp;
+		(*j)++;
+		printf("[DEBUG]-->HANDLE_SPECIAL[0.4]==> Token añadido (doble): [%s]\n", temp);
+		return (i + 2);
 	}
-	else if (type != UNKNOWN)																	// Si es un token especial de un solo carácter
+	else if (type != UNKNOWN)
 	{
-		temp = ft_substr(input, i, 1);															// Extrae un solo carácter como token
+		printf("[DEBUG]-->HANDLE_SPECIAL[0.5]==> Redirección simple detectada: [%c]\n", input[i]);
+		temp = ft_substr(input, i, 1);
 		if (!temp)
-			return (-1);																		// Retorna -1 si falla la asignación de memoria
-		tokens[*j] = temp;																		// Almacena el token en tokens
-		(*j)++;																					// Incrementa el índice de tokens
-		return (i + 1);																			// Avanza una posición en la cadena
+		{
+			printf("[ERROR]-->HANDLE_SPECIAL[0.6]==> Error al asignar memoria para redirección simple\n");
+			return (-1);
+		}
+		tokens[*j] = temp;
+		(*j)++;
+		printf("[DEBUG]-->HANDLE_SPECIAL[0.7]==> Token añadido (simple): [%s]\n", temp);
+		return (i + 1);
 	}
-	return (-1);																				// Retorna -1 si no es un carácter especial conocido
+	printf("[ERROR]-->HANDLE_SPECIAL[0.8]==> Carácter especial desconocido: [%c]\n", input[i]);
+	return (-1);
 }
+
+
 

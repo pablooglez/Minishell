@@ -3,103 +3,164 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/04 21:13:44 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/12 17:55:48 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	classify_special_token(char c)																				// Clasifica un carácter especial y retorna su tipo como t_token
+
+t_token	classify_special_token(char c)
 {
-	if (c == '|')																									// Si el carácter es un pipe
-		return (PIPE);																								// Retorna el token PIPE
-	if (c == '>')																									// Si el carácter es un símbolo de redirección de salida
-		return (REDIR);																								// Retorna el token REDIR
-	if (c == '<')																									// Si el carácter es un símbolo de redirección de entrada
-		return (REDIR);																								// Retorna el token REDIR
-	return (UNKNOWN);																								// Retorna UNKNOWN si el carácter no es especial
-}
-
-
-void	free_tokens_parse(char **tokens)																			// Libera la memoria asignada para un array de tokens
-{
-	int	i;																											// Declara una variable entera para recorrer los tokens
-
-	i = 0;																											// Inicializa i en 0
-	if (!tokens)																									// Si tokens es NULL, no hay nada que liberar
-		return ;																									// Sale de la función sin hacer nada
-	while (tokens[i])																								// Recorre los tokens hasta encontrar un NULL
-		free(tokens[i++]);																							// Libera el token actual y luego incrementa i
-	free(tokens);																									// Finalmente, libera el array de punteros en sí mismo
-}
-
-int	handle_token(char *input, int i, char **tokens, int *j)															// Procesa un token que no es una comilla ni carácter especial
-{
-	int	start;																										// Declara una variable para almacenar el índice inicial del token
-
-	start = i;																										// Asigna el índice actual como el inicio del token
-	while (input[i] && input[i] != ' ' && !is_quote(input[i]) && get_special_token_type(input[i]) == UNKNOWN)
-		i++;																										// Avanza el índice mientras el carácter no sea espacio, comilla o carácter especial
-	tokens[*j] = ft_substr(input, start, i - start);																// Extrae el substring y lo asigna a tokens[j]
-	if (!tokens[*j])																								// Si la asignación falla
+	if (c == '|')																			// Verifica si el carcates es un Pipe
 	{
-		free_tokens_parse(tokens);																					// Libera tokens y retorna -1
-		return (-1);
+		printf("[DEBUG]-->CLASSIFY_SPECIAL_TOKEN==> Token especial detectado: PIPE\n");
+		return (PIPE);																		// Retorna PIPE si el carácter es un Pipe
 	}
-	(*j)++;																											// Incrementa j para el próximo token
-	return (i);																										// Retorna el índice actualizado
+	if (c == '>')																			// Verifica si el Caracter es una Redireccion	
+	{
+		printf("[DEBUG]-->CLASSIFY_SPECIAL_TOKEN==> Token especial detectado: REDIR (>)\n");
+		return (REDIR);
+	}
+	if (c == '<')
+	{
+		printf("[DEBUG]-->CLASSIFY_SPECIAL_TOKEN==> Token especial detectado: REDIR (<)\n");
+		return (REDIR);
+	}
+	return (UNKNOWN);
 }
 
-int	process_token(char *input, int *i, char **tokens, int *j)														// Procesa un token en la posición actual del input
+int	process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
 {
-	if (is_quote(input[*i]))																						// Si el carácter es una comilla
+	int	i = 0;
+
+	printf("[DEBUG]-->PROCESS_TOKENS==> Iniciando procesamiento de tokens\n");
+	while (tokens[i])
 	{
-		*i = handle_quotes(input, *i, tokens, j);																	// Maneja el contenido entre comillas
-		if (*i == -1)																								// Si hay un error en el manejo de comillas
-			return (-1);																							// Retorna -1 para indicar error
+		if (process_token_pipe(tokens, &i, &current_cmd, shell) == -1)
+		{
+			printf("[ERROR]-->PROCESS_TOKENS==> Error en process_token_pipe\n");
+			return (-1);
+		}
+		if (process_arguments(tokens, &i, current_cmd, shell) == -1)
+		{
+			printf("[ERROR]-->PROCESS_TOKENS==> Error en process_arguments\n");
+			return (-1);
+		}
 	}
-	else if (get_special_token_type(input[*i]) != UNKNOWN)															// Si el carácter es especial
+	printf("[DEBUG]-->PROCESS_TOKENS==> Finalizando procesamiento de tokens\n");
+	return (0);
+}
+
+int	handle_escape(char *input, int i, char *buffer, int *buf_index)
+{
+	i++;
+	if (input[i] == '"' || input[i] == '\'' || input[i] == '\\')
 	{
-		*i = handle_special_char(input, *i, tokens, j);																// Maneja el carácter especial
-		if (*i == -1)																								// Si hay un error
-			return (-1);																							// Retorna -1 para indicar error
+		printf("[DEBUG]-->HANDLE_ESCAPE==> Carácter escapado detectado: [%c]\n", input[i]);
+		buffer[(*buf_index)++] = input[i++];
 	}
 	else
 	{
-		*i = handle_token(input, *i, tokens, j);																	// Procesa un token regular
-		if (*i == -1)																								// Si hay un error
-			return (-1);																							// Retorna -1 para indicar error
+		printf("[DEBUG]-->HANDLE_ESCAPE==> Carácter no escapado: [%c]\n", input[i]);
+		buffer[(*buf_index)++] = '\\';
+		buffer[(*buf_index)++] = input[i++];
 	}
-	return (0);																										// Retorna 0 para indicar éxito
+	return (i);
 }
 
-char	**tokenize_input(char *input)																				// Divide la línea de entrada en tokens y los almacena en un array
+int	handle_token(char *input, int i, char **tokens, int *j)
 {
-	char	**tokens;																								// Declara un array de strings para almacenar los tokens
-	int		i;																										// Declara un índice para recorrer el input
-	int		j;																										// Declara un índice para almacenar tokens en el array
+	char	buffer[1024];
+	int		buf_index = 0;
+	int		no_expand = 0;
 
-	i = 0;																											// Inicializa i en 0
-	j = 0;																											// Inicializa j en 0
-	tokens = ft_calloc(100, sizeof(char *));																		// Reserva memoria para hasta 100 tokens
-	if (!tokens)																									// Si falla la asignación de memoria
-		return (NULL);																								// Retorna NULL para indicar error
-	while (input[i])																								// Recorre cada carácter del input
+	while (input[i] && input[i] != ' ')
 	{
-		while (input[i] == ' ')																						// Ignora los espacios iniciales
-			i++;
-		if (process_token(input, &i, tokens, &j) == -1)																// Procesa el token y verifica errores
+		if (input[i] == '\'')
 		{
-			free_tokens_parse(tokens);																				// Libera tokens y retorna NULL si hay error
+			printf("[DEBUG]-->HANDLE_TOKEN-01==> Handling comillas simples\n");
+			no_expand = 1;
+			i = handle_single_quotes(input, i, buffer, &buf_index);
+			printf("[DEBUG]-->HANDLE_TOKEN-02==> End single_quotes Índice :       	   [%d]\n", i);
+		}
+		else if (input[i] == '"')
+		{
+			printf("[DEBUG]-->HANDLE_TOKEN-03==> Handling comillas dobles\n");
+			i = handle_double_quotes(input, i, buffer, &buf_index);
+			printf("[DEBUG]-->HANDLE_TOKEN==> End double_quotes Índice :       	[%d]\n", i);
+		}
+		else if (input[i] == '\\')
+		{
+			printf("[DEBUG]-->HANDLE_TOKEN-04==> Handling carácter escapado\n");
+			i = handle_escape(input, i, buffer, &buf_index);
+			printf("[DEBUG]-->HANDLE_TOKEN-05==> End escape Índice :      				[%d]\n", i);
+		}
+		else
+		{
+			buffer[buf_index++] = input[i++];
+			printf("[DEBUG]-->HANDLE_TOKEN-06==> Añadiendo carácter al buffer:         [%c]\n", buffer[buf_index - 1]);
+		}
+
+		if (i == -1)
+		{
+			printf("[ERROR]-->HANDLE_TOKEN-07==> Error al manejar el token\n");
+			return (-1);
+		}
+	}
+
+	buffer[buf_index] = '\0';
+	if (no_expand)
+	{
+		tokens[*j] = ft_strjoin("__NO_EXPAND__", buffer);
+		printf("[DEBUG]-->HANDLE_TOKEN-08==> Token creado (sin expansión): 	   [%s]\n", tokens[*j]);
+	}
+	else
+	{
+		tokens[*j] = ft_strdup(buffer);
+		printf("[DEBUG]-->HANDLE_TOKEN-09==> Token creado:			   [%s]\n", tokens[*j]);
+	}
+
+	if (!tokens[*j])
+	{
+		printf("[ERROR]-->HANDLE_TOKEN-10==> Error al duplicar el token\n");
+		free_tokens_parse(tokens);
+		return (-1);
+	}
+	(*j)++;
+	return (i);
+}
+
+char	**tokenize_input(char *input)
+{
+	char	**tokens;
+	int		i = 0;
+	int		j = 0;
+
+	printf("[DEBUG]-->TOKENIZE_INPUT==> Iniciando tokenización\n");
+	tokens = ft_calloc(100, sizeof(char *));
+	if (!tokens)
+	{
+		printf("[ERROR]-->TOKENIZE_INPUT==> Error al asignar memoria para tokens\n");
+		return (NULL);
+	}
+
+	while (input[i])
+	{
+		while (input[i] == ' ')
+			i++;
+		if (process_token(input, &i, tokens, &j) == -1)
+		{
+			printf("[ERROR]-->TOKENIZE_INPUT==> Error en process_token\n");
+			free_tokens_parse(tokens);
 			return (NULL);
 		}
-		//while (input[i] == ' ')																					// Este código está comentado, ignora los espacios nuevamente (quizás redundante)
-		//i++;
 	}
-	tokens[j] = NULL;																								// Añade un NULL al final de tokens para indicar el final del array
-	return (tokens);																								// Retorna el array de tokens
-}
 
+	tokens[j] = NULL;
+	printf("[DEBUG]-->TOKENIZE_INPUT==> Tokenización completada.		   [Tokens Creados: %d]\n", j);
+	return (tokens);
+}

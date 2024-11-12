@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:57:47 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/04 20:50:23 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/12 12:26:48 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int parse_heredoc(char **tokens, int *i, t_cmd *cmd)
 	t_redir *new_redir;																										// Puntero para la nueva redirección
 	t_redir *current;																										// Puntero para recorrer la lista de redirecciones existentes
 
-	printf("(DEBUG) parse_heredoc: Token actual es '%s'\n", tokens[*i]);													// Imprime el token actual
-	printf("(DEBUG) parse_heredoc: Delimitador heredoc es '%s'\n", tokens[*i + 1]);											// Imprime el delimitador heredoc
 	new_redir = malloc(sizeof(t_redir));																					// Asigna memoria para la nueva redirección
 	if (!new_redir)																											// Verifica si la asignación falló
 		return (-1);																										// Retorna -1 en caso de error
@@ -42,10 +40,8 @@ int parse_heredoc(char **tokens, int *i, t_cmd *cmd)
 	if (!new_redir->file)																									// Verifica si la duplicación falló
 	{
 		free(new_redir);																									// Libera la memoria asignada a la redirección si hubo error
-		printf("(ERROR) parse_heredoc: Error al duplicar el delimitador\n");												// Imprime un mensaje de error
 		return (-1);																										// Retorna -1 en caso de error
 	}
-	printf("(DEBUG) parse_heredoc: Redirección heredoc agregada con delimitador '%s'\n", new_redir->file);					// Mensaje de confirmación
 	new_redir->next = NULL;																									// Establece el puntero `next` como NULL
 	if (!cmd->redir)																										// Si no hay redirecciones previas en el comando
 		cmd->redir = new_redir;																								// Asigna la nueva redirección como la primera
@@ -102,46 +98,22 @@ int create_and_add_redirection(t_cmd *cmd, int type, char *file)
 	return (0);																												// Retorna 0 si todo ha sido correctamente procesado
 }
 
-int is_empty_or_whitespace(char *str)
-{
-	if (!str)																												// Verifica si el string es NULL
-		return (1);																											// Retorna 1 si está vacío
-	while (*str)																											// Recorre cada carácter del string
-	{
-		if (*str != ' ')																									// Si encuentra un carácter diferente de espacio
-			return (0);																										// Retorna 0 indicando que no está vacío
-		str++;																												// Avanza al siguiente carácter
-	}
-	return (1);																												// Retorna 1 si todos los caracteres son espacios
-}
-
 int validate_redirection_syntax(char **tokens, int *i)
 {
 	int	current_type;																										// Tipo de redirección actual
 	int	next_type;																											// Tipo de redirección siguiente
 
 	current_type = get_redirection_type(tokens[*i]);																		// Obtiene el tipo del token actual
-	printf("(DEBUG) validate_redirection_syntax: Token actual '%s', Tipo %d\n", tokens[*i], current_type);					// Imprime para depuración
 	if (tokens[*i + 1] != NULL)																								// Verifica si hay un siguiente token
 		next_type = get_redirection_type(tokens[*i + 1]);																	// Obtiene el tipo del siguiente token
 	else
 		next_type = NOT_REDIR;																								// Si no hay siguiente, asigna tipo no redirección
 	if (next_type != NOT_REDIR)																								// Verifica si hay un error de redirección
-	{
-		printf("Error: redirección duplicada o mal formada.\n");															// Imprime un mensaje de error
 		return (-1);																										// Retorna -1 indicando un error
-	}
 	if (tokens[*i + 1] == NULL || is_empty_or_whitespace(tokens[*i + 1]))													// Verifica si falta el archivo
-	{
-		printf("Error: falta archivo o delimitador para la redirección.\n");												// Imprime un mensaje de error
 		return (-1);																										// Retorna -1 indicando un error
-	}
-	if (*i == 0 && current_type != NOT_REDIR)																				// Verifica si el token actual es el primero y si es una redirección
-	{
-		printf("Error: falta comando antes de la redirección.\n");															// Imprime un mensaje de error
+	if (*i == 0 && current_type != NOT_REDIR)																				// Verifica si el token actual es el primero y si es una redirección									
 		return (-1);																										// Retorna -1 indicando un error
-	}
-	printf("(DEBUG) validate_redirection_syntax: Sintaxis de redirección validada correctamente\n");						// Imprime mensaje de éxito
 	return (0);																												// Retorna 0 indicando que la sintaxis es válida
 }
 
@@ -153,11 +125,12 @@ int process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
 	if (tokens[*i] == NULL || is_empty_or_whitespace(tokens[*i]))															// Verifica si el token actual es NULL o vacío
 		return (-1);																										// Retorna -1 en caso de error
 	type = get_redirection_type(tokens[*i]);																				// Obtiene el tipo de redirección
-	printf("(DEBUG) process_redirection: Procesando redirección tipo %d para token '%s'\n", type, tokens[*i]); 				// Imprime para depuración
 	if (type == NOT_REDIR)																									// Si no es una redirección
 		return (1);																											// Retorna 1 para indicar que no se procesó redirección
+	//printf("[DEBUG]-->PROCESS_REDIRECTION[0.1]==> Tipo de redirección detectado: [%d]\n", type);
 	if (validate_redirection_syntax(tokens, i) == -1)																		// Valida la sintaxis de la redirección
 	{
+		//printf("[ERROR]-->PROCESS_REDIRECTION[0.2]==> Error de sintaxis en redirección\n");
 		(*i)++;																												// Incrementa el índice
 		return (-1);																										// Retorna -1 en caso de error
 	}
@@ -170,30 +143,14 @@ int process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
 	}
 	expanded_filename = expand_string(tokens[*i + 1], shell);																// Expande el nombre del archivo
 	if (!expanded_filename || is_empty_or_whitespace(expanded_filename))													// Verifica si la expansión falló
-	{
-		printf("Error: expansión fallida en el nombre del archivo.\n");														// Imprime un mensaje de error
 		return (-1);																										// Retorna -1 en caso de error
-	}
 	if (create_and_add_redirection(cmd, type, expanded_filename) == -1)														// Crea y añade la redirección
 	{
 		free(expanded_filename);																							// Libera el nombre del archivo expandido
 		return (-1);																										// Retorna -1 en caso de error
 	}
-	printf("(DEBUG) process_redirection: Redirección agregada para archivo '%s' con tipo %d\n", expanded_filename, type);	// Mensaje de éxito
 	free(expanded_filename);																								// Libera el nombre del archivo expandido
 	*i += 2;																												// Incrementa el índice en 2 para pasar al siguiente token
 	return (0);																												// Retorna 0 si todo ha sido correctamente procesado
 }
 
-void free_redirections(t_redir *redir)
-{
-	t_redir *temp;																											// Puntero temporal para liberar cada redirección
-
-	while (redir)																											// Recorre toda la lista de redirecciones
-	{
-		temp = redir;																										// Guarda la redirección actual en `temp`
-		redir = redir->next;																								// Avanza a la siguiente redirección
-		free(temp->file);																									// Libera la memoria del nombre del archivo de la redirección
-		free(temp);																											// Libera la estructura de la redirección
-	}
-}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/04 20:14:43 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/12 17:48:43 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,42 +122,55 @@ typedef struct s_minishell
 	struct s_cmd	*tokens;																// Lista de comandos o tokens actuales
 }	t_minishell;
 
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------//
+//                                       									PROJECT MINISHELL                                                           //
 //------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 //--------------FUNCIONES PARSING---------------//
-char		*read_input(void);																//Lee la entrada del usuario ##CAMBIADO TIPO CHAR EN VEZ DE VOID##
-char		**tokenize_input(char *input);
-void		free_tokens_parse(char **tokens);
-t_cmd		*parse_input(char *input_line, t_minishell *shell);								//Separa la entrada en tokens y crea el comando (parsing)
-char		*expand_env_vars(char *input, char **env);										//Gestiona la expansion de variables de entorno($USER, $?)
-int			handle_quotes(char *input, int i, char **tokens, int *j);
-bool		is_quote(char c);
-int			handle_special_char(char *input, int i, char **tokens, int *j);
-int			is_special_char(char c);
-t_cmd   	*create_new_command(t_minishell *shell);  										// Declaración de create_new_command
-int    		process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell);		// Declaración de process_token_pipe
-int			process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell);						// Declaración de process_arguments
-void		display_commands(t_cmd *cmd);
-int			process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell);
-int			get_redirection_type(char *token);
-bool		contains_invalid_characters(char *input);
-t_token 	get_special_token_type(char c);
-char 		*get_expanded_value(const char *variable, t_minishell *shell);
-void		print_command(t_cmd *cmd);
-char    	*expand_string(const char *str, t_minishell *shell);
-char    	*expand_argument(const char *arg, t_minishell *shell);
-void    	expand_tokens(t_cmd *cmd, t_minishell *shell);
-char   	 	*handle_escaped_dollar(int *i);
-char    	*handle_dollar_sign(const char *str, int *i, t_minishell *shell);
-char    	*handle_regular_char(const char *str, int *i);
-char    	*remove_quotes(const char *arg);
-char		*expand_entire_input(const char *input, t_minishell *shell);
-void		free_command(t_cmd *cmd);
-char		*expand_var_or_char(const char *str, int *i, t_minishell *shell);
-int			is_empty_or_whitespace(char *str);
-void 		free_command_list(t_cmd *cmd);
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------//
+int         add_argument(char *token, int arg_index, t_cmd *cmd);                                 // Añade un argumento al comando actual
+bool        contains_invalid_characters(char *input);                                             // Verifica si la entrada contiene caracteres inválidos
+t_cmd       *create_new_command(t_minishell *shell);                                              // Crea una nueva estructura de comando
+void        display_commands(t_cmd *cmd);                                                         // Muestra los comandos y argumentos para depuración
+void        expand_tokens(t_cmd *cmd, t_minishell *shell);                                        // Expande las variables de entorno en los tokens
+char        *expand_argument(const char *arg, t_minishell *shell);                                // Expande una variable de entorno en un argumento
+char        *expand_entire_input(const char *input, t_minishell *shell);                          // Expande todas las variables de entorno en la entrada
+char        *expand_env_vars(char *input, char **env);                                            // Gestiona la expansión de variables de entorno
+char        *expand_string(const char *str, t_minishell *shell);                                  // Expande una cadena con variables de entorno
+char        *expand_var_or_char(const char *str, int *i, t_minishell *shell);                     // Expande una variable o un carácter regular
+char        *get_expanded_value(const char *variable, t_minishell *shell);                        // Obtiene el valor expandido de una variable
+int         get_redirection_type(char *token);                                                    // Determina el tipo de redirección
+t_token     get_special_token_type(char c);                                                       // Determina el tipo de token especial
+int         handle_double_quotes(char *input, int i, char *buffer, int *buf_index);               // Maneja el contenido entre comillas dobles
+int         handle_escape(char *input, int i, char *buffer, int *buf_index);                      // Maneja caracteres escapados (\)
+char        *handle_escaped_dollar(int *i);                                                       // Maneja el escape de '$' en la expansión
+int         handle_quotes(char *input, int i, char **tokens, int *j);                             // Maneja comillas (simples o dobles)
+int         handle_single_quotes(char *input, int i, char *buffer, int *buf_index);               // Maneja el contenido entre comillas simples
+char        *handle_dollar_sign(const char *str, int *i, t_minishell *shell);                     // Maneja el signo de dólar para expansión
+char        *handle_regular_char(const char *str, int *i);                                        // Maneja caracteres regulares fuera de comillas
+int         handle_special_char(char *input, int i, char **tokens, int *j);                       // Maneja caracteres especiales
+int         handle_token(char *input, int i, char **tokens, int *j);                              // Procesa un token individual de la entrada
+bool        is_quote(char c);                                                                     // Verifica si el carácter es una comilla (' o ")
+int         is_empty_or_whitespace(char *str);                                                    // Verifica si una cadena está vacía o contiene solo espacios
+int         is_special_char(char c);                                                              // Verifica si el carácter es un carácter especial
+t_cmd       *initialize_first_command(t_minishell *shell);                                        // Inicializa el primer comando en la estructura
+int         initialize_arguments(char **tokens, int *i, t_cmd *cmd);                              // Inicializa los argumentos del comando
+t_cmd       *parse_input(char *input_line, t_minishell *shell);                                   // Parsea la línea de entrada y crea los comandos
+void        print_command(t_cmd *cmd);                                                            // Imprime la estructura del comando para depuración
+int         process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell);             // Procesa los argumentos de los comandos
+int         process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell);           // Maneja las redirecciones (<, >, >>, <<)
+int         process_token(char *input, int *i, char **tokens, int *j);                            // Procesa un token de la entrada
+int         process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell);           // Procesa los pipes (|)
+int         process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell);                // Procesa todos los tokens para construir los comandos
+char        *read_input(void);                                                                    // Lee la entrada del usuario
+char        *remove_quotes(const char *arg);                                                      // Elimina las comillas de un argumento
+void        free_command(t_cmd *cmd);                                                             // Libera la memoria de la estructura de comando
+void        free_command_list(t_cmd *cmd);                                                        // Libera la memoria de la lista de comandos
+void        free_redirections(t_redir *redir);                                                    // Libera la memoria de las redirecciones
+void        free_tokens_parse(char **tokens);                                                     // Libera la memoria de los tokens parseados                                                   
+char        **tokenize_input(char *input);                                                        // Divide la entrada en tokens
+
 
 //---------------------ENV-------------------------//
 void		*safe_malloc(t_minishell *shell, size_t size);									// Asigna memoria de forma segura, manejando errores.

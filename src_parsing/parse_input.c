@@ -3,47 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/04 21:05:49 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/12 18:45:55 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_cmd	*initialize_first_command(t_minishell *shell)				// Define la función que inicializa el primer comando
-{
-	t_cmd	*cmd;													// Declara un puntero a t_cmd que representará el comando
-
-	cmd = create_new_command(shell);								// Crea un nuevo comando usando la función create_new_command y lo asigna a cmd
-	if (!cmd)														// Si cmd es NULL (no se pudo crear el comando)
-		return (NULL);												// Retorna NULL para indicar un error
-	return (cmd);													// Retorna el puntero al nuevo comando creado
-}
-
-int	initialize_arguments(char **tokens, int *i, t_cmd *cmd)			// Inicializa los argumentos de un comando en cmd
-{
-	if (!cmd->path)													// Si cmd->path es NULL (no hay un path establecido aún)
-	{
-		cmd->path = ft_strdup(tokens[*i]);							// Copia el token actual a cmd->path
-		if (!cmd->path)												// Si la copia falla
-			return (-1);											// Retorna -1 para indicar un error
-		(*i)++;														// Incrementa el índice i para pasar al siguiente token
-	}
-	cmd->arguments = ft_calloc(100, sizeof(char *));				// Reserva memoria para hasta 100 argumentos
-	if (!cmd->arguments)											// Si la asignación falla
-		return (-1);												// Retorna -1 para indicar un error
-	return (0);														// Retorna 0 para indicar éxito
-}
-
-int	add_argument(char *token, int arg_index, t_cmd *cmd)			// Agrega un argumento a cmd->arguments en la posición arg_index
-{
-	cmd->arguments[arg_index] = ft_strdup(token);					// Copia el token y lo asigna en cmd->arguments[arg_index]
-	if (!cmd->arguments[arg_index])									// Si la copia falla
-		return (-1);												// Retorna -1 para indicar un error
-	return (0);														// Retorna 0 para indicar éxito
-}
 
 
 /*int	process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
@@ -54,6 +21,10 @@ int	add_argument(char *token, int arg_index, t_cmd *cmd)			// Agrega un argument
 	if (initialize_arguments(tokens, i, cmd) == -1)
 		return (-1);
 	arg_index = 0;
+	cmd->arguments[arg_index] = ft_strdup(cmd->path);
+	if (!cmd->arguments[arg_index])
+		return (-1);
+	arg_index++;
 	while (tokens[*i] && ft_strncmp(tokens[*i], "|", 2) != 0)
 	{
 		if (get_redirection_type(tokens[*i]) != NOT_REDIR)
@@ -72,86 +43,176 @@ int	add_argument(char *token, int arg_index, t_cmd *cmd)			// Agrega un argument
 	}
 	cmd->arguments[arg_index] = NULL;
 	return (0);
-}*/
-int	process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)	// Procesa los argumentos de un comando
+}
+
+int	process_token(char *input, int *i, char **tokens, int *j)
 {
-	int	arg_index;																// Declara el índice de argumentos
-	int	ret;																	// Declara una variable para almacenar resultados de funciones
-
-	if (initialize_arguments(tokens, i, cmd) == -1)								// Inicializa argumentos y verifica si falla
-		return (-1);															// Retorna -1 en caso de error
-	arg_index = 0;																// Inicializa el índice de argumentos en 0
-	cmd->arguments[arg_index] = ft_strdup(cmd->path);							// Copia cmd->path al primer argumento
-	if (!cmd->arguments[arg_index])												// Si la copia falla
-		return (-1);															// Retorna -1 para indicar un error
-
-	arg_index++;																// Incrementa el índice de argumentos
-	while (tokens[*i] && ft_strncmp(tokens[*i], "|", 2) != 0)					// Mientras haya tokens y no sea un pipe ("|")
+	if (get_special_token_type(input[*i]) != UNKNOWN)
 	{
-		if (get_redirection_type(tokens[*i]) != NOT_REDIR)						// Si el token es una redirección
+		*i = handle_special_char(input, *i, tokens, j);
+		if (*i == -1)
+			return (-1);
+	}
+	else
+	{
+		*i = handle_token(input, *i, tokens, j);
+		if (*i == -1)
+			return (-1);
+	}
+	return (0);
+}*/
+int	process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
+{
+	int	arg_index;
+	int	ret;
+
+	printf("[DEBUG]-->PROCESS_ARGUMENTS[0.1]==> Init argumentos\n");
+
+	if (initialize_arguments(tokens, i, cmd) == -1)
+	{
+		printf("[ERROR]-->PROCESS_ARGUMENTS[0.2]==> Error en initialize_arguments\n");
+		return (-1);
+	}
+
+	arg_index = 0;
+	cmd->arguments[arg_index] = ft_strdup(cmd->path);
+	if (!cmd->arguments[arg_index])
+	{
+		printf("[ERROR]-->PROCESS_ARGUMENTS[0.3]==> Error al duplicar cmd->path\n");
+		return (-1);
+	}
+	printf("[DEBUG]-->PROCESS_ARGUMENTS[0.4]==> Argumento[0] asignado:         [%s]\n", cmd->arguments[arg_index]);
+	arg_index++;
+
+	while (tokens[*i] && ft_strncmp(tokens[*i], "|", 2) != 0)
+	{
+		printf("[DEBUG]-->PROCESS_ARGUMENTS[0.5]==> Procesando token:              [%s]\n", tokens[*i]);
+
+
+		if (get_redirection_type(tokens[*i]) != NOT_REDIR)
 		{
-			ret = process_redirection(tokens, i, cmd, shell);					// Procesa la redirección
-			if (ret == -1)														// Si la redirección falla
-				return (-1);													// Retorna -1 para indicar un error
+			printf("[DEBUG]-->PROCESS_ARGUMENTS[0.6]==> Redirección detectada:               [%s]\n", tokens[*i]);
+			ret = process_redirection(tokens, i, cmd, shell);
+			if (ret == -1)
+			{
+				printf("[ERROR]-->PROCESS_ARGUMENTS[0.7]==> Error en process_redirection\n");
+				return (-1);
+			}
 		}
 		else
 		{
-			if (add_argument(tokens[*i], arg_index, cmd) == -1)					// Agrega el token como argumento
-				return (-1);													// Retorna -1 en caso de error
-			arg_index++;														// Incrementa el índice de argumentos
-			(*i)++;																// Incrementa el índice de tokens
+		
+			printf("[DEBUG]-->PROCESS_ARGUMENTS[0.8]==> Añadiendo argumento:           [%s]\n", tokens[*i]);
+			if (add_argument(tokens[*i], arg_index, cmd) == -1)
+			{
+				printf("[ERROR]-->PROCESS_ARGUMENTS[0.9]==> Error en add_argument\n");
+				return (-1);
+			}
+			arg_index++;
+			(*i)++;
 		}
 	}
-	cmd->arguments[arg_index] = NULL;											// Agrega un NULL al final de los argumentos
-	return (0);																	// Retorna 0 para indicar éxito
+
+
+	cmd->arguments[arg_index] = NULL;
+	printf("[DEBUG]-->PROCESS_ARGUMENTS[1.0]==> Fin Process. Total argumentos: [%d]\n", arg_index);
+	return (0);
+}
+int	process_token(char *input, int *i, char **tokens, int *j)
+{
+	printf("[DEBUG]-->PROCESS_TOKEN[0.1]==> Init processs del token en input:  [%d]:[%c]\n", *i, input[*i]);
+
+
+	if (get_special_token_type(input[*i]) != UNKNOWN)
+	{
+		printf("[DEBUG]-->PROCESS_TOKEN[0.2]==> Token especial detectado:                  [%c]\n", input[*i]);
+		*i = handle_special_char(input, *i, tokens, j);
+		if (*i == -1)
+		{
+			printf("[ERROR]-->PROCESS_TOKEN[0.3]==> Error en handle_special_char\n");
+			return (-1);
+		}
+		printf("[DEBUG]-->PROCESS_TOKEN[0.4]==> Índice i después token especial:  [%d]\n", *i);
+	}
+	else
+	{
+		printf("[DEBUG]-->PROCESS_TOKEN[0.5]==> Token normal detectado:            [%c]\n", input[*i]);
+		*i = handle_token(input, *i, tokens, j);
+		if (*i == -1)
+		{
+			printf("[ERROR]-->PROCESS_TOKEN[0.6]==> Error en handle_token\n");
+			return (-1);
+		}
+		printf("[DEBUG]-->PROCESS_TOKEN[0.7]==> Índice despues token normal:       [%d]\n", *i);
+	}
+
+	printf("[DEBUG]-->PROCESS_TOKEN[0.8]==> Token añadido al array de tokens:  [%s]\n", tokens[*j - 1]);
+	return (0);
 }
 
-int	process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)		// Procesa todos los tokens de entrada
+
+t_cmd	*parse_input(char *input_line, t_minishell *shell)
 {
-	int	i;																		// Declara un índice para recorrer los tokens
+	char	**tokens;
+	t_cmd	*cmd;
+	t_cmd	*current_cmd;		// Variable para recorrer la lista de comandos de printf
+	int		i = 0;				// Variable para recorrer el bucle de printf
 
-	i = 0;																		// Inicializa i en 0
-	while (tokens[i])															// Mientras haya tokens
+	if (is_empty_or_whitespace(input_line))                                                // Verificar si la línea está vacía o tiene solo espacios
+		return (NULL);
+	if (contains_invalid_characters(input_line))                                           // Verificar si la línea contiene caracteres inválidos
+		return (NULL);
+	tokens = tokenize_input(input_line);
+	if (!tokens || !tokens[0])
 	{
-		if (process_token_pipe(tokens, &i, &current_cmd, shell) == -1)			// Procesa posibles pipes y verifica errores
-			return (-1);														// Retorna -1 en caso de error
-		if (process_arguments(tokens, &i, current_cmd, shell) == -1)			// Procesa los argumentos del comando
-			return (-1);														// Retorna -1 en caso de error
-	}
-	return (0);																	// Retorna 0 para indicar éxito
-}
-
-t_cmd	*parse_input(char *input_line, t_minishell *shell)						// Parsea la línea de entrada del usuario
-{
-	char	**tokens;															// Declara un array de strings para los tokens
-	t_cmd	*cmd;																// Declara un puntero a t_cmd para almacenar el comando
-
-	if (is_empty_or_whitespace(input_line))										// Verifica si la línea de entrada está vacía o es solo espacio
-        return (NULL);															// Retorna NULL si no hay nada que parsear
-	if (contains_invalid_characters(input_line))								// Verifica si la línea tiene caracteres inválidos
-		return (NULL);															// Retorna NULL si encuentra caracteres inválidos
-	tokens = tokenize_input(input_line);										// Divide la línea de entrada en tokens
-	if (!tokens || !tokens[0])													// Si no se pudieron obtener tokens o está vacío
-	{
-		free_tokens_parse(tokens);												// Libera tokens y retorna NULL
+		free_tokens_parse(tokens);
 		return (NULL);
 	}
-	cmd = initialize_first_command(shell);										// Inicializa el primer comando
-	if (!cmd)																	// Si falla la inicialización
+	printf("[DEBUG]-->PARSE_INPUT[0.1]==> Tokens generados:\n");
+	i = 0;
+	while (tokens[i])
 	{
-		free_tokens_parse(tokens);												// Libera tokens y retorna NULL
+		printf("[DEBUG]-->PARSE_INPUT[0.2]==> 	Token[%d]-->              ->        [%s]\n", i, tokens[i]);
+		i++;
+	}
+	cmd = create_new_command(shell);
+	if (!cmd)
+	{
+		free_tokens_parse(tokens);
 		return (NULL);
 	}
-	if (tokens[0][0] == '$')													// Si el primer token es una variable
-		cmd->path = ft_strdup("echo");											// Asigna "echo" como el path del comando
-	if (process_tokens(tokens, cmd, shell) == -1)								// Procesa los tokens y verifica si hay errores
+	if (tokens[0][0] == '$')
 	{
-		free_tokens_parse(tokens);												// Libera tokens y comando, luego retorna NULL
+		cmd->path = ft_strdup("echo");
+		printf("[DEBUG]-->PARSE_INPUT[0.5]==> cmd->path asignado a 'echo':             [%s]\n", cmd->path);
+	}
+	i = 0;
+	while (tokens[i])
+	{
+		printf("[DEBUG]-->PARSE_INPUT[0.7]==> Token[%d] antes de expandir:          [%s]\n", i, tokens[i]);
+		i++;
+	}
+	if (process_tokens(tokens, cmd, shell) == -1)
+	{
+		free_tokens_parse(tokens);
 		free_command(cmd);
 		return (NULL);
 	}
-	expand_tokens(cmd, shell);													// Expande las variables en el comando
-	free_tokens_parse(tokens);													// Libera los tokens ya que no se necesitan más
-	//print_command(cmd);														// Imprime el comando para depuración (si está habilitado)
-	return (cmd);																// Retorna el comando parseado
+	expand_tokens(cmd, shell);
+	printf("[DEBUG]-->PARSE_INPUT[0.8]==> Comandos creados y argumentos:\n");
+	current_cmd = cmd;
+	while (current_cmd)
+	{
+		printf("[DEBUG]-->PARSE_INPUT[0.9]==> Comando (cmd->path):                 [%s]\n", current_cmd->path);
+		i = 0;
+		while (current_cmd->arguments && current_cmd->arguments[i])
+		{
+			printf("[DEBUG]-->PARSE_INPUT[0.9.%d]==> Argumento[%d]:                      [%s]\n", i + 1, i, current_cmd->arguments[i]);
+			i++;
+		}
+		current_cmd = current_cmd->next;
+	}
+	free_tokens_parse(tokens);
+	return (cmd);
 }
+

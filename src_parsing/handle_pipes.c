@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:43:54 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/04 19:46:16 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/12 16:48:05 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,19 @@ int create_next_command(t_cmd **cmd, t_minishell *shell)
 		return (-1);																// Retorna -1 indicando un error
 	(*cmd)->next->prev = *cmd;														// Establece el nodo anterior del nuevo comando
 	*cmd = (*cmd)->next;															// Avanza el puntero cmd al nuevo comando
-	printf("(NEW COMMAND CREATED) New command created after pipe.\n");				// Imprime un mensaje de confirmación
 	return (0);																		// Retorna 0 indicando éxito
 }
 
 int process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell)
 {
-	printf("(DEBUG) Entrando a process_token_pipe con token: '%s'\n", tokens[*i]);	// Imprime el token actual para depuración
 	if (ft_strncmp(tokens[*i], "|", 2) == 0)										// Verifica si el token actual es un pipe
 	{
-		printf("(PIPE DETECTED) Pipe found at token %d: '%s'\n", *i, tokens[*i]);	// Imprime que se detectó un pipe
+		
 		if (check_pipe_errors(tokens, i) == -1)										// Verifica si hay errores en la posición del pipe
 			return (-1);															// Retorna -1 si hay un error
 		if (create_next_command(cmd, shell) == -1)									// Crea el siguiente comando
 			return (-1);															// Retorna -1 si hay un error
-		printf("(DEBUG) Nuevo comando creado después del pipe.\n");					// Imprime un mensaje de depuración
+				// Imprime un mensaje de depuración
 		return (0);																	// Retorna 0 indicando éxito
 	}
 	return (1);																		// Retorna 1 si el token no es un pipe
