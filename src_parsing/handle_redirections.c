@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:57:47 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/12 21:10:49 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/12 21:29:36 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int create_and_add_redirection(t_cmd *cmd, int type, char *file)
 	t_redir *new_redir;																										// Puntero para la nueva redirección
 	t_redir *current;																										// Puntero para recorrer la lista de redirecciones existentes
 
-	if (type == OUTFILE || type == APPEND)																					// Verifica si el tipo es salida o append
+	if (type == OUTFILE || type == APPEND || type == INFILE)																					// Verifica si el tipo es salida o append
 	{
 		current = cmd->redir;																								// Inicia en la primera redirección
 		while (current)																										// Recorre la lista de redirecciones
