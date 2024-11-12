@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 17:59:21 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/05 20:24:48 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/12 20:59:18 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ void	handle_redirection(t_cmd *cmd)
 				perror("Error abriendo archivo de entrada");					// Imprime un mensaje de error.
 				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
-			if (dup2(fd, STDIN_FILENO) == -1)									// Redirige la entrada estándar (STDIN) al descriptor de archivo recién abierto.
-			{
-				perror("Error en redirección de entrada");						// Imprime un mensaje de error si dup2 falla.
-				close(fd);														// Cierra el descriptor de archivo abierto.
-				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
-			}
 			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
 			cmd->intfd=fd;
 		}
@@ -44,12 +38,6 @@ void	handle_redirection(t_cmd *cmd)
 				perror("Error abriendo archivo de salida");						// Imprime un mensaje de error.
 				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
-			if (dup2(fd, STDOUT_FILENO) == -1)									// Redirige la salida estándar (STDOUT) al descriptor de archivo abierto.
-			{
-				perror("Error en redirección de salida");						// Imprime un mensaje de error si dup2 falla.
-				close(fd);														// Cierra el descriptor de archivo abierto.
-				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
-			}
 			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
 			cmd->outfd = fd;													// Guarda el descriptor de archivo en el campo 'intfd' de 'cmd' para el seguimiento de la redirección de entrada.
 		}
@@ -59,12 +47,6 @@ void	handle_redirection(t_cmd *cmd)
 			if (fd == -1)														// Si la apertura falla...
 			{
 				perror("Error abriendo archivo para append");					// Imprime un mensaje de error.
-				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
-			}
-			if (dup2(fd, STDOUT_FILENO) == -1)									// Redirige la salida estándar (STDOUT) al descriptor de archivo abierto en modo append.
-			{
-				perror("Error en redirección de salida(append)"); 				// Imprime un mensaje de error si dup2 falla.
-				close(fd);														// Cierra el descriptor de archivo abierto.
 				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
 			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.

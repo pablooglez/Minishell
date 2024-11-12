@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:53:22 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/12 20:04:47 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/12 21:03:16 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

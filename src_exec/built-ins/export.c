@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:11 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/12 19:17:48 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/12 21:06:26 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	ft_export(t_minishell *shell, char **arg)
 		{
 			if (is_valid_identifier(arg[i]))												//Verifica si es un identificador válido (ejemplo: solo letras y guiones bajos)
 				update_env_var(&(shell->env_vars), arg[i], "");								//Añade la variable sin valor asociado (se establece a NULL)
+		else
+			{
 			else
 			{ 
 				ft_error(shell, CMD_NOT_FOUND, "export: not a valid identifier", 0);		//Muestra un error si el identificador no es válido
@@ -72,4 +74,5 @@ void	ft_export(t_minishell *shell, char **arg)
 		}
 		i++;																				//Avanza al siguiente argumento en la lista
 	}
+	i++;																				//Avanza al siguiente argumento en la lista
 }
