@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:53:22 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/12 17:53:40 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/12 20:04:47 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int	initialize_arguments(char **tokens, int *i, t_cmd *cmd)
 {
 	if (!cmd->path)																	// Verifica si el path del comando no ha sido asignado
 	{
-		if (tokens[0][0] == '$')													// Verifica si el primer token es una variable
-			cmd->path = ft_strdup("echo");											// Asigna el comando "echo" al path
-		else
+		/*if (tokens[0][0] == '$')													// Verifica si el primer token es una variable
+			cmd->path = ft_strdup("echo");*/											// Asigna el comando "echo" al path
+		//else
 			cmd->path = ft_strdup(tokens[*i]);										// Duplica el token actual al path
 		if (!cmd->path)																// Verifica si la asignación falló
 			return (-1);															// Retorna -1 en caso de error

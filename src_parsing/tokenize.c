@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/12 17:55:48 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/12 20:24:09 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,24 +113,27 @@ int	handle_token(char *input, int i, char **tokens, int *j)
 	}
 
 	buffer[buf_index] = '\0';
-	if (no_expand)
-	{
-		tokens[*j] = ft_strjoin("__NO_EXPAND__", buffer);
-		printf("[DEBUG]-->HANDLE_TOKEN-08==> Token creado (sin expansión): 	   [%s]\n", tokens[*j]);
-	}
-	else
-	{
-		tokens[*j] = ft_strdup(buffer);
-		printf("[DEBUG]-->HANDLE_TOKEN-09==> Token creado:			   [%s]\n", tokens[*j]);
-	}
+	if (buf_index > 0)
+	{ 
+		if (no_expand)
+		{
+			tokens[*j] = ft_strjoin("__NO_EXPAND__", buffer);
+			printf("[DEBUG]-->HANDLE_TOKEN-08==> Token creado (sin expansión): 	   [%s]\n", tokens[*j]);
+		}
+		else
+		{
+			tokens[*j] = ft_strdup(buffer);
+			printf("[DEBUG]-->HANDLE_TOKEN-09==> Token creado:			   [%s]\n", tokens[*j]);
+		}
 
-	if (!tokens[*j])
-	{
-		printf("[ERROR]-->HANDLE_TOKEN-10==> Error al duplicar el token\n");
-		free_tokens_parse(tokens);
-		return (-1);
+		if (!tokens[*j])
+		{
+			printf("[ERROR]-->HANDLE_TOKEN-10==> Error al duplicar el token\n");
+			free_tokens_parse(tokens);
+			return (-1);
+		}
+		(*j)++;
 	}
-	(*j)++;
 	return (i);
 }
 

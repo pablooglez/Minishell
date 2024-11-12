@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/12 18:45:55 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/12 20:03:19 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,11 +181,11 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 		free_tokens_parse(tokens);
 		return (NULL);
 	}
-	if (tokens[0][0] == '$')
+	/*if (tokens[0][0] == '$')
 	{
 		cmd->path = ft_strdup("echo");
 		printf("[DEBUG]-->PARSE_INPUT[0.5]==> cmd->path asignado a 'echo':             [%s]\n", cmd->path);
-	}
+	}*/
 	i = 0;
 	while (tokens[i])
 	{

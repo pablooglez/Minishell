@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:02:04 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/11 13:04:47 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/12 20:36:18 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ char *expand_entire_input(const char *input, t_minishell *shell)
 	char *expanded;
 
 	expanded = expand_string(input, shell);									// Expande toda la cadena input
+	printf("[DEBUG]-->EXPAND_ENTIRE_INPUT==> Cadena expandida:            [%s]\n", expanded);
 	if (expanded != NULL && access(expanded, X_OK) == 0)					// Verifica si la expansión es ejecutable
 		return (expanded);													// Retorna la cadena expandida si es ejecutable
 	free(expanded);															// Libera expanded si no es ejecutable
@@ -98,6 +99,7 @@ void expand_tokens(t_cmd *cmd, t_minishell *shell)
 	i = 0;
 	while (cmd->arguments && cmd->arguments[i] != NULL)						// Recorre cada argumento en cmd
 	{
+		printf("[DEBUG]-->EXPAND_TOKENS 0. 1 ==> Argumento antes de expandir:      [%s]\n", cmd->arguments[i]);
 		expanded = expand_argument(cmd->arguments[i], shell);				// Expande el argumento actual
 		free(cmd->arguments[i]);											// Libera el argumento original
 		cmd->arguments[i] = expanded;										// Actualiza el argumento con la expansión
