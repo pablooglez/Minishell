@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/05 20:22:12 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/12 21:20:50 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ int	execute_command(t_minishell *shell)
 			if (pid == 0)																	// Verifica si el proceso actual es el hijo (pid == 0 significa proceso hijo)
 			{
 				handle_redirection(cmd);													// Maneja las redirecciones de entrada y salida si las hay
-				dup2(0,cmd->intfd);															// Redirige la entrada estándar según el descriptor de archivo de entrada del comando
-				dup2(1,cmd->outfd);															// Redirige la salida estándar según el descriptor de archivo de salida del comando
+				if (cmd->intfd != 0)														// Redirige la entrada estándar según el descriptor de archivo de entrada del comando
+					dup2(cmd->intfd, STDIN_FILENO);
+				if (cmd->outfd != 1)														// Redirige la salida estándar según el descriptor de archivo de salida del comando
+					dup2(cmd->outfd, STDOUT_FILENO);
 
 																							// Obtiene la ruta completa del comando (ejemplo: "/bin/ls" si el comando es "ls")
 				command_path = get_command_path(cmd->arguments[0], shell);					// Llama a get_command_path para buscar el comando en los directorios de PATH
@@ -53,7 +55,10 @@ int	execute_command(t_minishell *shell)
 				free(command_path);															// Libera la memoria de command_path si execve se ejecuta correctamente
 			}
 			else if (pid < 0)																// Si fork() falla, verifica que pid sea menor que 0 (indica un error)
+			{
 				ft_error(shell, MEMORY, NULL, 0);											// Si hubo un error al crear el proceso, maneja el error de memoria
+				return (1);																	// Sale de la función con un código de error
+			}
 			else																			// Si estamos en el proceso padre (pid > 0)
 			{
 				waitpid(pid, &shell->exit_status, 0);										// Espera a que el proceso hijo termine su ejecución
