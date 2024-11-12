@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 17:59:21 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/12 20:59:18 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/12 21:15:34 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	handle_redirection(t_cmd *cmd)
 		if (redir->type == INFILE)												// Si el tipo de redirección es INFILE (redirección de entrada)...
 		{
 			fd = open(redir->file, O_RDONLY);									// Intenta abrir el archivo en modo lectura.
+			printf("(PABDEBUG)-->HANDLE_REDIRECTION==> File Descriptor: [%d]\n", fd);
 			if (fd == -1)														// Si la apertura falla...
 			{
 				perror("Error abriendo archivo de entrada");					// Imprime un mensaje de error.
@@ -33,6 +34,7 @@ void	handle_redirection(t_cmd *cmd)
 		else if (redir->type == OUTFILE)										// Si el tipo de redirección es OUTFILE (redirección de salida)...
 		{
 			fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644); 		// Abre el archivo en modo escritura, truncándolo o creándolo si no existe.
+			printf("(PABDEBUG)-->HANDLE_REDIRECTION==> File Descriptor: [%d]\n", fd);
 			if (fd == -1)														// Si la apertura falla...
 			{
 				perror("Error abriendo archivo de salida");						// Imprime un mensaje de error.
