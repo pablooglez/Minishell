@@ -6,21 +6,31 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:02:04 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/12 20:36:18 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/13 20:10:08 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *find_env_value(t_env *env_vars, const char *key)
+char	*find_env_value(t_env *env_vars, const char *key)
 {
-	while (env_vars)														// Recorre la lista de variables de entorno
+	size_t	key_len;														// Para almacenar la longitud de la key
+	size_t	current_key_len;												// Para almacenar la longitud de la key actual
+
+	if (!key || !env_vars)													// Verifica si la key o env_vars es NULL
+		return (NULL);
+	key_len = ft_strlen(key); 												// Obtiene la longitud de la key
+	while (env_vars != NULL)												// Recorre la lista de variables de entorno
 	{
-		if (ft_strncmp(env_vars->key, key, ft_strlen(env_vars->key)) == 0)	// Compara el key de la variable actual
-			return (env_vars->value);										// Retorna el valor si la clave coincide
-		env_vars = env_vars->next;											// Pasa a la siguiente variable en la lista
+		current_key_len = ft_strlen(env_vars->key);							// Obtiene la longitud de la key actual
+		if (current_key_len == key_len)										// COmparala longitud de la key actual con la key dada
+		{
+			if (ft_strncmp(env_vars->key, key, key_len) == 0)				// Compara la key actual con la key dada env_vars->key es la key actual, key es la key dada, y key_len es la longitud de la key
+				return (env_vars->value);									// Retorna el valor si las keys son iguales
+		}
+		env_vars = env_vars->next;									    	// Avanza al siguiente nodo de la lista
 	}
-	return (NULL);															// Retorna NULL si no encuentra la clave
+	return (NULL);															// Retorna NULL si no se encuentra la key
 }
 
 char *get_expanded_value(const char *variable, t_minishell *shell)
@@ -29,10 +39,12 @@ char *get_expanded_value(const char *variable, t_minishell *shell)
 
 	if (ft_strncmp(variable, "?", 2) == 0)									// Verifica si la variable es "?"
 		return (ft_itoa(shell->exit_status));								// Retorna el valor del estado de salida como string
-
+	
+	printf("[DEBUG]-->GET_EXPANDED_VALUE[0.0]==> Variable:                [%s]\n", variable);
 	value = find_env_value(shell->env_vars, variable);						// Busca el valor de la variable en env_vars
 	if (value)
 		return (ft_strdup(value));											// Retorna una copia del valor si existe
+	printf("[DEBUG]-->GET_EXPANDED_VALUE[0.1]==> Value:                   [%s]\n", value);
 	return (ft_strdup(""));													// Retorna una cadena vacía si no existe
 }
 

@@ -6,12 +6,11 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:03:33 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/12 20:31:59 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/13 21:11:54 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 char	*expand_argument(const char *arg, t_minishell *shell)
 {
@@ -38,7 +37,9 @@ char	*expand_argument(const char *arg, t_minishell *shell)
 		free(unquoted);
 		return (expanded);
 	}
+	printf("[DEBUG]-->EXPAND_ARGUMENT[0.2]==>Arg bef.. expand_string:         [%s]\n", arg);
 	expanded = expand_string(arg, shell);
+	printf("[DEBUG]-->EXPAND_ARGUMENT[0.3]==>Expand later expand_string:     [%s]\n", expanded);	
 	return (expanded);
 }
 
