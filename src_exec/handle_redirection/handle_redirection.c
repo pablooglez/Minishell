@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 17:59:21 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/12 21:15:34 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:15:02 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ void	handle_redirection(t_cmd *cmd)
 				perror("Error abriendo archivo de entrada");					// Imprime un mensaje de error.
 				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
+			dup2(fd, STDIN_FILENO);
 			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
-			cmd->intfd=fd;
+			//cmd->intfd=fd;
 		}
 		else if (redir->type == OUTFILE)										// Si el tipo de redirección es OUTFILE (redirección de salida)...
 		{
@@ -40,8 +41,9 @@ void	handle_redirection(t_cmd *cmd)
 				perror("Error abriendo archivo de salida");						// Imprime un mensaje de error.
 				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
+			dup2(fd, STDOUT_FILENO);
 			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
-			cmd->outfd = fd;													// Guarda el descriptor de archivo en el campo 'intfd' de 'cmd' para el seguimiento de la redirección de entrada.
+			//cmd->outfd = fd;													// Guarda el descriptor de archivo en el campo 'intfd' de 'cmd' para el seguimiento de la redirección de entrada.
 		}
 		else if (redir->type == APPEND)											// Si el tipo de redirección es APPEND (redirección de salida en modo append)...
 		{
@@ -51,8 +53,9 @@ void	handle_redirection(t_cmd *cmd)
 				perror("Error abriendo archivo para append");					// Imprime un mensaje de error.
 				exit(EXIT_FAILURE);												// Sale del programa con un código de error.
 			}
+			dup2(fd, STDOUT_FILENO);
 			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
-			cmd->outfd = fd;													// Guarda el descriptor de archivo en el campo 'outfd' de 'cmd' para el seguimiento de la redirección de salida.
+			//cmd->outfd = fd;													// Guarda el descriptor de archivo en el campo 'outfd' de 'cmd' para el seguimiento de la redirección de salida.
 		}
 		redir = redir->next;													// Avanza al siguiente elemento en la lista de redirecciones.
 	}
