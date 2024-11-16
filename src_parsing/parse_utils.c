@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:28:02 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/15 14:05:43 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/16 19:55:02 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,3 +65,7 @@ int	remove_extra_spaces(char *input, char *norm)
 		j--;
 	return (j);
 }
+
+
+
+

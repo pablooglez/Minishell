@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/04 20:12:25 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/16 20:47:33 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int main(int argc, char **argv, char **env)
         input = read_input();
 		if (!input)
         {
-            printf("Salida detectada (EOF).\n");
+            //printf("Salida detectada (EOF).\n");
             exit_shell(&shell);
         }
         else if (input[0] == '\0')
@@ -70,7 +70,7 @@ int main(int argc, char **argv, char **env)
             }
             else
             {
-                printf("(MAIN.c)ERROR: shell.tokens no est\xE1 asignado\n");
+                //printf("(MAIN.c)ERROR: shell.tokens no esta asignado\n");
             }
         }
         free(input);

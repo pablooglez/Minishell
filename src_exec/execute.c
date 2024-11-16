@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/12 21:20:50 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/16 20:22:25 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	execute_command(t_minishell *shell)
 			}
 			else if (pid < 0)																// Si fork() falla, verifica que pid sea menor que 0 (indica un error)
 			{
-				ft_error(shell, MEMORY, NULL, 0);											// Si hubo un error al crear el proceso, maneja el error de memoria
+				ft_error(shell, MEMORY_ERROR, NULL, 0);											// Si hubo un error al crear el proceso, maneja el error de memoria
 				return (1);																	// Sale de la función con un código de error
 			}
 			else																			// Si estamos en el proceso padre (pid > 0)

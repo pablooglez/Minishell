@@ -3,21 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:55:18 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/05 18:19:22 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/16 20:52:14 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void fatal(int code, char *value)												// Función que imprime mensajes de error personalizados según un código dado.
+
+void	fatal(int code, char *value)
 {
-	if (code == MEMORY)															// Si el código es MEMORY imprime un mensaje de error relacionado con la asignación de memoria.
-		printf("Error: Memory allocation failed\n");
-	if (code == CMD_NOT_FOUND)													// Si el código es MEMORY imprime un mensaje de error relacionado con la asignación de memoria.
-		printf("Error: Command not found: %s\n", value);
+	if (code == MEMORY_ERROR)                                                                            // Manejar error de memoria
+	{
+		write(2, "Minishell: error: Memory allocation failed\n", 43);                                    // Mensaje de error para fallo de memoria
+		exit(EXIT_FAILURE);                                                                              // Termina el programa con EXIT_FAILURE (1)
+	}
+	else if (code == CMD_NOT_FOUND)                                                                      // Manejar error de comando no encontrado
+	{
+		write(2, "Minishell: command not found: ", 30);                                                  // Mensaje de error para comando no encontrado
+		if (value)                                                                                       // Verificar si value no es NULL
+			write(2, value, ft_strlen(value));                                                           // Imprimir el nombre del comando
+		write(2, "\n", 1);                                                                               // Imprimir salto de línea
+		exit(127);                                                                                       // Termina con código 127 (comando no encontrado)
+	}
+	else if (code == SYNTAX_ERROR)                                                                       // Manejar error de sintaxis
+	{
+		write(2, "Minishell: syntax error near unexpected token `", 47);                                 // Mensaje de error para sintaxis
+		if (value)                                                                                       // Verificar si value no es NULL
+			write(2, value, ft_strlen(value));                                                           // Imprimir el token inesperado
+		write(2, "'\n", 2);                                                                              // Imprimir comilla y salto de línea
+		exit(2);                                                                                         // Termina con código 2 (error de sintaxis)
+	}
+	else if (code == PERMISSION_DENIED)                                                                  // Manejar error de permiso denegado
+	{
+		write(2, "Minishell: permission denied: ", 31);                                                  // Mensaje de error para permiso denegado
+		if (value)                                                                                       // Verificar si value no es NULL
+			write(2, value, ft_strlen(value));                                                           // Imprimir el nombre del archivo o directorio
+		write(2, "\n", 1);                                                                               // Imprimir salto de línea
+		exit(126);                                                                                       // Termina con código 126 (permiso denegado)
+	}
+	else                                                                                                // Manejar cualquier otro error desconocido
+	{
+		write(2, "Minishell: unknown error occurred\n", 34);                                             // Mensaje de error genérico
+		exit(EXIT_FAILURE);                                                                              // Termina con EXIT_FAILURE (1)
+	}
 }
 
 void	ft_error(t_minishell *shell, int code, char *value, int should_exit)	// Función para gestionar errores, recibe el shell, un código de error, un valor, y si el programa debe finalizar.

@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/16 13:08:51 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/16 21:23:09 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,15 @@ extern volatile sig_atomic_t	g_signal; 													// Variable global que se ut
 // Enumeración para definir códigos de error
 typedef enum e_error 
 {
-	MEMORY = 20,																			// Error de memoria
-	CMD_NOT_FOUND = 21																		// Error de comando no encontrado
-}	t_error;
+    SUCCESS = 0,              	 									// Operación exitosa
+    GENERAL_ERROR = 1,         										// Error general
+    SYNTAX_ERROR = 2,          										// Error de sintaxis (quotes no balanceadas, pipes mal ubicados)
+    MEMORY_ERROR = 3,          										// Error de memoria (malloc fallido)
+    PERMISSION_DENIED = 126,   										// Permiso denegado al ejecutar un archivo
+    CMD_NOT_FOUND = 127,       										// Comando no encontrado
+    INVALID_EXIT = 128,        										// Argumento inválido para el comando exit
+    EXIT_ERROR = 255           										// Error en el comando exit (fuera del rango permitido)
+} t_error;
 
 // Enumeración para definir tipos de tokens
 typedef enum e_token
@@ -61,9 +67,10 @@ typedef enum e_token
 	AND = 1,																				// Token para el operador lógico AND
 	OR = 2,																					// Token para el operador lógico OR
 	PIPE = 3,																				// Token para un pipe (|)
+	REDIR = 4,																				// Token para una redirección	
 	OPEN_PAR = 5,																			// Token para un paréntesis abierto--SOLO PARA BONUS--
 	CLOSE_PAR = 6,																			// Token para un paréntesis cerrado--SOLO PARA BONUS--
-	REDIR = 7,																				// Token para redirección
+	END_OF_INPUT = 7,          															// Fin del input (EOF)																			
 	UNKNOWN = -1,																			// Token desconocido
 }	t_token;
 
@@ -170,7 +177,8 @@ void		replace_tabs_with_spaces(char *input);													// Reemplaza los tabula
 int         remove_extra_spaces(char *input, char *norm);
 void 		print_error(const char *msg);
 int 		print_error_and_return(const char *msg);
-void 		print_error_and_exit(const char *msg, int exit_code);                                                // Elimina espacios en blanco adicionales de la entrada                       
+void 		print_error_and_exit(const char *msg, int exit_code);
+int			error_handler(const char *msg, int exit_code);                                         // Elimina espacios en blanco adicionales de la entrada                       
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------//
 

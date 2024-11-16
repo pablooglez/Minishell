@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 18:05:45 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/28 18:54:47 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/16 20:21:42 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void *safe_malloc(t_minishell *shell, size_t size)
 
 	tmp = malloc(size);											    // Intento de asignar 'size' bytes de memoria
 	if (!tmp)														// Si la asignación de memoria falla (tmp es NULL)
-		ft_error(shell, MEMORY, NULL, 1);							// Llama a la función ft_error para manejar el error, pasando el shell y un código de error
+		ft_error(shell, MEMORY_ERROR, NULL, 1);							// Llama a la función ft_error para manejar el error, pasando el shell y un código de error
 	return (tmp);													// Devuelve el puntero a la memoria asignada (o NULL si falló)
 }
 
