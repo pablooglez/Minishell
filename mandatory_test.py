@@ -3,6 +3,7 @@ import time
 import os
 import readline
 import importlib.util
+from datetime import datetime
 
 # Colores ANSI para la terminal
 COLOR_RESET = "\033[0m"
@@ -23,6 +24,12 @@ test_number = 0
 tests_passed = 0
 tests_failed = 0
 failed_tests = []
+
+# Generar nombre único para el archivo de fallos
+log_counter = 1
+while os.path.exists(f"fallos_{log_counter}.txt"):
+    log_counter += 1
+failure_log_filename = f"test_fallidos_{log_counter}.txt"
 
 def run_command(shell_cmd, shell_path):
     try:
@@ -62,7 +69,7 @@ def compare_output(cmd):
     bash_output, bash_error, bash_exit_code, bash_time = run_command(cmd, "/bin/bash")
     minishell_output, minishell_error, minishell_exit_code, minishell_time = run_command(cmd, "./minishell")
 
-    # Normalizar outputs (Eliminar espacios extra y líneas en blanco)
+    # Normalizar outputs
     bash_output_normalized = "\n".join(line.strip() for line in bash_output.splitlines() if line.strip())
     minishell_output_normalized = "\n".join(line.strip() for line in minishell_output.splitlines() if line.strip())
 
@@ -93,7 +100,7 @@ def compare_output(cmd):
         tests_failed += 1
         failed_tests.append(cmd)
 
-    print(SEPARATOR_MIDDLE)
+        print(SEPARATOR_MIDDLE)
     print(f"{COLOR_GRAY} ╔{'─' * 20}╤{'─' * 20}╤{'─' * 56}╗{COLOR_RESET}")
 
     # Códigos de salida
@@ -108,7 +115,18 @@ def compare_output(cmd):
     print(SEPARATOR_BOTTOM)
     print("·······································##############···············································")
     print("########################################  NEXT TEST ################################################")
+    print("·······································##############···············································")
 
+    # Guardar el fallo solo si hay diferencias
+    if bash_output_normalized != minishell_output_normalized or bash_exit_code != minishell_exit_code:
+        with open(failure_log_filename, "a") as f:
+            f.write(f"TEST NUMERO {test_number}: {cmd}\n")
+            f.write(f"  Bash Output: {bash_output_normalized}\n")
+            f.write(f"  Minishell Output: {minishell_output_normalized}\n")
+            f.write(f"  Bash Exit Code: {bash_exit_code}, Minishell Exit Code: {minishell_exit_code}\n")
+            f.write(f"  Bash Error: {bash_error if bash_error else '<No Error>'}\n")
+            f.write(f"  Minishell Error: {minishell_error if minishell_error else '<No Error>'}\n")
+            f.write("-" * 80 + "\n")
 
 def run_test_file(test_file):
     global tests_passed, tests_failed, failed_tests
@@ -131,18 +149,21 @@ def run_test_file(test_file):
         print(f"    {COLOR_RED}❌ Tests Fallados: {tests_failed}{COLOR_RESET}")
 
         if failed_tests:
-            print(f"\n{COLOR_RED}    Lista de Tests Fallidos:{COLOR_RESET}")
-            for failed in failed_tests:
-                print(f"      - {failed}")
+            print(f"\n{COLOR_RED}    Lista de Tests Fallidos guardada en '{failure_log_filename}'{COLOR_RESET}")
         else:
             print(f"{COLOR_GREEN}    ¡Todos los tests han pasado!{COLOR_RESET}")
         print(SEPARATOR_BOTTOM)
 
 def list_test_files():
     print(f"{COLOR_BLUE}📂 TESTS DISPONIBLES:{COLOR_RESET}")
-    for file in os.listdir("./tests"):
-        if file.startswith("test_") and file.endswith(".py"):
-            print(f"    - {file}")
+    test_files = [file for file in os.listdir("./tests") if file.startswith("test_") and file.endswith(".py")]
+    
+    for index, file in enumerate(test_files, start=1):
+        print(f"  {index}. {file}")
+    
+    return test_files
+
+
 
 def execute_all_tests():
     for file in os.listdir("./tests"):
@@ -158,20 +179,34 @@ def execute_command_loop():
         compare_output(cmd)
 
 def execute_test_loop():
+    test_files = list_test_files()
+    
     while True:
-        test_file = input(f"{COLOR_BLUE}  🔍 Ingresa el nombre del archivo de prueba (o 'back' para regresar): {COLOR_RESET}").strip()
-        if test_file.lower() == "back":
+        choice = input(f"{COLOR_BLUE}  🔍 Ingresa el número del archivo de prueba o 'back' para regresar: {COLOR_RESET}").strip()
+        
+        if choice.lower() == "back":
             break
-        run_test_file(f"./tests/{test_file}")
+        
+        if choice.isdigit():
+            index = int(choice)
+            if 1 <= index <= len(test_files):
+                selected_file = test_files[index - 1]
+                print(f"{COLOR_YELLOW}\n🚀 Ejecutando archivo de prueba: {selected_file}{COLOR_RESET}")
+                run_test_file(f"./tests/{selected_file}")
+            else:
+                print(f"{COLOR_RED}❌ Número inválido. Por favor, selecciona un número válido.{COLOR_RESET}")
+        else:
+            print(f"{COLOR_RED}❌ Entrada inválida. Por favor, selecciona un número o escribe 'back'.{COLOR_RESET}")
+
 
 def show_menu():
     print(f"\n{COLOR_BLUE}╔════════════════════════════════════════════════════╗{COLOR_RESET}")
     print(f"  🏠  {COLOR_YELLOW}       #M E N Ú   P R I N C I P A L     {COLOR_RESET}")
     print(f"{COLOR_BLUE}╟────────────────────────────────────────────────────╢{COLOR_RESET}")
-    print(f"  1️⃣   ✨  {COLOR_GREEN}Ejecutar Comando a probar Cabessa{COLOR_RESET}")
+    print(f"  1️⃣   ✨  {COLOR_GREEN}Ejecutar UN COMANDO a probar Cabessa{COLOR_RESET}")
     print(f"  2️⃣   📂  {COLOR_YELLOW}Lista de Archivos de Prueba{COLOR_RESET}")
-    print(f"  3️⃣   🚀  {COLOR_YELLOW}Ejecutar TODOS los Archivos de Prueba{COLOR_RESET}")
-    print(f"  4️⃣   🔍  {COLOR_YELLOW}Ejecutar Archivo de Prueba Específico{COLOR_RESET}")
+    print(f"  3️⃣   🚀  {COLOR_YELLOW}Ejecutar UN TEST especifico{COLOR_RESET}")
+    print(f"  4️⃣   🔍  {COLOR_YELLOW}Ejecutar TODOS los Tests a la vez{COLOR_RESET}")
     print(f"  5️⃣   ❌  {COLOR_RED}Salir{COLOR_RESET}")
     print(f"{COLOR_BLUE}╟────────────────────────────────────────────────────╢{COLOR_RESET}")
     print(f"        📝  Escribe 'back' para regresar.{COLOR_RESET}")
@@ -191,9 +226,9 @@ if __name__ == "__main__":
         elif choice == "2":
             list_test_files()
         elif choice == "3":
-            execute_all_tests()
-        elif choice == "4":
             execute_test_loop()
+        elif choice == "4":
+            execute_all_tests()
         elif choice == "5":
             print(f"{COLOR_GREEN}👋 Saliendo del comparador. ¡Adiós!{COLOR_RESET}")
             break

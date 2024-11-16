@@ -1,0 +1,270 @@
+TEST NUMERO 159: export VAR1=hello && echo $VAR1
+  Bash Output: hello
+  Minishell Output: VAR1=helloVAR1=helloError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 160: export VAR2='world' && echo $VAR2
+  Bash Output: world
+  Minishell Output: VAR2=worldVAR2=worldError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 161: export VAR3='hello world' && echo $VAR3
+  Bash Output: hello world
+  Minishell Output: VAR3=hello worldVAR3=hello worldError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 162: export VAR4='"quoted"' && echo $VAR4
+  Bash Output: "quoted"
+  Minishell Output: VAR4="quoted"VAR4="quoted"Error: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 164: export EMPTY='' && echo $EMPTY
+  Bash Output: 
+  Minishell Output: EMPTY=EMPTY=Error: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 165: unset VAR1 && echo $VAR1
+  Bash Output: 
+  Minishell Output: Error: Command not found: unset: not a valid identifier
+Error: Command not found: unset: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 166: echo $$
+  Bash Output: 630068
+  Minishell Output: 630069
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 168: export VAR=42 && echo $? && unset VAR && echo $?
+  Bash Output: 0
+0
+  Minishell Output: VAR=42VAR=42Error: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 169: echo $0
+  Bash Output: /bin/bash
+  Minishell Output: 
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 170: export A=1 B=2 C=3 && echo $A$B$C
+  Bash Output: 123
+  Minishell Output: A=1A=1A=1A=1Error: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 171: export PREFIX='hello' && export SUFFIX='world' && echo $PREFIX-$SUFFIX
+  Bash Output: hello-world
+  Minishell Output: PREFIX=helloPREFIX=helloError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 172: export PATH_VAR='/usr/bin' && echo $PATH_VAR:$PATH
+  Bash Output: /usr/bin:/home/israel/.vscode-server/bin/e8653663e8840adaf45af01eab5c627a5af81807/bin/remote-cli:/home/israel/.local/bin:/home/israel/.nvm/versions/node/v18.20.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Python311/Scripts/:/mnt/c/Python311/:/mnt/c/windows/system32:/mnt/c/windows:/mnt/c/windows/System32/Wbem:/mnt/c/windows/System32/WindowsPowerShell/v1.0/:/mnt/c/windows/System32/OpenSSH/:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Program Files/Intel/WiFi/bin/:/mnt/c/Program Files/Common Files/Intel/WirelessCommon/:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/nodejs/:/mnt/c/ProgramData/chocolatey/bin:/mnt/d/VSTUDIO/Descargas/bin:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Users/israe/AppData/Local/Microsoft/WindowsApps:/mnt/d/Users/israe/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/israe/AppData/Roaming/npm:/mnt/c/MinGW/bin:/snap/bin
+  Minishell Output: PATH_VAR=/usr/binPATH_VAR=/usr/binError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 173: export QUOTED='"double quoted"' && echo $QUOTED
+  Bash Output: "double quoted"
+  Minishell Output: QUOTED="double quoted"QUOTED="double quoted"Error: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 174: export SINGLE=''single quoted'' && echo $SINGLE
+  Bash Output: single
+  Minishell Output: SINGLE=singleSINGLE=singleSINGLE=singleError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 175: export MIXED="hello'world" && echo $MIXED
+  Bash Output: hello'world
+  Minishell Output: MIXED=hello'worldMIXED=hello'worldError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 176: export VAR_CMD='echo command' && $VAR_CMD
+  Bash Output: command
+  Minishell Output: VAR_CMD=echo commandVAR_CMD=echo commandError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 177: export VAR_ARG='hello world' && echo $VAR_ARG
+  Bash Output: hello world
+  Minishell Output: VAR_ARG=hello worldVAR_ARG=hello worldError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 178: export GREP_CMD='grep VAR' && echo 'test VAR' | $GREP_CMD
+  Bash Output: test VAR
+  Minishell Output: GREP_CMD=grep VARGREP_CMD=grep VARError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 179: export OUTFILE='output.txt' && echo 'test' > $OUTFILE && cat $OUTFILE
+  Bash Output: test
+  Minishell Output: 
+  Bash Exit Code: 0, Minishell Exit Code: 1
+  Bash Error: <No Error>
+  Minishell Error: 'utf-8' codec can't decode byte 0xe1 in position 173: invalid continuation byte
+--------------------------------------------------------------------------------
+TEST NUMERO 180: export INFILE='input.txt' && echo 'content' > $INFILE && cat < $INFILE
+  Bash Output: content
+  Minishell Output: 
+  Bash Exit Code: 0, Minishell Exit Code: 1
+  Bash Error: <No Error>
+  Minishell Error: 'utf-8' codec can't decode byte 0xe1 in position 174: invalid continuation byte
+--------------------------------------------------------------------------------
+TEST NUMERO 181: export CMD='cat' && export FILE='input.txt' && $CMD < $FILE
+  Bash Output: content
+  Minishell Output: 
+  Bash Exit Code: 0, Minishell Exit Code: 1
+  Bash Error: <No Error>
+  Minishell Error: 'utf-8' codec can't decode byte 0xe1 in position 163: invalid continuation byte
+--------------------------------------------------------------------------------
+TEST NUMERO 185: echo ${VAR4}suffix
+  Bash Output: suffix
+  Minishell Output: ${VAR4}suffix
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 186: export NUM_VAR=123 && echo $NUM_VAR
+  Bash Output: 123
+  Minishell Output: NUM_VAR=123NUM_VAR=123Error: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 187: export _UNDERSCORE_VAR=underscore && echo $_UNDERSCORE_VAR
+  Bash Output: underscore
+  Minishell Output: _UNDERSCORE_VAR=underscore_UNDERSCORE_VAR=underscoreError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 188: export VAR@SPECIAL=special && echo $VAR@SPECIAL
+  Bash Output: 
+  Minishell Output: VAR@SPECIAL=specialError: Command not found: export: not a valid identifier
+  Bash Exit Code: 1, Minishell Exit Code: 0
+  Bash Error: /bin/bash: line 1: export: `VAR@SPECIAL=special': not a valid identifier
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 189: export PWD_OVERRIDE='/custom/path' && cd $PWD_OVERRIDE && pwd && unset PWD_OVERRIDE
+  Bash Output: 
+  Minishell Output: PWD_OVERRIDE=/custom/pathPWD_OVERRIDE=/custom/pathError: Command not found: export: not a valid identifier
+  Bash Exit Code: 1, Minishell Exit Code: 0
+  Bash Error: /bin/bash: line 1: cd: /custom/path: No such file or directory
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 190: export VAR='hello' && unset VAR && export VAR='new_value' && echo $VAR
+  Bash Output: new_value
+  Minishell Output: VAR=helloVAR=helloError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 191: export VAR=1 && export VAR=$((VAR + 1)) && echo $VAR
+  Bash Output: 2
+  Minishell Output: VAR=1VAR=1Error: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 192: export A=hello B=world && echo $A | grep $B
+  Bash Output: 
+  Minishell Output: A=helloA=helloA=helloError: Command not found: export: not a valid identifier
+  Bash Exit Code: 1, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 193: export STR='a b c' && echo $STR | tr ' ' '-'
+  Bash Output: a-b-c
+  Minishell Output: STR=a b cSTR=a b cError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 194: export LIST='1 2 3' && for i in $LIST; do echo $i; done
+  Bash Output: 1
+2
+3
+  Minishell Output: LIST=1 2 3LIST=1 2 3Error: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 195: export VAR='*' && echo $VAR
+  Bash Output: && Libft Makefile README.md append.txt cd dir-with-hyphen dir_with_underscore docs file.txt include input.txt mandatory_test.py minishell out.txt output.txt pwd quotes_test.py src src_exec src_parsing test dir test_comillas.txt test_dir test_fallidos_1.txt test_parse.txt tests
+  Minishell Output: VAR=*VAR=*Error: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 196: export VAR='$' && echo $VAR
+  Bash Output: $
+  Minishell Output: VAR=$VAR=$Error: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 197: export VAR=' ' && echo $VAR
+  Bash Output: 
+  Minishell Output: VAR= VAR= Error: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 198: export VAR='' && echo ${VAR:-default}
+  Bash Output: default
+  Minishell Output: VAR=VAR=Error: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 199: export PATH='/tmp' && echo $PATH && unset PATH
+  Bash Output: /tmp
+  Minishell Output: PATH=/tmpPATH=/tmpError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 200: export HOME='/tmp' && cd && pwd && unset HOME
+  Bash Output: /tmp
+  Minishell Output: HOME=/tmpHOME=/tmpError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 201: export SHELL='/bin/fake_shell' && echo $SHELL && unset SHELL
+  Bash Output: /bin/fake_shell
+  Minishell Output: SHELL=/bin/fake_shellSHELL=/bin/fake_shellError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------

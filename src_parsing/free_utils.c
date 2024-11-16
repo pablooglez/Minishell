@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 13:30:05 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/11 19:29:59 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/16 13:09:02 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,29 @@ void free_redirections(t_redir *redir)
 		free(temp);																											// Libera la estructura de la redirección
 	}
 }
+
+void print_error(const char *msg)
+{
+    if (msg)
+        write(2, msg, ft_strlen(msg));
+}
+
+int print_error_and_return(const char *msg)
+{
+    if (msg)
+        write(2, msg, ft_strlen(msg));
+    return (-1);
+}
+
+void print_error_and_exit(const char *msg, int exit_code)
+{
+    if (msg)
+        write(2, msg, ft_strlen(msg));
+    exit(exit_code);
+}
+
+
+
 
 
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   code_checks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:16:23 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/04 18:29:15 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/15 17:38:14 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void display_commands(t_cmd *cmd)
     while (current)
     {
         //if (is_expanded_command)
-            //printf("Expanded CommanDC: %s\n", current->path);
+            printf("Expanded CommanDC: %s\n", current->path);
        // else
         printf("CommanDC: %s\n", current->path);
 

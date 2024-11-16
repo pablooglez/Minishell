@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/12 19:11:46 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/16 13:08:51 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ typedef enum e_token
 	AND = 1,																				// Token para el operador lógico AND
 	OR = 2,																					// Token para el operador lógico OR
 	PIPE = 3,																				// Token para un pipe (|)
-	OPEN_PAR = 5,																			// Token para un paréntesis abierto
-	CLOSE_PAR = 6,																			// Token para un paréntesis cerrado
+	OPEN_PAR = 5,																			// Token para un paréntesis abierto--SOLO PARA BONUS--
+	CLOSE_PAR = 6,																			// Token para un paréntesis cerrado--SOLO PARA BONUS--
 	REDIR = 7,																				// Token para redirección
 	UNKNOWN = -1,																			// Token desconocido
 }	t_token;
@@ -165,7 +165,12 @@ void        free_command(t_cmd *cmd);                                           
 void        free_command_list(t_cmd *cmd);                                                        // Libera la memoria de la lista de comandos
 void        free_redirections(t_redir *redir);                                                    // Libera la memoria de las redirecciones
 void        free_tokens_parse(char **tokens);                                                     // Libera la memoria de los tokens parseados
-char        **tokenize_input(char *input);                                                        // Divide la entrada en tokens
+char        **tokenize_input(char *input);
+void		replace_tabs_with_spaces(char *input);													// Reemplaza los tabuladores por espacios en blanco	
+int         remove_extra_spaces(char *input, char *norm);
+void 		print_error(const char *msg);
+int 		print_error_and_return(const char *msg);
+void 		print_error_and_exit(const char *msg, int exit_code);                                                // Elimina espacios en blanco adicionales de la entrada                       
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------//
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:11 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/12 21:08:05 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/16 13:37:28 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	print_env_vars(t_env *env_list)														//Función auxiliar para impri
 		if (current_env->key)																//Verifica que la clave de la variable de entorno existe
 		{
 			if (current_env->value)															//Si la variable tiene un valor asociado
-				printf("declare -x %s=\"%s\"\n", current_env->key, current_env->value);		//Imprimir en formato: declare -x KEY="VALUE"
+				printf("Declare -x %s=\"%s\"\n", current_env->key, current_env->value);		//Imprimir en formato: declare -x KEY="VALUE"
 			else
 				printf ("declare -x %s\n", current_env->key);								//Si no tiene valor, imprime solo la clave: declare -x KEY
 		}

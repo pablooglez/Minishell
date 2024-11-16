@@ -1,0 +1,97 @@
+TEST NUMERO 120: echo 'It's a test'
+  Bash Output: 
+  Minishell Output: 
+  Bash Exit Code: 2, Minishell Exit Code: 1
+  Bash Error: /bin/bash: line 1: unexpected EOF while looking for matching `''
+/bin/bash: line 3: syntax error: unexpected end of file
+  Minishell Error: 'utf-8' codec can't decode byte 0xe1 in position 122: invalid continuation byte
+--------------------------------------------------------------------------------
+TEST NUMERO 128: echo "'$HOME'"
+  Bash Output: '/home/israel'
+  Minishell Output: '$HOME'
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 131: export VAR='test' && echo "$VAR"
+  Bash Output: test
+  Minishell Output: VAR=testVAR=testError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 132: export VAR='test' && echo '$VAR'
+  Bash Output: $VAR
+  Minishell Output: VAR=testVAR=testError: Command not found: export: not a valid identifier
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 141: echo '"'"
+  Bash Output: 
+  Minishell Output: 
+  Bash Exit Code: 2, Minishell Exit Code: 1
+  Bash Error: /bin/bash: line 1: unexpected EOF while looking for matching `"'
+/bin/bash: line 3: syntax error: unexpected end of file
+  Minishell Error: 'utf-8' codec can't decode byte 0xe1 in position 113: invalid continuation byte
+--------------------------------------------------------------------------------
+TEST NUMERO 142: echo "'"'
+  Bash Output: 
+  Minishell Output: 
+  Bash Exit Code: 2, Minishell Exit Code: 1
+  Bash Error: /bin/bash: line 1: unexpected EOF while looking for matching `''
+/bin/bash: line 3: syntax error: unexpected end of file
+  Minishell Error: 'utf-8' codec can't decode byte 0xe1 in position 113: invalid continuation byte
+--------------------------------------------------------------------------------
+TEST NUMERO 148: echo 'Escaping \'single quotes\' inside'
+  Bash Output: 
+  Minishell Output: 
+  Bash Exit Code: 2, Minishell Exit Code: 1
+  Bash Error: /bin/bash: line 1: unexpected EOF while looking for matching `''
+/bin/bash: line 3: syntax error: unexpected end of file
+  Minishell Error: 'utf-8' codec can't decode byte 0xe1 in position 144: invalid continuation byte
+--------------------------------------------------------------------------------
+TEST NUMERO 151: echo 'output' > 'file.txt'
+  Bash Output: 
+  Minishell Output: output
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 152: echo "output" > "file.txt"
+  Bash Output: 
+  Minishell Output: output
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 155: echo 'start' && echo "$USER" && echo 'end'
+  Bash Output: start
+israel
+end
+  Minishell Output: start && echo israel && echo end
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 156: echo 'Hello' || echo 'Failed'
+  Bash Output: Hello
+  Minishell Output: 
+  Bash Exit Code: 0, Minishell Exit Code: 1
+  Bash Error: <No Error>
+  Minishell Error: 'utf-8' codec can't decode byte 0xe1 in position 162: invalid continuation byte
+--------------------------------------------------------------------------------
+TEST NUMERO 157: echo "Check: $(echo 'subshell')"
+  Bash Output: Check: subshell
+  Minishell Output: Check: $(echo 'subshell')
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 158: echo "Nested $(echo 'inside $(echo "deep")')"
+  Bash Output: Nested inside $(echo "deep")
+  Minishell Output: Nested $(echo 'inside $(echo deep)')
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
