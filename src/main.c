@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/16 20:47:33 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:02:21 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,6 @@ int main(int argc, char **argv, char **env)
                 execute_command(&shell);
                 free_command_list(shell.tokens);
                 shell.tokens = NULL;
-            }
-            else
-            {
-                //printf("(MAIN.c)ERROR: shell.tokens no esta asignado\n");
             }
         }
         free(input);
