@@ -6,75 +6,71 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/16 20:47:33 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/17 21:51:08 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_signal;											//Variable para manejar las señales
+volatile sig_atomic_t	g_signal;                                            // Variable global para manejar señales
 
-void	exit_shell(t_minishell *shell)										//Función que se encarga de liberar recursos y salir del shell.
+void	exit_shell(t_minishell *shell)                                       // Función para liberar recursos y salir del shell
 {
 	int	status;
 
-	status = shell->exit_status;											// Guarda el estado de salida del shell.
-	if(shell->tokens)														// Si existen tokens creados durante la ejecución...
-		free_tokens(&shell->tokens);										// ...los libera de memoria.
-	free_shell(&shell);	
-	//rl_clear_history();													
-	exit(status);															// Sale del programa con el código de estado almacenado en "status".
+	status = shell->exit_status;                                            // Guarda el código de salida del shell
+	if (shell->tokens)                                                      // Verifica si hay tokens creados
+		free_tokens(&shell->tokens);                                        // Libera memoria de los tokens
+	free_shell(&shell);                                                     // Libera la estructura del shell
+	//rl_clear_history();                                                   // Limpia el historial de readline (desactivado)
+    exit(status);                                                          // Termina el programa con el estado de salida
 }
 
-void	init_minishell(t_minishell *shell, char **env)						// Inicializa la estructura del shell con el entorno.
+void	init_minishell(t_minishell *shell, char **env)                      // Inicializa la estructura del shell con el entorno
 {
-	ft_memset(shell, 0, sizeof(t_minishell));								// Limpia la memoria de la estructura "shell" para evitar valores basura.
-	create_env_vars(shell, env);											// Inicializa las variables de entorno para el shell.
-	shell->running = 1;														// Establece el flag "running" en 1, indicando que el shell está activo.
-	signal(SIGINT, signal_handler);											// Configura el manejador de señal para SIGINT
-	signal(SIGQUIT, SIG_IGN);												//Ignora SIGQUIT para que no termine el shell
+	ft_memset(shell, 0, sizeof(t_minishell));                               // Limpia la memoria de la estructura "shell"
+	create_env_vars(shell, env);                                            // Inicializa las variables de entorno
+	//shell->running = 1;                                                   // Marca el shell como activo (comentado)
+	signal(SIGINT, signal_handler);                                         // Configura el manejador de señal para SIGINT
+	signal(SIGQUIT, SIG_IGN);                                               // Ignora SIGQUIT para evitar que el shell termine
 }
 
 int main(int argc, char **argv, char **env)
 {
-    t_minishell shell;
-    char *input;
+    t_minishell shell;                                                      // Estructura del shell
+    char *input;                                                            // Variable para almacenar la entrada del usuario
 
-    (void)argc;
-    (void)argv;
-    init_minishell(&shell, env);
-    while (1)
+    (void)argc;                                                             // Ignora el argumento de número de argumentos
+    (void)argv;                                                             // Ignora el argumento de vector de argumentos
+    init_minishell(&shell, env);                                            // Inicializa el shell con el entorno
+    while (1)                                                               // Bucle principal del shell
     {
-        if (g_signal)
-            g_signal = 0;
-
-        input = read_input();
-		if (!input)
+        if (g_signal)                                                       // Verifica si se recibió una señal
         {
-            //printf("Salida detectada (EOF).\n");
-            exit_shell(&shell);
+            g_signal = 0;                                                   // Restablece el indicador de señal
+            printf("\n");                                                   // Imprime una nueva línea
         }
-        else if (input[0] == '\0')
+        /*if (isatty(STDIN_FILENO))                                         // Comprueba si la entrada es interactiva (solo para pruebas)
+            printf("Minishell ➜ ");*/                                       // Muestra el prompt (comentado para pruebas)       
+        input = read_input();                                               // Lee la entrada del usuario
+        if (!input)                                                         // Si se recibe EOF (Ctrl+D)
         {
-            free(input);
-            continue;
+            printf("exit\n");                                               // Imprime "exit" y termina el shell
+            exit_shell(&shell);                                             // Llama a la función para liberar recursos y salir
         }
-        else
+        else if (input[0] == '\0')                                          // Verifica si la entrada está vacía
         {
-            shell.tokens = parse_input(input, &shell);
-            if (shell.tokens)
-            {
-                execute_command(&shell);
-                free_command_list(shell.tokens);
-                shell.tokens = NULL;
-            }
-            else
-            {
-                //printf("(MAIN.c)ERROR: shell.tokens no esta asignado\n");
-            }
+            free(input);                                                    // Libera la memoria de la entrada
+            continue;                                                       // Continua al siguiente ciclo del bucle
         }
-        free(input);
+        shell.tokens = parse_input(input, &shell);                          // Analiza la entrada y crea los tokens
+        if (shell.tokens)                                                   // Si hay tokens válidos
+        {
+            execute_command(&shell);                                        // Ejecuta el comando basado en los tokens
+            free_command_list(shell.tokens);                                // Libera la lista de comandos
+            shell.tokens = NULL;                                            // Establece los tokens a NULL
+        }
+        free(input);                                                        // Libera la memoria de la entrada
     }
-    return (0);
+    return (0);                                                             // Retorna 0 al terminar (no debería llegar aquí)
 }
-

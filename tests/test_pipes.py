@@ -1,63 +1,58 @@
 # test_pipes.py
+
 tests = [
-    # Casos simples
-    "echo 'Hola Mundo' | cat",  # Pipe básico
-    "echo 'Hello' | wc -c",  # Contar caracteres
-    "ls | grep 'test'",  # Filtrar salida de ls
-    "echo 'Testing' | tr '[:lower:]' '[:upper:]'",  # Convertir a mayúsculas
+    # Casos básicos de pipes
+    "echo 'Hello World' | cat",  # Pipe simple, debería funcionar
+    "echo 'Hello' | grep 'H'",  # Filtrado usando pipe
+    "echo 'Hello' | grep 'h'",  # Filtrado fallido (grep es case-sensitive)
+    "ls | sort",  # Listar archivos y ordenarlos
+    "ls -la | grep 'test'",  # Filtrar archivos con 'test'
 
-    # Casos encadenados
-    "echo '1 2 3 4 5' | tr ' ' '\n' | sort | uniq",  # Procesamiento encadenado
-    "ls | grep 'py' | wc -l",  # Contar archivos .py
-    "cat /etc/passwd | grep 'root' | cut -d: -f1",  # Extraer usuario root
-    "echo 'Pipe test' | cat | cat | cat",  # Múltiples pipes
+    # Casos de error con pipes
+    "| echo 'Hello'",  # Pipe al inicio, debería dar error
+    "echo 'Test' || echo 'This should not run'",  # Doble pipe (no válido en obligatorio)
+    "echo 'Test' | | echo 'Hello'",  # Dos pipes consecutivos, debería dar error
+    "echo 'Test' |",  # Pipe al final, debería dar error
+    "echo | echo",  # Pipe vacío, debería dar error
 
-    # Comandos inexistentes
-    "ls | nonexistent_command",  # Comando no existente después de pipe
-    "nonexistent_command | grep 'test'",  # Comando no existente antes de pipe
+    # Pipes anidados
+    "echo 'Line 1\nLine 2\nLine 3' | grep 'Line' | wc -l",  # Contar líneas con grep y wc
+    "echo 'Hello' | tr '[:lower:]' '[:upper:]' | grep 'HELLO'",  # Convertir a mayúsculas y filtrar
+    "cat /etc/passwd | grep 'root' | cut -d: -f1",  # Buscar 'root' y cortar el primer campo
 
-    # Redirecciones combinadas con pipes
-    "echo 'Output redirection' > test_output.txt | cat test_output.txt",  # Redirección antes de pipe
-    "echo 'Appending' >> test_output.txt | cat test_output.txt",  # Append antes de pipe
-    "cat < test_output.txt | grep 'Output'",  # Redirección de input con pipe
-    "rm -f test_output.txt",  # Limpiar archivo de prueba
+    # Pipes con comandos inexistentes
+    "invalid_command | echo 'Hello'",  # Comando inexistente antes del pipe
+    "echo 'Test' | invalid_command",  # Comando inexistente después del pipe
 
-    # Here documents combinados con pipes
-    "cat << EOF | grep 'test'\nHello test\nEOF",  # Here document con pipe
-    "cat << EOF | wc -l\nLine 1\nLine 2\nEOF",  # Contar líneas de Here document
+    # Pipes con redirecciones
+    "echo 'Hello World' | tee output.txt | cat",  # Redireccionar a archivo y mostrar en pantalla
+    "ls | grep 'test' > output.txt",  # Redirigir salida del pipe a archivo
+    "cat < output.txt | grep 'test'",  # Usar redirección con pipe
 
-    # Pipes con built-ins
-    "echo 'Hello World' | echo",  # Pipe con echo
-    "pwd | cat",  # Pipe con pwd
-    "export VAR='Testing' | echo $VAR",  # Pipe con export (no debe afectar a export)
-    "unset VAR | echo $VAR",  # Pipe con unset (no debe afectar a unset)
-    "cd /tmp | pwd",  # Pipe con cd (no debe cambiar directorio)
+    # Here documents con pipes
+    "cat <<EOF | grep 'Hello'\nHello World\nEOF",  # Here document con pipe
+    "grep 'Hello' <<EOF | wc -l\nHello\nWorld\nEOF",  # Filtrar con here document y contar líneas
 
-    # Expansión de variables con pipes
-    "echo $USER | grep $(whoami)",  # Expansión de variable y uso en pipe
-    "echo $SHELL | tr '[:lower:]' '[:upper:]'",  # Convertir el valor de $SHELL a mayúsculas
+    # Combinaciones complejas
+    "echo 'test1\ntest2\ntest3' | grep 'test' | sort | uniq",  # Ordenar y eliminar duplicados
+    "echo 'A\nB\nC' | tr '[:upper:]' '[:lower:]' | grep 'a'",  # Convertir a minúsculas y buscar
+    "seq 1 5 | xargs -I {} echo 'Number: {}'",  # Usar xargs con pipe
+    #"yes | head -n 10 | grep 'y'",  # Generar líneas y filtrar
 
-    # Casos con pipes múltiples y complejos
-    "echo 'Minishell Test' | tr ' ' '\n' | sort | uniq | wc -l",  # Pipeline largo
-    "cat /dev/null | echo 'Empty Input'",  # Pipe con input vacío
-    "cat /etc/hosts | head -n 5 | tail -n 1",  # Extracción de una línea específica
+    # Casos límite
+    "echo 'Test' |",  # Pipe al final, debería dar error
+    "| echo 'Test'",  # Pipe al inicio, debería dar error
+    "echo 'Test' | | echo 'Double Pipe'",  # Doble pipe, debería dar error
+    "echo 'Test' | invalid_command | echo 'Should not run'",  # Comando inexistente en el medio
 
-    # Pipes anidados y manejo de errores
-    "echo 'Nested Pipe Test' | (grep 'Pipe' | tr '[:lower:]' '[:upper:]')",  # Pipes anidados
-    "echo 'Error Test' | grep 'Test' | nonexistent_command",  # Comando inválido en pipeline
-    "ls /invalid_directory | grep 'something'",  # Error en comando inicial de pipeline
+    # Pruebas de ejecución en segundo plano (background)
+    "sleep 1 | echo 'Should wait'",  # Comando con sleep en pipe
+    "echo 'Test' | sleep 1",  # Sleep al final del pipe
+    "sleep 1 & echo 'Running in background' | cat",  # Background con pipe
 
-    # Uso de stderr con pipes
-    "ls invalid_file 2>&1 | grep 'No such file'",  # Redirigir stderr a stdout y usar pipe
-    "grep 'root' /etc/passwd 2>&1 | wc -l",  # Redirigir stderr y contar líneas
-    "echo 'Test stderr' | nonexistent_command 2>&1 | grep 'command not found'",  # Comando inválido y manejo de stderr
-
-    # Casos con señales y pipes
-    "sleep 2 | echo 'Signal Test'",  # Comando que espera, interrumpir con Ctrl-C
-    "cat | grep 'Signal' & sleep 2",  # Comando en segundo plano, interrumpir con Ctrl-C
-
-    # Combinación de pipes y redirecciones
-    "echo 'Redirect and Pipe' > pipe_test.txt | cat pipe_test.txt",  # Redirección y pipe
-    "cat < pipe_test.txt | tr '[:lower:]' '[:upper:]' > result.txt && cat result.txt",  # Redirección y escritura en archivo
-    "rm -f pipe_test.txt result.txt",  # Limpiar archivos de prueba
+    # Pruebas de uso de pipes con comandos built-in
+    "export VAR='Hello' | echo $VAR",  # Uso de pipe con export
+    "cd / | pwd | grep '/'",  # Uso de pipe con cd y pwd
+    "exit 0 | echo 'Should not print'",  # Uso de pipe con exit
 ]
+
