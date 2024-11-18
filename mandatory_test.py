@@ -62,7 +62,7 @@ def compare_output(cmd):
     test_number += 1
 
     print(SEPARATOR_TOP)
-    print(f"            ✨                    {COLOR_YELLOW}TEST NUMERO {test_number}: {COLOR_RESET}  {cmd}")
+    print(f"            ✨                       {COLOR_YELLOW}TEST NUMERO {test_number}: {COLOR_RESET}  {cmd}")
     print(SEPARATOR_MIDDLE)
 
     # Ejecutar en Bash y Minishell
@@ -100,7 +100,7 @@ def compare_output(cmd):
         tests_failed += 1
         failed_tests.append(cmd)
 
-        print(SEPARATOR_MIDDLE)
+    print(SEPARATOR_MIDDLE)
     print(f"{COLOR_GRAY} ╔{'─' * 20}╤{'─' * 20}╤{'─' * 56}╗{COLOR_RESET}")
 
     # Códigos de salida
@@ -113,10 +113,8 @@ def compare_output(cmd):
     print(SEPARATOR_MIDDLE)
     print(f"    {color}{result}{COLOR_RESET}")
     print(SEPARATOR_BOTTOM)
-    print("·······································##############···············································")
-    print("########################################  NEXT TEST ################################################")
-    print("·······································##############···············································")
-
+    print("\n")
+   
     # Guardar el fallo solo si hay diferencias
     if bash_output_normalized != minishell_output_normalized or bash_exit_code != minishell_exit_code:
         with open(failure_log_filename, "a") as f:
@@ -200,17 +198,17 @@ def execute_test_loop():
 
 
 def show_menu():
-    print(f"\n{COLOR_BLUE}╔════════════════════════════════════════════════════╗{COLOR_RESET}")
-    print(f"  🏠  {COLOR_YELLOW}       #M E N Ú   P R I N C I P A L     {COLOR_RESET}")
-    print(f"{COLOR_BLUE}╟────────────────────────────────────────────────────╢{COLOR_RESET}")
-    print(f"  1️⃣   ✨  {COLOR_GREEN}Ejecutar UN COMANDO a probar Cabessa{COLOR_RESET}")
-    print(f"  2️⃣   📂  {COLOR_YELLOW}Lista de Archivos de Prueba{COLOR_RESET}")
-    print(f"  3️⃣   🚀  {COLOR_YELLOW}Ejecutar UN TEST especifico{COLOR_RESET}")
-    print(f"  4️⃣   🔍  {COLOR_YELLOW}Ejecutar TODOS los Tests a la vez{COLOR_RESET}")
-    print(f"  5️⃣   ❌  {COLOR_RED}Salir{COLOR_RESET}")
-    print(f"{COLOR_BLUE}╟────────────────────────────────────────────────────╢{COLOR_RESET}")
-    print(f"        📝  Escribe 'back' para regresar.{COLOR_RESET}")
-    print(f"{COLOR_BLUE}╚════════════════════════════════════════════════════╝{COLOR_RESET}")
+    print(f"\n        {COLOR_BLUE}╔════════════════════════════════════════════════════╗{COLOR_RESET}")
+    print(f"        |    🏠{COLOR_YELLOW}       # M E N Ú   P R I N C I P A L  #   {COLOR_RESET}    |")
+    print(f"        {COLOR_BLUE}╟────────────────────────────────────────────────────╢{COLOR_RESET}")
+    print(f"        |    1️⃣   ✨  {COLOR_GREEN}Ejecutar UN COMANDO a probar Cabessa{COLOR_RESET}    |")
+    print(f"        |    2️⃣   📂  {COLOR_YELLOW}Lista de Archivos de Prueba{COLOR_RESET}             |")
+    print(f"        |    3️⃣   🚀  {COLOR_YELLOW}Ejecutar UN TEST especifico{COLOR_RESET}             |")
+    print(f"        |    4️⃣   🔍  {COLOR_YELLOW}Ejecutar TODOS los Tests a la vez       {COLOR_RESET}|")
+    print(f"        |    5️⃣   ❌  {COLOR_RED}Salir{COLOR_RESET}                                   |")                       
+    print(f"        {COLOR_BLUE}╟────────────────────────────────────────────────────╢{COLOR_RESET}")
+    print(f"        |       📝  Escribe 'back' para regresar.{COLOR_RESET}            |")            
+    print(f"        {COLOR_BLUE}╚════════════════════════════════════════════════════╝{COLOR_RESET}")
 
 if __name__ == "__main__":
     print("\n")
@@ -219,7 +217,7 @@ if __name__ == "__main__":
 
     while True:
         show_menu()
-        choice = input(f"{COLOR_YELLOW}     🔽 Seleccione una opción -> {COLOR_RESET}").strip()
+        choice = input(f"{COLOR_YELLOW}             🔽 Seleccione una opción -> {COLOR_RESET}").strip()
 
         if choice == "1":
             execute_command_loop()

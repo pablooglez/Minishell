@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:53:22 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/12 21:03:16 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/18 15:32:20 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ t_cmd	*create_new_command(t_minishell *shell)
 	new_cmd->next = NULL;															// Inicializa el puntero al siguiente comando
 	new_cmd->prev = NULL;															// Inicializa el puntero al comando anterior
 	new_cmd->intfd = 0;																// Inicializa el descriptor de archivo de entrada														
-	new_cmd->outfd = 1;																// Inicializa el descriptor de archivo de salida
+	new_cmd->outfd = 1;
+	new_cmd->type = CMD;															// Inicializa el tipo de comando												
 	return (new_cmd);																// Retorna el nuevo comando
 }
 

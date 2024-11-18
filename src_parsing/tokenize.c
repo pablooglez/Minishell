@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/16 18:56:58 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:02:25 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,31 @@ int	process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
 			//printf("[ERROR]-->PROCESS_TOKENS==> Error en process_token_pipe\n");
 			return (-1);
 		}
+
+		// Procesar argumentos para el comando actual
 		if (process_arguments(tokens, &i, current_cmd, shell) == -1)
 		{
 			//printf("[ERROR]-->PROCESS_TOKENS==> Error en process_arguments\n");
 			return (-1);
 		}
+
+		// Verificar si hay más tokens y avanzar al siguiente comando
+		if (tokens[i] && current_cmd->type == PIPE)
+		{
+			if (!current_cmd->next)
+			{
+				//printf("[ERROR]-->PROCESS_TOKENS==> current_cmd->next es NULL después de crear un nuevo comando\n");
+				return (-1);
+			}
+			//printf("[DEBUG]-->PROCESS_TOKENS==> Avanzando al siguiente comando después de la pipe\n");
+			current_cmd = current_cmd->next;
+		}
 	}
 	//printf("[DEBUG]-->PROCESS_TOKENS==> Finalizando procesamiento de tokens\n");
 	return (0);
 }
+
+
 
 int	handle_escape(char *input, int i, char *buffer, int *buf_index)
 {

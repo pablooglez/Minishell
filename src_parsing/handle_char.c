@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 17:49:52 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/16 18:56:58 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:02:25 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,61 @@ t_token	get_special_token_type(char c)
 	return (UNKNOWN);
 }
 
-bool	contains_invalid_characters(char *input)
+int	is_unimplemented_operator(char *input, int i, int in_single_quotes, int in_double_quotes)
+{
+	if (!in_single_quotes && !in_double_quotes &&
+		((input[i] == '&' && input[i + 1] == '&') || (input[i] == '|' && input[i + 1] == '|')))
+	{
+		if (input[i] == '&')
+			print_error("Minishell: syntax error logic operator not implemented `&&'\n");
+		else
+			print_error("Minishell: syntax error logic operator not implemented `||'\n");
+		return (1);
+	}
+	return (0);
+}
+
+int	is_invalid_token_sequence(char *input, int i, int in_single_quotes, int in_double_quotes)
+{
+	if (!in_single_quotes && !in_double_quotes &&
+		((input[i] == ';' && input[i + 1] == ';') ||
+		(input[i] == '>' && input[i + 1] == '>' && input[i + 2] == '>') ||
+		(input[i] == '<' && input[i + 1] == '<' && input[i + 2] == '<')))
+	{
+		if (input[i] == ';')
+			print_error("Minishell: syntax error near unexpected token `;;'\n");
+		else if (input[i] == '>')
+			print_error("Minishell: syntax error near unexpected token `>>>'\n");
+		else
+			print_error("Minishell: syntax error near unexpected token `<<<'\n");
+		return (1);
+	}
+	return (0);
+}
+
+int	contains_invalid_characters(char *input)
 {
 	int	i;
+	int	in_single_quotes = 0;
+	int	in_double_quotes = 0;
 
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] == '\0')
-		{
-			//printf("[DEBUG]-->CONTAINS_INVALID[0.1]==> Carácter nulo detected: [%c]\n", input[i]);
-			return (true);
-		}
+		if (input[i] == '\'' && !in_double_quotes)
+			in_single_quotes = !in_single_quotes;
+		else if (input[i] == '\"' && !in_single_quotes)
+			in_double_quotes = !in_double_quotes;
+		if (is_unimplemented_operator(input, i, in_single_quotes, in_double_quotes) ||
+			is_invalid_token_sequence(input, i, in_single_quotes, in_double_quotes))
+			return (SYNTAX_ERROR);
+
 		i++;
 	}
-	return (false);
+	return (0);
 }
+
+
 
 int	handle_special_char(char *input, int i, char **tokens, int *j)
 {

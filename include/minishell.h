@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/16 21:23:09 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:13:29 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ typedef struct s_minishell
 
 //--------------FUNCIONES PARSING---------------//
 int         add_argument(char *token, int arg_index, t_cmd *cmd);                                 // Añade un argumento al comando actual
-bool        contains_invalid_characters(char *input);                                             // Verifica si la entrada contiene caracteres inválidos
+int        contains_invalid_characters(char *input);                                             // Verifica si la entrada contiene caracteres inválidos
 t_cmd       *create_new_command(t_minishell *shell);                                              // Crea una nueva estructura de comando
 void        display_commands(t_cmd *cmd);                                                         // Muestra los comandos y argumentos para depuración
 void        expand_tokens(t_cmd *cmd, t_minishell *shell);                                        // Expande las variables de entorno en los tokens
