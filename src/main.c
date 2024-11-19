@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/19 21:05:05 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/19 21:29:47 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ int main(int argc, char **argv, char **env)
             g_signal = 0;                                                   // Restablece el indicador de señal
             printf("\n");                                                   // Imprime una nueva línea
         }
-        input = read_input();                                               // Lee la entrada del usuario
-        /*if (!input)                                                         // Si se recibe EOF (Ctrl+D)
+        input = readline("\001\033[1;36m\002Minishell ➜ \001\033[0m\002");                                                // Lee la entrada del usuario
+        if (!input)                                                         // Si se recibe EOF (Ctrl+D)
         {
             printf("exit\n");                                               // Imprime "exit" y termina el shell
             exit_shell(&shell);                                             // Llama a la función para liberar recursos y salir
-        }*/
+        }
         if (input && input[0] == '\0')                                          // Verifica si la entrada está vacía
         {
             free(input);                                                    // Libera la memoria de la entrada

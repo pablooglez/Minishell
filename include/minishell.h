@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/19 17:41:10 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/19 21:31:50 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <term.h> 																			//tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # include <readline/readline.h> 															// readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay, add_history
 # include <readline/history.h>
-
+# include <errno.h>
 # include "../Libft/libft.h"
 # include <limits.h>
 
@@ -166,7 +166,6 @@ int         process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *
 int         process_token(char *input, int *i, char **tokens, int *j);                            // Procesa un token de la entrada
 int         process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell);           // Procesa los pipes (|)
 int         process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell);                // Procesa todos los tokens para construir los comandos
-char        *read_input(void);                                                                    // Lee la entrada del usuario
 char        *remove_quotes(const char *arg);                                                      // Elimina las comillas de un argumento
 void        free_command(t_cmd *cmd);                                                             // Libera la memoria de la estructura de comando
 void        free_command_list(t_cmd *cmd);                                                        // Libera la memoria de la lista de comandos
