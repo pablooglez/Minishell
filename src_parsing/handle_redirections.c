@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:57:47 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/18 18:02:25 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:40:36 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,8 @@ int process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
 	type = get_redirection_type(tokens[*i]);																				// Obtiene el tipo de redirección
 	if (type == NOT_REDIR)																									// Si no es una redirección
 		return (1);																											// Retorna 1 para indicar que no se procesó redirección
-	//printf("[DEBUG]-->PROCESS_REDIRECTION[0.1]==> Tipo de redirección detectado: [%d]\n", type);
 	if (validate_redirection_syntax(tokens, i) == -1)																		// Valida la sintaxis de la redirección
 	{
-		//printf("[ERROR]-->PROCESS_REDIRECTION[0.2]==> Error de sintaxis en redirección\n");
 		(*i)++;																												// Incrementa el índice
 		return (-1);																										// Retorna -1 en caso de error
 	}

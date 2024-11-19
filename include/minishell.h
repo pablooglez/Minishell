@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/18 13:13:29 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/19 17:41:10 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,21 @@
 
 //----------------- GLOBAL VARIABLE -----------------------//
 
-extern volatile sig_atomic_t	g_signal; 													// Variable global que se utiliza para manejar señales de forma segura.
+extern volatile sig_atomic_t	g_signal;													// Variable global que se utiliza para manejar señales de forma segura.
 
 //---------------------STRUCTURE --------------------------//
 
 // Enumeración para definir códigos de error
 typedef enum e_error 
 {
-    SUCCESS = 0,              	 									// Operación exitosa
-    GENERAL_ERROR = 1,         										// Error general
-    SYNTAX_ERROR = 2,          										// Error de sintaxis (quotes no balanceadas, pipes mal ubicados)
-    MEMORY_ERROR = 3,          										// Error de memoria (malloc fallido)
-    PERMISSION_DENIED = 126,   										// Permiso denegado al ejecutar un archivo
-    CMD_NOT_FOUND = 127,       										// Comando no encontrado
-    INVALID_EXIT = 128,        										// Argumento inválido para el comando exit
-    EXIT_ERROR = 255           										// Error en el comando exit (fuera del rango permitido)
+	SUCCESS = 0,													// Operación exitosa
+	GENERAL_ERROR = 1,												// Error general
+	SYNTAX_ERROR = 2,												// Error de sintaxis (quotes no balanceadas, pipes mal ubicados)
+	MEMORY_ERROR = 3,												// Error de memoria (malloc fallido)
+	PERMISSION_DENIED = 126,										// Permiso denegado al ejecutar un archivo
+	CMD_NOT_FOUND = 127,											// Comando no encontrado
+	INVALID_EXIT = 128,												// Argumento inválido para el comando exit
+	EXIT_ERROR = 255												// Error en el comando exit (fuera del rango permitido)
 } t_error;
 
 // Enumeración para definir tipos de tokens
@@ -70,7 +70,7 @@ typedef enum e_token
 	REDIR = 4,																				// Token para una redirección	
 	OPEN_PAR = 5,																			// Token para un paréntesis abierto--SOLO PARA BONUS--
 	CLOSE_PAR = 6,																			// Token para un paréntesis cerrado--SOLO PARA BONUS--
-	END_OF_INPUT = 7,          															// Fin del input (EOF)																			
+	END_OF_INPUT = 7,																		// Fin del input (EOF)																			
 	UNKNOWN = -1,																			// Token desconocido
 }	t_token;
 
@@ -213,7 +213,7 @@ char		*ft_strndup(const char *s, size_t n);											// Duplica hasta n caracte
 //--------------FUNCIONES EXECUTION-------------//
 int			execute_command(t_minishell *shell);											// Ejecuta un comando individual.
 int			handle_builtin(t_cmd *cmd, t_minishell *shell);									//Maneja comandos internos (built-ins)
-void		handle_pipes(t_cmd *cmd, t_minishell *shell);									// Maneja la ejecución de comandos conectados por pipes.
+void		check_pipes(t_cmd *cmd);														// Maneja la ejecución de comandos conectados por pipes.
 void		handle_redirection(t_cmd *cmd);													// Maneja las redirecciones de entrada y salida.
 
 //---------------------UTILS-------------------//

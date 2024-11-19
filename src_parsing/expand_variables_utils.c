@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variables_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:03:33 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/18 18:02:25 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/19 20:07:43 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ char	*expand_argument(const char *arg, t_minishell *shell)
 	if (arg[0] == '$')
 	{
 		expanded = expand_entire_input(arg, shell);
-		//printf("[DEBUG]-->EXPAND_ARGUMENT[0.1]==> Expanded:           [%s]\n", expanded);
 		if (expanded)
 			return (expanded);
 	}
@@ -37,9 +36,7 @@ char	*expand_argument(const char *arg, t_minishell *shell)
 		free(unquoted);
 		return (expanded);
 	}
-	//printf("[DEBUG]-->EXPAND_ARGUMENT[0.2]==>Arg bef.. expand_string:         [%s]\n", arg);
 	expanded = expand_string(arg, shell);
-	//printf("[DEBUG]-->EXPAND_ARGUMENT[0.3]==>Expand later expand_string:     [%s]\n", expanded);	
 	return (expanded);
 }
 

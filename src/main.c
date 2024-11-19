@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/18 21:10:53 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/19 21:05:05 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	exit_shell(t_minishell *shell)                                       // Fun
 		free_tokens(&shell->tokens);                                        // Libera memoria de los tokens
 	free_shell(&shell);                                                     // Libera la estructura del shell
 	//rl_clear_history();                                                   // Limpia el historial de readline (desactivado)
+    close(shell->original_stdin);
+    close(shell->original_stdout);
     exit(status);                                                          // Termina el programa con el estado de salida
 }
 
@@ -42,6 +44,9 @@ int main(int argc, char **argv, char **env)
 
     (void)argc;                                                             // Ignora el argumento de número de argumentos
     (void)argv;                                                             // Ignora el argumento de vector de argumentos
+   	shell.original_stdin = dup(STDIN_FILENO);
+	shell.original_stdout = dup(STDOUT_FILENO);
+
     init_minishell(&shell, env);                                            // Inicializa el shell con el entorno
     while (1)                                                               // Bucle principal del shell
     {
@@ -50,15 +55,13 @@ int main(int argc, char **argv, char **env)
             g_signal = 0;                                                   // Restablece el indicador de señal
             printf("\n");                                                   // Imprime una nueva línea
         }
-        /*if (isatty(STDIN_FILENO))                                         // Comprueba si la entrada es interactiva (solo para pruebas)
-            printf("Minishell ➜ ");*/                                       // Muestra el prompt (comentado para pruebas)       
         input = read_input();                                               // Lee la entrada del usuario
-        if (!input)                                                         // Si se recibe EOF (Ctrl+D)
+        /*if (!input)                                                         // Si se recibe EOF (Ctrl+D)
         {
             printf("exit\n");                                               // Imprime "exit" y termina el shell
             exit_shell(&shell);                                             // Llama a la función para liberar recursos y salir
-        }
-        else if (input[0] == '\0')                                          // Verifica si la entrada está vacía
+        }*/
+        if (input && input[0] == '\0')                                          // Verifica si la entrada está vacía
         {
             free(input);                                                    // Libera la memoria de la entrada
             continue;                                                       // Continua al siguiente ciclo del bucle
@@ -72,5 +75,5 @@ int main(int argc, char **argv, char **env)
         }
         free(input);                                                        // Libera la memoria de la entrada
     }
-    return (0);                                                             // Retorna 0 al terminar (no debería llegar aquí)
+    exit_shell(&shell);                                                             // Retorna 0 al terminar (no debería llegar aquí)
 }
