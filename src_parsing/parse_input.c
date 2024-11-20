@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/20 03:27:48 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:34:44 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	process_token(char *input, int *i, char **tokens, int *j)
 	return (0);
 }
 
-t_cmd	*parse_input(char *input_line, t_minishell *shell)
+/*t_cmd	*parse_input(char *input_line, t_minishell *shell)
 {
 	char	**tokens;
 	t_cmd	*cmd;
@@ -93,24 +93,76 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 		free_tokens_parse(tokens);
 		return (NULL);
 	}
-	/*if (tokens[0][0] == '$')
+	if (tokens[0][0] == '$')
 	{
 		cmd->path = ft_strdup("echo");
 		//printf("[DEBUG]-->PARSE_INPUT[0.5]==> cmd->path asignado a 'echo':             [%s]\n", cmd->path);
-	}*/
+	}
 	i = 0;
 	while (tokens[i])
 	{
 		//printf("***[DEBUG]-->PARSE_INPUT[0.7]==> Token[%d] antes de expandir:          [%s]\n", i, tokens[i]);
 		i++;
+		if (process_tokens(tokens, cmd, shell) == -1)
+		{
+			free_tokens_parse(tokens);
+			free_command(cmd);
+			return (NULL);
+		}
+		expand_tokens(cmd, shell);
+		//printf("***[DEBUG]-->PARSE_INPUT[0.8]==> Comandos creados y argumentos:\n");
+		current_cmd = cmd;
+		while (current_cmd)
+		{
+			i = 0;
+			while (current_cmd->arguments && current_cmd->arguments[i])
+				i++;
+			current_cmd = current_cmd->next;
+		}
+		free_tokens_parse(tokens);
+		return (cmd);
+	}
+}*/
+
+t_cmd	*parse_input(char *input_line, t_minishell *shell)
+{
+	char	**tokens;
+	t_cmd	*cmd;
+	t_cmd	*current_cmd;  // Variable para recorrer la lista de comandos
+	int		i;
+
+	if (is_empty_or_whitespace(input_line))  // Verificar si la línea está vacía o tiene solo espacios
+		return (NULL);
+
+	if (contains_invalid_characters(input_line))  // Verificar si la línea contiene caracteres inválidos
+		return (NULL);
+
+	tokens = tokenize_input(input_line);
+	if (!tokens || !tokens[0])
+	{
+		free_tokens_parse(tokens);
+		return (NULL);
+	}
+
+	cmd = create_new_command(shell);
+	if (!cmd)
+	{
+		free_tokens_parse(tokens);
+		return (NULL);
+	}
+
+	// Procesar los tokens
 	if (process_tokens(tokens, cmd, shell) == -1)
 	{
 		free_tokens_parse(tokens);
 		free_command(cmd);
 		return (NULL);
 	}
+
+	// Expandir los tokens
 	expand_tokens(cmd, shell);
-	//printf("***[DEBUG]-->PARSE_INPUT[0.8]==> Comandos creados y argumentos:\n");
+
+	// Recorrer y depurar la lista de comandos
 	current_cmd = cmd;
 	while (current_cmd)
 	{
@@ -119,7 +171,11 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 			i++;
 		current_cmd = current_cmd->next;
 	}
+
+	// Liberar los tokens
 	free_tokens_parse(tokens);
+
+	// Retornar el comando
 	return (cmd);
 }
 
