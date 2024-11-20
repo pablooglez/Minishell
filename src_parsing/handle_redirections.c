@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:57:47 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/20 04:46:43 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:30:52 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int get_redirection_type(char *token)
 {
+	//printf("[DEBUG] get_redirection_type: Token: %s\n", token);																// Imprime el token recibido
 	if (!token)																												// Si el token es NULL, no es una redirección válida
 		return (NOT_REDIR);																									// Retorna -1 para indicar redirección no válida
 	if (ft_strncmp(token, ">", 1) == 0 && ft_strlen(token) == 1)															// Verifica si el token es ">" (salida)
@@ -102,46 +103,53 @@ int parse_heredoc(char **tokens, int *i, t_cmd *cmd)
 }*/
 int create_and_add_redirection(t_cmd *cmd, int type, char *file)
 {
-    t_redir *new_redir; // Puntero para la nueva redirección
-    t_redir *current;   // Puntero para recorrer la lista de redirecciones existentes
+	//printf("[DEBUG] create_and_add_redirection: Adding redirection (type: %d, file: %s)\n", type, file);
+    t_redir *new_redir; 																			// Puntero para la nueva redirección
+    t_redir *current;   																			// Puntero para recorrer la lista de redirecciones existentes
 
     //printf("[DEBUG] create_and_add_redirection: Adding redirection (type: %d, file: %s)\n", type, file);
 
-    // Crear una nueva redirección
+    																								// Crear una nueva redirección
     new_redir = malloc(sizeof(t_redir));
     if (!new_redir)
     {
         perror("[ERROR] create_and_add_redirection: Memory allocation failed");
-        return (-1); // Retorna -1 si falla la asignación
+        return (-1); 																				// Retorna -1 si falla la asignación
     }
 
-    // Inicializar la nueva redirección
+   																									 // Inicializar la nueva redirección
     new_redir->type = type;
     new_redir->file = ft_strdup(file);
     new_redir->next = NULL;
 
     if (!new_redir->file)
     {
-        free(new_redir); // Liberar memoria si la duplicación falla
+        free(new_redir); 																			// Liberar memoria si la duplicación falla
         perror("[ERROR] create_and_add_redirection: File duplication failed");
         return (-1);
     }
 
-    // Añadir la nueva redirección a la lista de redirecciones del comando
-    if (!cmd->redir) // Si no hay redirecciones previas
+    																								// Añadir la nueva redirección a la lista de redirecciones del comando
+    if (!cmd->redir) 																				// Si no hay redirecciones previas
     {
         cmd->redir = new_redir;
     }
     else
     {
         current = cmd->redir;
-        while (current->next) // Avanzar al final de la lista
+        while (current->next) 																		// Avanzar al final de la lista
             current = current->next;
-        current->next = new_redir; // Añadir al final de la lista
+        current->next = new_redir; 																	// Añadir al final de la lista
     }
 
-    //////printf("[DEBUG] create_and_add_redirection: Added redirection (type: %d, file: %s)\n", type, file);
-    return (0); // Retorna 0 si todo fue procesado correctamente
+    //printf("[DEBUG] create_and_add_redirection: Added redirection (type: %d, file: %s)\n", type, file);
+    current = cmd->redir;
+    while (current)
+    {
+        printf("  -> Type: %d, File: %s\n", current->type, current->file);
+        current = current->next;
+    }
+	return (0);
 }
 
 
@@ -178,6 +186,7 @@ int process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
 		return (1);																											// Retorna 1 para indicar que no se procesó redirección
 	if (validate_redirection_syntax(tokens, i) == -1)																		// Valida la sintaxis de la redirección
 	{
+		//printf("[ERROR] process_redirection: Invalid redirection syntax: %s\n", tokens[*i]);
 		(*i)++;																												// Incrementa el índice
 		return (-1);																										// Retorna -1 en caso de error
 	}
@@ -188,6 +197,7 @@ int process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
 		(*i)++;																												// Incrementa el índice
 		return (0);																											// Retorna 0 si se procesó correctamente
 	}
+	//printf("[DEBUG] process_redirection: Processing redirection type: %d\n", type);
 	expanded_filename = expand_string(tokens[*i + 1], shell);																// Expande el nombre del archivo
 	if (!expanded_filename || is_empty_or_whitespace(expanded_filename))													// Verifica si la expansión falló
 		return (-1);																										// Retorna -1 en caso de error
