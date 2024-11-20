@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:11 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/16 13:37:28 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:03:18 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,5 @@ void	ft_export(t_minishell *shell, char **arg)
 			}
 		}
 		i++;																				//Avanza al siguiente argumento en la lista
-	}
+	 }
 }

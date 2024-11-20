@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/20 03:09:30 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:22:45 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include <term.h> 																			//tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
 # include <readline/readline.h> 															// readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay, add_history
 # include <readline/history.h>
-
+# include <errno.h>
 # include "../Libft/libft.h"
 # include <limits.h>
 
@@ -43,21 +43,21 @@
 
 //----------------- GLOBAL VARIABLE -----------------------//
 
-extern volatile sig_atomic_t	g_signal; 													// Variable global que se utiliza para manejar señales de forma segura.
+extern volatile sig_atomic_t	g_signal;													// Variable global que se utiliza para manejar señales de forma segura.
 
 //---------------------STRUCTURE --------------------------//
 
 // Enumeración para definir códigos de error
 typedef enum e_error 
 {
-    SUCCESS = 0,              	 									// Operación exitosa
-    GENERAL_ERROR = 1,         										// Error general
-    SYNTAX_ERROR = 2,          										// Error de sintaxis (quotes no balanceadas, pipes mal ubicados)
-    MEMORY_ERROR = 3,          										// Error de memoria (malloc fallido)
-    PERMISSION_DENIED = 126,   										// Permiso denegado al ejecutar un archivo
-    CMD_NOT_FOUND = 127,       										// Comando no encontrado
-    INVALID_EXIT = 128,        										// Argumento inválido para el comando exit
-    EXIT_ERROR = 255           										// Error en el comando exit (fuera del rango permitido)
+	SUCCESS = 0,													// Operación exitosa
+	GENERAL_ERROR = 1,												// Error general
+	SYNTAX_ERROR = 2,												// Error de sintaxis (quotes no balanceadas, pipes mal ubicados)
+	MEMORY_ERROR = 3,												// Error de memoria (malloc fallido)
+	PERMISSION_DENIED = 126,										// Permiso denegado al ejecutar un archivo
+	CMD_NOT_FOUND = 127,											// Comando no encontrado
+	INVALID_EXIT = 128,												// Argumento inválido para el comando exit
+	EXIT_ERROR = 255												// Error en el comando exit (fuera del rango permitido)
 } t_error;
 
 // Enumeración para definir tipos de tokens
@@ -70,7 +70,7 @@ typedef enum e_token
 	REDIR = 4,																				// Token para una redirección	
 	OPEN_PAR = 5,																			// Token para un paréntesis abierto--SOLO PARA BONUS--
 	CLOSE_PAR = 6,																			// Token para un paréntesis cerrado--SOLO PARA BONUS--
-	END_OF_INPUT = 7,          															// Fin del input (EOF)																			
+	END_OF_INPUT = 7,																		// Fin del input (EOF)																			
 	UNKNOWN = -1,																			// Token desconocido
 }	t_token;
 
@@ -166,7 +166,6 @@ int         process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *
 int         process_token(char *input, int *i, char **tokens, int *j);                            // Procesa un token de la entrada
 int         process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell);           // Procesa los pipes (|)
 int         process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell);                // Procesa todos los tokens para construir los comandos
-char        *read_input(void);                                                                    // Lee la entrada del usuario
 char        *remove_quotes(const char *arg);                                                      // Elimina las comillas de un argumento
 void        free_command(t_cmd *cmd);                                                             // Libera la memoria de la estructura de comando
 void        free_command_list(t_cmd *cmd);                                                        // Libera la memoria de la lista de comandos
@@ -214,7 +213,7 @@ char		*ft_strndup(const char *s, size_t n);											// Duplica hasta n caracte
 //--------------FUNCIONES EXECUTION-------------//
 int			execute_command(t_minishell *shell);											// Ejecuta un comando individual.
 int			handle_builtin(t_cmd *cmd, t_minishell *shell);									//Maneja comandos internos (built-ins)
-void		handle_pipes(t_cmd *cmd, t_minishell *shell);									// Maneja la ejecución de comandos conectados por pipes.
+void		check_pipes(t_cmd *cmd);														// Maneja la ejecución de comandos conectados por pipes.
 void		handle_redirection(t_cmd *cmd);													// Maneja las redirecciones de entrada y salida.
 
 //---------------------UTILS-------------------//

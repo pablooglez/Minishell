@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 17:59:21 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/16 19:00:12 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/19 19:29:44 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	handle_redirection(t_cmd *cmd)
 
 	while (redir)																// Itera a través de cada redirección en la lista de redirecciones del comando.
 	{
+		printf("Redir %s\n", redir->file);
 		if (redir->type == INFILE)												// Si el tipo de redirección es INFILE (redirección de entrada)...
 		{
 			fd = open(redir->file, O_RDONLY);									// Intenta abrir el archivo en modo lectura.
-			//printf("(PABDEBUG)-->HANDLE_REDIRECTION==> File Descriptor: [%d]\n", fd);
 			if (fd == -1)														// Si la apertura falla...
 			{
 				perror("Error abriendo archivo de entrada");					// Imprime un mensaje de error.
@@ -30,12 +30,10 @@ void	handle_redirection(t_cmd *cmd)
 			}
 			dup2(fd, STDIN_FILENO);
 			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
-			//cmd->intfd=fd;
 		}
 		else if (redir->type == OUTFILE)										// Si el tipo de redirección es OUTFILE (redirección de salida)...
 		{
 			fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644); 		// Abre el archivo en modo escritura, truncándolo o creándolo si no existe.
-			//printf("(PABDEBUG)-->HANDLE_REDIRECTION==> File Descriptor: [%d]\n", fd);
 			if (fd == -1)														// Si la apertura falla...
 			{
 				perror("Error abriendo archivo de salida");						// Imprime un mensaje de error.
@@ -43,7 +41,6 @@ void	handle_redirection(t_cmd *cmd)
 			}
 			dup2(fd, STDOUT_FILENO);
 			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
-			//cmd->outfd = fd;													// Guarda el descriptor de archivo en el campo 'intfd' de 'cmd' para el seguimiento de la redirección de entrada.
 		}
 		else if (redir->type == APPEND)											// Si el tipo de redirección es APPEND (redirección de salida en modo append)...
 		{
@@ -55,7 +52,6 @@ void	handle_redirection(t_cmd *cmd)
 			}
 			dup2(fd, STDOUT_FILENO);
 			close(fd);															// Cierra el descriptor de archivo, ya que la duplicación fue exitosa.
-			//cmd->outfd = fd;													// Guarda el descriptor de archivo en el campo 'outfd' de 'cmd' para el seguimiento de la redirección de salida.
 		}
 		redir = redir->next;													// Avanza al siguiente elemento en la lista de redirecciones.
 	}

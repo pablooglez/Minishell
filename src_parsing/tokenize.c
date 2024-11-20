@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/20 03:18:26 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:29:19 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,72 +16,45 @@
 t_token	classify_special_token(char c)
 {
 	if (c == '|')																			// Verifica si el carcates es un Pipe
-	{
-		//printf("[DEBUG]-->CLASSIFY_SPECIAL_TOKEN==> Token especial detectado: PIPE\n");
 		return (PIPE);																		// Retorna PIPE si el carácter es un Pipe
-	}
-	if (c == '>')																			// Verifica si el Caracter es una Redireccion	
-	{
-		//printf("[DEBUG]-->CLASSIFY_SPECIAL_TOKEN==> Token especial detectado: REDIR (>)\n");
+	if (c == '>')																			// Verifica si el Caracter es una Redireccion
 		return (REDIR);
-	}
 	if (c == '<')
-	{
-		//printf("[DEBUG]-->CLASSIFY_SPECIAL_TOKEN==> Token especial detectado: REDIR (<)\n");
 		return (REDIR);
-	}
 	return (UNKNOWN);
 }
 
 int	process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
 {
 	int	i = 0;
-
-	//printf("[DEBUG]-->PROCESS_TOKENS==> Iniciando procesamiento de tokens\n");
+	
 	while (tokens[i])
 	{
 		if (process_token_pipe(tokens, &i, &current_cmd, shell) == -1)
-		{
-			//printf("[ERROR]-->PROCESS_TOKENS==> Error en process_token_pipe\n");
 			return (-1);
-		}
 
 		// Procesar argumentos para el comando actual
 		if (process_arguments(tokens, &i, current_cmd, shell) == -1)
-		{
-			//printf("[ERROR]-->PROCESS_TOKENS==> Error en process_arguments\n");
 			return (-1);
-		}
 
 		// Verificar si hay más tokens y avanzar al siguiente comando
 		if (tokens[i] && current_cmd->type == PIPE)
 		{
 			if (!current_cmd->next)
-			{
-				//printf("[ERROR]-->PROCESS_TOKENS==> current_cmd->next es NULL después de crear un nuevo comando\n");
 				return (-1);
-			}
-			//printf("[DEBUG]-->PROCESS_TOKENS==> Avanzando al siguiente comando después de la pipe\n");
 			current_cmd = current_cmd->next;
 		}
 	}
-	//printf("[DEBUG]-->PROCESS_TOKENS==> Finalizando procesamiento de tokens\n");
 	return (0);
 }
-
-
 
 int	handle_escape(char *input, int i, char *buffer, int *buf_index)
 {
 	i++;
 	if (input[i] == '"' || input[i] == '\'' || input[i] == '\\')
-	{
-		//printf("[DEBUG]-->HANDLE_ESCAPE==> Carácter escapado detectado: [%c]\n", input[i]);
 		buffer[(*buf_index)++] = input[i++];
-	}
 	else
 	{
-		//printf("[DEBUG]-->HANDLE_ESCAPE==> Carácter no escapado: [%c]\n", input[i]);
 		buffer[(*buf_index)++] = '\\';
 		buffer[(*buf_index)++] = input[i++];
 	}
@@ -213,7 +186,6 @@ int	handle_token(char *input, int i, char **tokens, int *j)
 
 		if (!tokens[*j]) // Validar duplicado
 		{
-			//printf("[ERROR]-->HANDLE_TOKEN-10==> Error al duplicar el token\n");
 			free_tokens_parse(tokens);
 			return (-1);
 		}
@@ -233,10 +205,7 @@ char	**tokenize_input(char *input)
 	//printf("[DEBUG]-->TOKENIZE_INPUT==> Iniciando tokenización\n");
 	tokens = ft_calloc(100, sizeof(char *));
 	if (!tokens)
-	{
-		//printf("[ERROR]-->TOKENIZE_INPUT==> Error al asignar memoria para tokens\n");
 		return (NULL);
-	}
 
 	while (input[i])
 	{
@@ -244,12 +213,10 @@ char	**tokenize_input(char *input)
 			i++;
 		if (process_token(input, &i, tokens, &j) == -1)
 		{
-			//printf("[ERROR]-->TOKENIZE_INPUT==> Error en process_token\n");
 			free_tokens_parse(tokens);
 			return (NULL);
 		}
 	}
-
 	tokens[j] = NULL;
 	//printf("****[DEBUG]-->TOKENIZE_INPUT==> Tokenización completada.		   [Tokens Creados: %d]\n", j);
 	return (tokens);

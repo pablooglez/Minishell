@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:54:51 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/13 21:25:46 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:03:26 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <linux/limits.h>
+//#include <linux/limits.h>
 
 void	ft_cd(t_minishell *shell, char **arg)										//Función para manejar el comando "cd" (cambiar directorio)
 {

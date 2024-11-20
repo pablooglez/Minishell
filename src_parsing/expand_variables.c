@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:02:04 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/19 21:39:37 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:26:35 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*find_env_value(t_env *env_vars, const char *key)
 			if (ft_strncmp(env_vars->key, key, key_len) == 0)				// Compara la key actual con la key dada env_vars->key es la key actual, key es la key dada, y key_len es la longitud de la key
 				return (env_vars->value);									// Retorna el valor si las keys son iguales
 		}
-		env_vars = env_vars->next;									    	// Avanza al siguiente nodo de la lista
+		env_vars = env_vars->next;											// Avanza al siguiente nodo de la lista
 	}
 	return (NULL);															// Retorna NULL si no se encuentra la key
 }
@@ -41,13 +41,11 @@ char *get_expanded_value(const char *variable, t_minishell *shell)
 
 	if (ft_strncmp(variable, "?", 2) == 0)									// Verifica si la variable es "?"
 		return (ft_itoa(shell->exit_status));								// Retorna el valor del estado de salida como string
-	
-	//printf("[DEBUG]-->GET_EXPANDED_VALUE[0.0]==> Variable:                [%s]\n", variable);
+
 	value = find_env_value(shell->env_vars, variable);						// Busca el valor de la variable en env_vars
 	//printf("[DEBUG]-->GET_EXPANDED_VALUE[0.0.1]==> Value:                   [%s]\n", value);
 	if (value)
 		return (ft_strdup(value));											// Retorna una copia del valor si existe
-	//printf("[DEBUG]-->GET_EXPANDED_VALUE[0.1]==> Value:                   [%s]\n", value);
 	return (ft_strdup(""));													// Retorna una cadena vacía si no existe
 }
 
@@ -115,7 +113,6 @@ char *expand_entire_input(const char *input, t_minishell *shell)
 	char *expanded;
 
 	expanded = expand_string(input, shell);									// Expande toda la cadena input
-	//printf("[DEBUG]-->EXPAND_ENTIRE_INPUT==> Cadena expandida:            [%s]\n", expanded);
 	if (expanded != NULL && access(expanded, X_OK) == 0)					// Verifica si la expansión es ejecutable
 		return (expanded);													// Retorna la cadena expandida si es ejecutable
 	//printf("[DEBUG]-->EXPAND_ENTIRE_INPUT==> Cadena no es ejecutable\n");

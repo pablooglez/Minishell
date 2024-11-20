@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 23:22:18 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/19 21:38:58 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:25:18 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 
 char	*handle_escaped_dollar(int *i)
 {
-	//printf("[DEBUG]-->HANDLE_ESCAPED_DOLLAR[0.0]==> Start:                     [%d]\n", *i);
 	*i += 2;
-	//printf("[DEBUG]-->HANDLE_ESCAPED_DOLLAR[0.0]==> Start despues de *i+=2:                   [%d]\n", *i);
-	//printf("[DEBUG]-->HANDLE_ESCAPED_DOLLAR[0.1]==> Dollar sign:                [%c]\n", '$');
 	return (ft_strdup("$"));
 }
 char	*handle_special_cases(const char *str, int *i, t_minishell *shell)
@@ -31,12 +28,11 @@ char	*handle_special_cases(const char *str, int *i, t_minishell *shell)
 		(*i)++;																	// Incrementa el índice para pasar al siguiente carácter
 		//printf("[DEBUG]-->HANDLE_SPECIAL_CASES[0.0]==> Dollar sign:                 [%c]\n", str[*i]);
 		expanded = get_expanded_value("?", shell); 								// Obtiene el valor expandido de la variable '?'
-		if (!expanded) 															// Verifica si la expansión falla
-			return (ft_strdup("")); 											// Retorna una cadena vacía si falla
-		//printf("[DEBUG]-->HANDLE_SPECIAL_CASES[0.1]==> Expanded:                    [%s]\n", expanded);
-		return (expanded); 														// Retorna la cadena expandida si tiene éxito
+		if (!expanded)															// Verifica si la expansión falla
+			return (ft_strdup(""));												// Retorna una cadena vacía si falla
+		return (expanded);														// Retorna la cadena expandida si tiene éxito
 	}
-	if (str[*i] == '$')  														// Verifica si es $
+	if (str[*i] == '$')															// Verifica si es $
 	{
 		(*i)++;																	// Incrementa el índice para pasar al siguiente carácter
 		//printf("[DEBUG]-->HANDLE_SPECIAL_CASES[0.2]==> Dollar sign:                 [%c]\n", str[*i]);
@@ -58,8 +54,8 @@ char	*handle_special_cases(const char *str, int *i, t_minishell *shell)
 char	*handle_dollar_sign(const char *str, int *i, t_minishell *shell)
 {
 	char	*expanded;															// Variable para almacenar la cadena expandida
-	char	*var_name;														    // Variable para almacenar el nombre de la variable			
-	int		start; 																// Variable para almacenar la posición inicial de la variable
+	char	*var_name;															// Variable para almacenar el nombre de la variable			
+	int		start;																// Variable para almacenar la posición inicial de la variable
 
 	(*i)++; 																	// Incrementa el índice para pasar al siguiente carácter
 	expanded = handle_special_cases(str, i, shell); 							// Maneja los casos especiales
@@ -92,11 +88,9 @@ char	*handle_dollar_sign(const char *str, int *i, t_minishell *shell)
 char	*handle_regular_char(const char *str, int *i)
 {
 	char	*expanded;
-	
-	//printf("[DEBUG]-->HANDLE_REGULAR_CHAR[0.0]==> Start:                       [%d]\n", *i);
+
 	expanded = ft_substr(str, *i, 1);
 	(*i)++;
-	//printf("[DEBUG]-->HANDLE_REGULAR_CHAR[0.1]==> Expanded:                    [%s]\n", expanded);
 	return (expanded);
 }
 
