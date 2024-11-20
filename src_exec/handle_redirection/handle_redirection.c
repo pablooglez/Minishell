@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 17:59:21 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/19 19:29:44 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/20 18:53:20 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	handle_redirection(t_cmd *cmd)
 
 	while (redir)																// Itera a través de cada redirección en la lista de redirecciones del comando.
 	{
-		printf("Redir %s\n", redir->file);
 		if (redir->type == INFILE)												// Si el tipo de redirección es INFILE (redirección de entrada)...
 		{
 			fd = open(redir->file, O_RDONLY);									// Intenta abrir el archivo en modo lectura.

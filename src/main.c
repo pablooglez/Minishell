@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/20 03:23:29 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:26:22 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	exit_shell(t_minishell *shell)                                       // Fun
 	//rl_clear_history();                                                   // Limpia el historial de readline (desactivado)
     close(shell->original_stdin);
     close(shell->original_stdout);
-    exit(status);                                                          // Termina el programa con el estado de salida
+    exit(status);                                                           // Termina el programa con el estado de salida
 }
 
 void	init_minishell(t_minishell *shell, char **env)                      // Inicializa la estructura del shell con el entorno
@@ -55,13 +55,13 @@ int main(int argc, char **argv, char **env)
             g_signal = 0;                                                   // Restablece el indicador de señal
             printf("\n");                                                   // Imprime una nueva línea
         }
-        input = readline("\001\033[1;36m\002Minishell ➜ \001\033[0m\002");                                                // Lee la entrada del usuario
+        input = readline("\001\033[1;36m\002Minishell ➜ \001\033[0m\002");  // Lee la entrada del usuario
         if (!input)                                                         // Si se recibe EOF (Ctrl+D)
         {
             printf("exit\n");                                               // Imprime "exit" y termina el shell
             exit_shell(&shell);                                             // Llama a la función para liberar recursos y salir
         }
-        if (input && input[0] == '\0')                                          // Verifica si la entrada está vacía
+        if (input && input[0] == '\0')                                      // Verifica si la entrada está vacía
         {
             free(input);                                                    // Libera la memoria de la entrada
             continue;                                                       // Continua al siguiente ciclo del bucle
@@ -75,5 +75,5 @@ int main(int argc, char **argv, char **env)
         }
         free(input);                                                        // Libera la memoria de la entrada
     }
-    exit_shell(&shell);                                                             // Retorna 0 al terminar (no debería llegar aquí)
+    exit_shell(&shell);                                                     // Retorna 0 al terminar (no debería llegar aquí)
 }

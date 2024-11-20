@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:55:18 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/16 20:52:14 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:25:44 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,16 @@ void	fatal(int code, char *value)
 	}
 }
 
-void	ft_error(t_minishell *shell, int code, char *value, int should_exit)	// Función para gestionar errores, recibe el shell, un código de error, un valor, y si el programa debe finalizar.
+void	ft_error(t_minishell *shell, int code, char *value, int should_exit)							// Función para gestionar errores, recibe el shell, un código de error, un valor, y si el programa debe finalizar.
 {
-	fatal(code, value);															// Llama a la función fatal para imprimir el mensaje de error adecuado.
+	fatal(code, value);																					// Llama a la función fatal para imprimir el mensaje de error adecuado.
 
-	if (code != CMD_NOT_FOUND && value)											// No liberar 'value' si es parte de 'cmd->arguments'
+	if (code != CMD_NOT_FOUND && value)																	// No liberar 'value' si es parte de 'cmd->arguments'
 		free(value);
 	
-	/*if (value)																// Si se ha pasado un valor no nulo, libera la memoria asignada a 'value'.
+	/*if (value)																						// Si se ha pasado un valor no nulo, libera la memoria asignada a 'value'.
 		free(value);*/
 	
-	if (should_exit) 															// Si el indicador should_exit está activado, termina el programa con el código de salida que tiene el shell.
-		exit(shell->exit_status);												//Termina el programa con el código de salida almacenado en shell.
+	if (should_exit) 																					// Si el indicador should_exit está activado, termina el programa con el código de salida que tiene el shell.
+		exit(shell->exit_status);																		//Termina el programa con el código de salida almacenado en shell.
 }
