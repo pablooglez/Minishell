@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:57:47 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/20 20:30:52 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:51:24 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,14 +140,6 @@ int create_and_add_redirection(t_cmd *cmd, int type, char *file)
         while (current->next) 																		// Avanzar al final de la lista
             current = current->next;
         current->next = new_redir; 																	// Añadir al final de la lista
-    }
-
-    //printf("[DEBUG] create_and_add_redirection: Added redirection (type: %d, file: %s)\n", type, file);
-    current = cmd->redir;
-    while (current)
-    {
-        printf("  -> Type: %d, File: %s\n", current->type, current->file);
-        current = current->next;
     }
 	return (0);
 }
