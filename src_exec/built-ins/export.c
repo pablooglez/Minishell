@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:11 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/18 18:03:18 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/20 19:54:20 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_export(t_minishell *shell, char **arg)
 	while (arg && arg[i])																	//Bucle para recorrer los argumentos que siguen al comando "export"
 	{
 		char *equal_sign = ft_strchr(arg[i], '=');											//Busca el simbolo '=' en el argumento actual
-		write(1,arg[1],ft_strlen(arg[1]));
+		//write(1,arg[1],ft_strlen(arg[1]));
 		if (equal_sign)																		//Si encuentra un '=' en el argumento, significa que es el tipo "KEY=VALUE"
 		{
 			char *key = ft_strndup(arg[i], equal_sign - arg[i]);							//Extrae la clave (lo que está antes del '=')

@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:48 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/10/22 20:33:31 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/20 19:55:59 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_unset(t_minishell *shell, char **arg)								//Función auxiliar para el
 			delete_env_var(&(shell->env_vars), arg[i]);							//Llama a la función para eliminar la variable de entorno
 		
 		else																	//Si el nombre de la variable no es válido
-			ft_error(shell, CMD_NOT_FOUND, "unset: not a valid identifier", 0); //Muestra un error
+			write(2, "unset: not a valid identifier\n", 30);						//Muestra un error
 		i++;																	//Avanza al siguiente argumento
 	}
 }
