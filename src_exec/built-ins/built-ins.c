@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:15:09 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/19 20:11:58 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/20 19:35:45 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	handle_builtin(t_cmd *cmd, t_minishell *shell)
 {
-	handle_redirection(cmd);
+	if (ft_strnstr("echo|cd|pwd|export|unset|env|exit", cmd->arguments[0], 33))
+		handle_redirection(cmd);
 	if (ft_strncmp(cmd->arguments[0], "echo", 5) == 0)						//Comprobamos si el comando es "echo"
 	{
 		ft_echo(shell, cmd->arguments);										//Llama a la función personalizada para "echo"

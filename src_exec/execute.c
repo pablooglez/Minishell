@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/19 20:21:54 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/20 19:37:23 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	execute_command(t_minishell *shell)
 			safe_dup2(cmd->pipe[1], STDOUT_FILENO);
 			if (handle_builtin(cmd, shell))
 				exit(shell->exit_status);
+			handle_redirection(cmd);
 																						// Obtiene la ruta completa del comando (ejemplo: "/bin/ls" si el comando es "ls")
 			command_path = get_command_path(cmd->arguments[0], shell);					// Llama a get_command_path para buscar el comando en los directorios de PATH
 				
@@ -65,12 +66,12 @@ int	execute_command(t_minishell *shell)
 		else if (pid < 0)																// Si fork() falla, verifica que pid sea menor que 0 (indica un error)
 		{
 			ft_error(shell, MEMORY_ERROR, NULL, 0);											// Si hubo un error al crear el proceso, maneja el error de memoria
-			exit(EXIT_FAILURE);																		// Sale de la función con un código de error
+			exit(EXIT_FAILURE);															// Sale de la función con un código de error
 		}
 		else																			// Si estamos en el proceso padre (pid > 0)
 		{
 			waitpid(pid, &shell->exit_status, 0);										// Espera a que el proceso hijo termine su ejecución
-																			// Comprueba el estado de salida del proceso hijo
+																						// Comprueba el estado de salida del proceso hijo
 			if (WIFEXITED(shell->exit_status))											// Si el proceso terminó normalmente (sin señal)
 				shell->exit_status = WEXITSTATUS(shell->exit_status);					// Obtiene el código de salida del proceso hijo
 			else if (WIFSIGNALED(shell->exit_status))									// Si el proceso terminó debido a una señal

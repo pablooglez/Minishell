@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 17:59:21 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/20 20:30:52 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 20:34:16 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	handle_redirection(t_cmd *cmd)
 
 	while (redir)																// Itera a través de cada redirección en la lista de redirecciones del comando.
 	{
-		//printf("[DEBUG]->HANDLE_REDIRECTION->Redir %s\n", redir->file);
 		if (redir->type == INFILE)												// Si el tipo de redirección es INFILE (redirección de entrada)...
 		{
 			//printf("[DEBUG]->HANDLE_REDIRECTION->INFILE\n");
