@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:32:11 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/18 18:02:25 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:18:26 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	handle_single_quotes(char *input, int i, char *buffer, int *buf_index)
 		//printf("[ERROR]-->H_SINGLE_QUOTES[0.3]==> Error: comilla simple sin cerrar\n");
 		return (error_handler("Minishell: syntax error\n", SYNTAX_ERROR));
 	}
+	//buffer[(*buf_index)] = '\0';
 	//printf("[DEBUG]-->H_SINGLE_QUOTES[0.4]==> End single_quotes Índice :       [%d]\n", i + 1);
 	return (i + 1);
 }
@@ -72,3 +73,6 @@ int	handle_double_quotes(char *input, int i, char *buffer, int *buf_index)
 	//printf("[DEBUG]-->_DOUBLE_QUOTES[0.5]==> DOuble_quotes ok. Indice es:      [%d]\n", i + 1);
 	return (i + 1);
 }
+
+
+

@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/18 18:02:25 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:09:24 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,13 +162,14 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 		return (NULL);
 	if (contains_invalid_characters(input_line))                                           // Verificar si la línea contiene caracteres inválidos
 		return (NULL);
+	//printf("[DEBUG]-->PARSE_INPUT[0.0]==> Iniciando parseo de la entrada es: 	   [%s]\n", input_line);
 	tokens = tokenize_input(input_line);
 	if (!tokens || !tokens[0])
 	{
 		free_tokens_parse(tokens);
 		return (NULL);
 	}
-	//printf("[DEBUG]-->PARSE_INPUT[0.1]==> Tokens generados:\n");
+	//printf("*****[DEBUG]-->PARSE_INPUT[0.1]==> Tokens generados:\n");
 	i = 0;
 	while (tokens[i])
 	{
@@ -176,6 +177,10 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 		i++;
 	}
 	cmd = create_new_command(shell);
+	//printf("[DEBUG]-->PARSE_INPUT[0.3]==> Comando creado:                 [%p]\n", (void *)cmd);
+	//printf("[DEBUG]-->PARSE_INPUT[0.4]==> Comando creado (cmd->path):     [%s]\n", cmd->path);
+	//printf("[DEBUG]-->PARSE_INPUT[0.5]==> Comando creado (cmd->type):     [%d]\n", cmd->type);
+	//printf("[DEBUG]-->PARSE_INPUT[0.6]==> Comando creado (cmd->arguments): [%p]\n", (void *)cmd->arguments);
 	if (!cmd)
 	{
 		free_tokens_parse(tokens);
@@ -189,7 +194,7 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 	i = 0;
 	while (tokens[i])
 	{
-		//printf("[DEBUG]-->PARSE_INPUT[0.7]==> Token[%d] antes de expandir:          [%s]\n", i, tokens[i]);
+		//printf("***[DEBUG]-->PARSE_INPUT[0.7]==> Token[%d] antes de expandir:          [%s]\n", i, tokens[i]);
 		i++;
 	}
 	if (process_tokens(tokens, cmd, shell) == -1)
@@ -199,7 +204,7 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 		return (NULL);
 	}
 	expand_tokens(cmd, shell);
-	//printf("[DEBUG]-->PARSE_INPUT[0.8]==> Comandos creados y argumentos:\n");
+	//printf("***[DEBUG]-->PARSE_INPUT[0.8]==> Comandos creados y argumentos:\n");
 	current_cmd = cmd;
 	while (current_cmd)
 	{

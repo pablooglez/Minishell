@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/18 18:02:25 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:18:26 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,39 @@ int	handle_escape(char *input, int i, char *buffer, int *buf_index)
 	return (i);
 }
 
+int expand_variable(char *input, int i, char *buffer, int *buf_index)
+{
+    char var_name[256];
+    int var_len = 0;
+
+    i++; // Skip the '$' character
+
+    if (input[i] == '\0') // No variable name after '$'
+        return i;
+
+    // Extract the variable name
+    while (input[i] && (ft_isalnum(input[i]) || input[i] == '_'))
+    {
+        var_name[var_len++] = input[i++];
+    }
+    var_name[var_len] = '\0';
+
+    // Get the variable value using getenv
+    char *value = getenv(var_name);
+    if (value)
+    {
+        // Copy the value into the buffer
+        int k = 0;
+        while (value[k])
+        {
+            buffer[(*buf_index)++] = value[k++];
+        }
+    }
+    // If the variable is not found, do nothing (empty string)
+
+    return i;
+}
+
 int	handle_token(char *input, int i, char **tokens, int *j)
 {
 	char	buffer[1024];
@@ -96,53 +129,89 @@ int	handle_token(char *input, int i, char **tokens, int *j)
 
 	while (input[i] && input[i] != ' ')
 	{
-		if (input[i] == '\'')
+		if (input[i] == '\'') // Manejar comillas simples
 		{
 			//printf("[DEBUG]-->HANDLE_TOKEN-01==> Handling comillas simples\n");
-			no_expand = 1;
-			i = handle_single_quotes(input, i, buffer, &buf_index);
-			//printf("[DEBUG]-->HANDLE_TOKEN-02==> End single_quotes Índice :       	   [%d]\n", i);
+			no_expand = 1; // Marcar como no expandible
+			i++; // Saltar la comilla inicial
+			while (input[i] && input[i] != '\'')
+			{
+				buffer[buf_index++] = input[i++];
+			}
+			if (input[i] != '\'') // Comillas sin cerrar
+			{
+				//printf("[ERROR]-->HANDLE_TOKEN==> Comillas simples sin cerrar\n");
+				return (-1);
+			}
+			i++; // Saltar la comilla final
 		}
-		else if (input[i] == '"')
+		else if (input[i] == '"') // Manejar comillas dobles
 		{
 			//printf("[DEBUG]-->HANDLE_TOKEN-03==> Handling comillas dobles\n");
-			i = handle_double_quotes(input, i, buffer, &buf_index);
-			//printf("[DEBUG]-->HANDLE_TOKEN==> End double_quotes Índice :       	[%d]\n", i);
+			i++; // Saltar la comilla inicial
+			while (input[i] && input[i] != '"')
+			{
+				if (input[i] == '$') // Expandir variables
+				{
+					i = expand_variable(input, i, buffer, &buf_index);
+					if (i == -1)
+						return (-1); // Error durante la expansión
+				}
+				else
+				{
+					buffer[buf_index++] = input[i++];
+				}
+			}
+			if (input[i] != '"') // Comillas sin cerrar
+			{
+				//printf("[ERROR]-->HANDLE_TOKEN==> Comillas dobles sin cerrar\n");
+				return (-1);
+			}
+			i++; // Saltar la comilla final
 		}
-		else if (input[i] == '\\')
+		else if (input[i] == '\\') // Manejar caracteres escapados
 		{
 			//printf("[DEBUG]-->HANDLE_TOKEN-04==> Handling carácter escapado\n");
 			i = handle_escape(input, i, buffer, &buf_index);
-			//printf("[DEBUG]-->HANDLE_TOKEN-05==> End escape Índice :      				[%d]\n", i);
+			if (i == -1)
+			{
+				//printf("[ERROR]-->HANDLE_TOKEN==> Error al manejar carácter escapado\n");
+				return (-1);
+			}
 		}
-		else
+		else if (input[i] == '$') // Manejar variables fuera de comillas
+		{
+			i = expand_variable(input, i, buffer, &buf_index);
+			if (i == -1)
+			{
+				//printf("[ERROR]-->HANDLE_TOKEN==> Error al expandir variable\n");
+				return (-1);
+			}
+		}
+		else // Agregar caracteres normales al buffer
 		{
 			buffer[buf_index++] = input[i++];
-			//printf("[DEBUG]-->HANDLE_TOKEN-06==> Añadiendo carácter al buffer:         [%c]\n", buffer[buf_index - 1]);
-		}
-
-		if (i == -1)
-		{
-			//printf("[ERROR]-->HANDLE_TOKEN-07==> Error al manejar el token\n");
-			return (-1);
+			//printf("[DEBUG]-->HANDLE_TOKEN-06==> Añadiendo carácter al buffer: [%c]\n", buffer[buf_index - 1]);
 		}
 	}
 
-	buffer[buf_index] = '\0';
+	buffer[buf_index] = '\0'; // Finalizar el buffer
+
+	// Añadir el token al array de tokens
 	if (buf_index > 0)
 	{ 
 		if (no_expand)
 		{
-			tokens[*j] = ft_strjoin("__NO_EXPAND__", buffer);
-			//printf("[DEBUG]-->HANDLE_TOKEN-08==> Token creado (sin expansión): 	   [%s]\n", tokens[*j]);
+			tokens[*j] = ft_strjoin("__NO_EXPAND__", buffer); // Token literal
+			//printf("[DEBUG]-->HANDLE_TOKEN-08==> Token creado (sin expansión): [%s]\n", tokens[*j]);
 		}
 		else
 		{
-			tokens[*j] = ft_strdup(buffer);
-			//printf("[DEBUG]-->HANDLE_TOKEN-09==> Token creado:			   [%s]\n", tokens[*j]);
+			tokens[*j] = ft_strdup(buffer); // Token normal
+			//printf("[DEBUG]-->HANDLE_TOKEN-09==> Token creado: [%s]\n", tokens[*j]);
 		}
 
-		if (!tokens[*j])
+		if (!tokens[*j]) // Validar duplicado
 		{
 			//printf("[ERROR]-->HANDLE_TOKEN-10==> Error al duplicar el token\n");
 			free_tokens_parse(tokens);
@@ -153,11 +222,13 @@ int	handle_token(char *input, int i, char **tokens, int *j)
 	return (i);
 }
 
+
 char	**tokenize_input(char *input)
 {
 	char	**tokens;
 	int		i = 0;
 	int		j = 0;
+
 
 	//printf("[DEBUG]-->TOKENIZE_INPUT==> Iniciando tokenización\n");
 	tokens = ft_calloc(100, sizeof(char *));
@@ -180,6 +251,6 @@ char	**tokenize_input(char *input)
 	}
 
 	tokens[j] = NULL;
-	//printf("[DEBUG]-->TOKENIZE_INPUT==> Tokenización completada.		   [Tokens Creados: %d]\n", j);
+	//printf("****[DEBUG]-->TOKENIZE_INPUT==> Tokenización completada.		   [Tokens Creados: %d]\n", j);
 	return (tokens);
 }

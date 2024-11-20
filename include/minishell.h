@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/18 13:13:29 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 03:09:30 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,8 @@ int         remove_extra_spaces(char *input, char *norm);
 void 		print_error(const char *msg);
 int 		print_error_and_return(const char *msg);
 void 		print_error_and_exit(const char *msg, int exit_code);
-int			error_handler(const char *msg, int exit_code);                                         // Elimina espacios en blanco adicionales de la entrada                       
+int			error_handler(const char *msg, int exit_code);                                         // Elimina espacios en blanco adicionales de la entrada   
+int 		expand_variable(char *input, int i, char *buffer, int *buf_index);                           // Expande una variable de entorno                    
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------//
 
