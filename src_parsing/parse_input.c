@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/20 03:34:44 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/20 04:21:38 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,41 +128,33 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 {
 	char	**tokens;
 	t_cmd	*cmd;
-	t_cmd	*current_cmd;  // Variable para recorrer la lista de comandos
+	t_cmd	*current_cmd;
 	int		i;
 
-	if (is_empty_or_whitespace(input_line))  // Verificar si la línea está vacía o tiene solo espacios
+	if (is_empty_or_whitespace(input_line)) 
 		return (NULL);
 
-	if (contains_invalid_characters(input_line))  // Verificar si la línea contiene caracteres inválidos
+	if (contains_invalid_characters(input_line)) 
 		return (NULL);
-
 	tokens = tokenize_input(input_line);
 	if (!tokens || !tokens[0])
 	{
 		free_tokens_parse(tokens);
 		return (NULL);
 	}
-
 	cmd = create_new_command(shell);
 	if (!cmd)
 	{
 		free_tokens_parse(tokens);
 		return (NULL);
 	}
-
-	// Procesar los tokens
 	if (process_tokens(tokens, cmd, shell) == -1)
 	{
 		free_tokens_parse(tokens);
 		free_command(cmd);
 		return (NULL);
 	}
-
-	// Expandir los tokens
 	expand_tokens(cmd, shell);
-
-	// Recorrer y depurar la lista de comandos
 	current_cmd = cmd;
 	while (current_cmd)
 	{
@@ -171,11 +163,7 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 			i++;
 		current_cmd = current_cmd->next;
 	}
-
-	// Liberar los tokens
 	free_tokens_parse(tokens);
-
-	// Retornar el comando
 	return (cmd);
 }
 

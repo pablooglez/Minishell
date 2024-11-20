@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
+#    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/11/19 21:31:13 by pabloglez        ###   ########.fr        #
+#    Updated: 2024/11/20 04:34:35 by albelope         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
