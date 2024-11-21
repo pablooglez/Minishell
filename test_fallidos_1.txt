@@ -1,0 +1,59 @@
+TEST NUMERO 3: echo "hola"
+  Bash Output: hola
+  Minishell Output: 
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 1: echo hola
+  Bash Output: hola
+  Minishell Output: [1;36m [0mecho hola
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 2: echo "hola
+  Bash Output: 
+  Minishell Output: [1;36m [0mecho "hola
+[1;36m [0mexit
+  Bash Exit Code: 2, Minishell Exit Code: 0
+  Bash Error: /bin/bash: line 1: unexpected EOF while looking for matching `"'
+/bin/bash: line 3: syntax error: unexpected end of file
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 3: echo "hola"
+  Bash Output: hola
+  Minishell Output: [1;36m [0mecho "hola"
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 4: sdfdsadfsaf
+  Bash Output: 
+  Minishell Output: [1;36m [0msdfdsadfsaf
+[1;36m [0mexit
+  Bash Exit Code: 127, Minishell Exit Code: 127
+  Bash Error: /bin/bash: line 1: sdfdsadfsaf: command not found
+  Minishell Error: Minishell: command not found: sdfdsadfsaf
+--------------------------------------------------------------------------------
+TEST NUMERO 1: echo "hola"
+  Bash Output: hola
+  Minishell Output: 
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 1: echo hola
+  Bash Output: hola
+  Minishell Output: 
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------
+TEST NUMERO 2: echo "hola"
+  Bash Output: hola
+  Minishell Output: 
+  Bash Exit Code: 0, Minishell Exit Code: 0
+  Bash Error: <No Error>
+  Minishell Error: <No Error>
+--------------------------------------------------------------------------------

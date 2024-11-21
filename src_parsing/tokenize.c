@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/20 20:30:52 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:52:54 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,15 @@ int	process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
 
 int	handle_escape(char *input, int i, char *buffer, int *buf_index)
 {
-	i++;
-	if (input[i] == '"' || input[i] == '\'' || input[i] == '\\')
-		buffer[(*buf_index)++] = input[i++];
-	else
+	i++;																	// Incrementa el índice para pasar al siguiente carácter
+	if (input[i] == '"' || input[i] == '\'' || input[i] == '\\')			// Verifica si el carácter es una comilla doble, comilla simple o barra invertida
+		buffer[(*buf_index)++] = input[i++];								// Añade el carácter al buffer y aumenta el índice
+	else												
 	{
-		buffer[(*buf_index)++] = '\\';
-		buffer[(*buf_index)++] = input[i++];
+		buffer[(*buf_index)++] = '\\';										// Añade una barra invertida al buffer
+		buffer[(*buf_index)++] = input[i++];								// Añade el carácter al buffer	
 	}
-	return (i);
+	return (i);																// Retorna el índice actualizado
 }
 
 int	expand_variable(char *input, int i, char *buffer, int *buf_index)
@@ -144,7 +144,7 @@ int	handle_token(char *input, int i, char **tokens, int *j)
 			}
 			i++; 
 		}
-		else if (input[i] == '\\')
+		/*else if (input[i] == '\\')
 		{
 			//printf("[DEBUG]-->HANDLE_TOKEN-04==> Handling carácter escapado\n");
 			i = handle_escape(input, i, buffer, &buf_index);
@@ -153,7 +153,7 @@ int	handle_token(char *input, int i, char **tokens, int *j)
 				//printf("[ERROR]-->HANDLE_TOKEN==> Error al manejar carácter escapado\n");
 				return (-1);
 			}
-		}
+		}*/
 		else if (input[i] == '$')
 		{
 			i = expand_variable(input, i, buffer, &buf_index);

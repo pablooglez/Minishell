@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/20 20:30:52 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:43:17 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
 	return (0);
 }
 
-int	process_token(char *input, int *i, char **tokens, int *j)
+/*int	process_token(char *input, int *i, char **tokens, int *j)
 {
 	if (get_special_token_type(input[*i]) != UNKNOWN)
 	{
@@ -59,7 +59,34 @@ int	process_token(char *input, int *i, char **tokens, int *j)
 			return (-1);
 	}
 	return (0);
+}*/
+int process_token(char *input, int *i, char **tokens, int *j)
+{
+	int start;																						// Variable para almacenar la posición inicial de un token
+	
+    while (input[*i] && input[*i] != ' ')															// Mientras no se llegue al final de la cadena y no se encuentre un espacio
+    {
+		start = *i;																					// Guardar la posición inicial del token
+        while (input[*i] && input[*i] != ' ' && get_special_token_type(input[*i]) == UNKNOWN)		// Mientras no se llegue al final de la cadena, no se encuentre un espacio y no se encuentre un carácter especial
+            (*i)++; 																			   // Incrementar la posición del token
+
+        if (start != *i) 																				// Si la posición inicial del token es diferente a la posición actual
+        {
+            tokens[*j] = ft_substr(input, start, *i - start);										// Crear un substring con el token
+            if (!tokens[*j]) 																		// Si no se pudo crear el substring
+                return (-1);																			// Retornar -1
+            (*j)++;																						// Incrementar el índice de tokens
+        }	
+        if (get_special_token_type(input[*i]) != UNKNOWN)		                 				     //si se encuentra un char speci
+        {
+            *i = handle_special_char(input, *i, tokens, j);											// Manejar el carácter especial
+            if (*i == -1) 																			// Si no se pudo manejar el carácter especial
+                return (-1); 																		// Retornar -1
+        }
+    }
+    return (0);
 }
+
 
 /*t_cmd	*parse_input(char *input_line, t_minishell *shell)
 {
