@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/20 03:22:45 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:50:03 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ typedef enum e_error
 	PERMISSION_DENIED = 126,										// Permiso denegado al ejecutar un archivo
 	CMD_NOT_FOUND = 127,											// Comando no encontrado
 	INVALID_EXIT = 128,												// Argumento inválido para el comando exit
-	EXIT_ERROR = 255												// Error en el comando exit (fuera del rango permitido)
+	EXIT_ERROR = 255,												// Error en el comando exit (fuera del rango permitido)
+	CD_NOT_FOUND = 24,
+	MSG = 100,
 } t_error;
 
 // Enumeración para definir tipos de tokens
@@ -188,8 +190,7 @@ void		*safe_malloc(t_minishell *shell, size_t size);									// Asigna memoria d
 void		create_env_vars(t_minishell *shell, char **env);								// Crea una lista de variables de entorno desde el entorno del sistema.
 
 //----------------------ERROR-----------------------//
-void		fatal(int code, char *value);													// Maneja errores críticos que requieren la salida inmediata del shell.
-void		ft_error(t_minishell *shell, int code, char * value, int should_exit);			// Maneja errores y opcionalmente termina la ejecución.
+int			ft_error(t_minishell *shell, int code, char * value, int should_exit);			// Maneja errores y opcionalmente termina la ejecución.
 
 //-----------------FREE_UTILS---------------------//
 void		free_array(char ***array);														// Libera la memoria de un array de strings.
@@ -223,15 +224,15 @@ char		*get_command_path(char *cmd, t_minishell *shell);								//Obtiene la ruta
 //------------------BUILTIN-CD---------------//
 char		*get_env_value(t_env *env_list, char *key);										//Obtiene el valor de una variable de entorno
 void		update_env_var(t_env **env_list, char *key, char *value);						//Actualiza el valor de una variable de entorno
-void		ft_cd(t_minishell *shell, char **arg);											//Cambia el directorio de trabajo actual
+int			ft_cd(t_minishell *shell, char **arg);											//Cambia el directorio de trabajo actual
 //------------------BUILTIN-ECHO---------------//
 void		ft_echo(t_minishell *shell, char **arg);										//Imprime argumentos en la salida estándar
 //------------------BUILTIN-PWD----------------//
-void		ft_pwd(t_minishell *shell);														//Imprime el directorio de trabajo actual
+int			ft_pwd(t_minishell *shell);														//Imprime el directorio de trabajo actual
 //------------------BUILTIN-EXPORT-------------//
 int			is_valid_identifier(const char *str);											//Verifica si la cadena es un identificador válido para variables de entorno
 void		print_env_vars(t_env *env_list);												//Imprime todas las variables de entorno
-void		ft_export(t_minishell *shell, char **arg);										//Añade o actualiza variables de entorno
+int			ft_export(t_minishell *shell, char **arg);										//Añade o actualiza variables de entorno
 //------------------BUILTIN-UNSET--------------//
 void		delete_env_var(t_env **env_list, const char *key);								//Elimina una variable de entorno
 void		ft_unset(t_minishell *shell, char **arg);										//Elimina variables de entorno específicas

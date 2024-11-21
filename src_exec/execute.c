@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/21 17:34:18 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/21 19:35:33 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,18 +117,20 @@ void	execute(t_minishell *shell)
 		dup2(shell->original_stdout, STDOUT_FILENO);
 	}
 	else
-		execute_commands(shell);
-	while (cmd)
 	{
-		if (cmd->pid != -1)
+		execute_commands(shell);
+		while (cmd)
 		{
-			waitpid(cmd->pid, &shell->exit_status, 0);										// Espera a que el proceso hijo termine su ejecución
-			if (WIFEXITED(shell->exit_status))											// Si el proceso terminó normalmente (sin señal)
-				shell->exit_status = WEXITSTATUS(shell->exit_status);					// Obtiene el código de salida del proceso hijo
-			else if (WIFSIGNALED(shell->exit_status))									// Si el proceso terminó debido a una señal
-				shell->exit_status = 128 + WTERMSIG(shell->exit_status);				// Obtiene el número de la señal que lo finalizó
+			if (cmd->pid != -1)
+			{
+				waitpid(cmd->pid, &shell->exit_status, 0);										// Espera a que el proceso hijo termine su ejecución
+				if (WIFEXITED(shell->exit_status))											// Si el proceso terminó normalmente (sin señal)
+					shell->exit_status = WEXITSTATUS(shell->exit_status);					// Obtiene el código de salida del proceso hijo
+				else if (WIFSIGNALED(shell->exit_status))									// Si el proceso terminó debido a una señal
+					shell->exit_status = 128 + WTERMSIG(shell->exit_status);				// Obtiene el número de la señal que lo finalizó
+			}
+			cmd = cmd->next;
 		}
-		cmd = cmd->next;
 	}
 	if (shell->exit_status >= 128)
 		write(1, "\n", 1);

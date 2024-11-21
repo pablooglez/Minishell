@@ -6,14 +6,25 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:55:18 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/20 19:25:44 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/21 19:19:53 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	built_ins(int code, char *value)
+{
+	if (code == MSG && value)
+		write(2, value, ft_strlen(value));
+	if (code == CD_NOT_FOUND && value)
+	{
+		write(2, "cd: ", 4);
+		write(2, value, ft_strlen(value));
+		write(2, ": No such file or directory\n", 29);
+	}
+}
 
-void	fatal(int code, char *value)
+static void	fatal(int code, char *value)
 {
 	if (code == MEMORY_ERROR)                                                                            // Manejar error de memoria
 	{
@@ -44,23 +55,17 @@ void	fatal(int code, char *value)
 		write(2, "\n", 1);                                                                               // Imprimir salto de línea
 		exit(126);                                                                                       // Termina con código 126 (permiso denegado)
 	}
-	else                                                                                                // Manejar cualquier otro error desconocido
-	{
-		write(2, "Minishell: unknown error occurred\n", 34);                                             // Mensaje de error genérico
-		exit(EXIT_FAILURE);                                                                              // Termina con EXIT_FAILURE (1)
-	}
 }
 
-void	ft_error(t_minishell *shell, int code, char *value, int should_exit)							// Función para gestionar errores, recibe el shell, un código de error, un valor, y si el programa debe finalizar.
+int	ft_error(t_minishell *shell, int code, char *value, int should_exit)							// Función para gestionar errores, recibe el shell, un código de error, un valor, y si el programa debe finalizar.
 {
 	fatal(code, value);																					// Llama a la función fatal para imprimir el mensaje de error adecuado.
+	built_ins(code, value);
 
-	if (code != CMD_NOT_FOUND && value)																	// No liberar 'value' si es parte de 'cmd->arguments'
+	if (code != MSG && value)																						// Si se ha pasado un valor no nulo, libera la memoria asignada a 'value'.
 		free(value);
-	
-	/*if (value)																						// Si se ha pasado un valor no nulo, libera la memoria asignada a 'value'.
-		free(value);*/
 	
 	if (should_exit) 																					// Si el indicador should_exit está activado, termina el programa con el código de salida que tiene el shell.
 		exit(shell->exit_status);																		//Termina el programa con el código de salida almacenado en shell.
+	return (1);
 }

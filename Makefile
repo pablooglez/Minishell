@@ -6,7 +6,7 @@
 #    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/11/21 17:16:30 by pabloglez        ###   ########.fr        #
+#    Updated: 2024/11/21 19:55:47 by pabloglez        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@
 NAME:= minishell
 
 CFLAGS:= -g -Wall -Werror -Wextra \
-		#-g -fsanitize=address,undefined \
+		-g -fsanitize=address,undefined \
 		#-Wunreachable-code -Ofast \
 
 MINISHELL = include/
