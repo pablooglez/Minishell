@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/21 19:10:22 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/21 19:50:03 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,11 +228,11 @@ int			ft_cd(t_minishell *shell, char **arg);											//Cambia el directorio de
 //------------------BUILTIN-ECHO---------------//
 void		ft_echo(t_minishell *shell, char **arg);										//Imprime argumentos en la salida estándar
 //------------------BUILTIN-PWD----------------//
-void		ft_pwd(t_minishell *shell);														//Imprime el directorio de trabajo actual
+int			ft_pwd(t_minishell *shell);														//Imprime el directorio de trabajo actual
 //------------------BUILTIN-EXPORT-------------//
 int			is_valid_identifier(const char *str);											//Verifica si la cadena es un identificador válido para variables de entorno
 void		print_env_vars(t_env *env_list);												//Imprime todas las variables de entorno
-void		ft_export(t_minishell *shell, char **arg);										//Añade o actualiza variables de entorno
+int			ft_export(t_minishell *shell, char **arg);										//Añade o actualiza variables de entorno
 //------------------BUILTIN-UNSET--------------//
 void		delete_env_var(t_env **env_list, const char *key);								//Elimina una variable de entorno
 void		ft_unset(t_minishell *shell, char **arg);										//Elimina variables de entorno específicas
