@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:57:47 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/20 20:51:24 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:49:45 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

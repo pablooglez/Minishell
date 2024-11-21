@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/20 19:26:22 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/21 17:53:32 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,10 @@ int main(int argc, char **argv, char **env)
 {
     t_minishell shell;                                                      // Estructura del shell
     char *input;                                                            // Variable para almacenar la entrada del usuario
-
-    (void)argc;                                                             // Ignora el argumento de número de argumentos
-    (void)argv;                                                             // Ignora el argumento de vector de argumentos
-   	shell.original_stdin = dup(STDIN_FILENO);
-	shell.original_stdout = dup(STDOUT_FILENO);
-
+    shell.original_stdin = dup(STDIN_FILENO);
+    shell.original_stdout = dup(STDOUT_FILENO);
     init_minishell(&shell, env);                                            // Inicializa el shell con el entorno
-    while (1)                                                               // Bucle principal del shell
+    while (argc && argv)                                                               // Bucle principal del shell
     {
         if (g_signal)                                                       // Verifica si se recibió una señal
         {
@@ -61,15 +57,16 @@ int main(int argc, char **argv, char **env)
             printf("exit\n");                                               // Imprime "exit" y termina el shell
             exit_shell(&shell);                                             // Llama a la función para liberar recursos y salir
         }
-        if (input && input[0] == '\0')                                      // Verifica si la entrada está vacía
+        if (is_empty_or_whitespace(input))                                      // Verifica si la entrada está vacía
         {
             free(input);                                                    // Libera la memoria de la entrada
             continue;                                                       // Continua al siguiente ciclo del bucle
         }
+        add_history(input);                                                               // Agrega la entrada al historial si no está vacía
         shell.tokens = parse_input(input, &shell);                          // Analiza la entrada y crea los tokens
         if (shell.tokens)                                                   // Si hay tokens válidos
         {
-            execute_command(&shell);                                        // Ejecuta el comando basado en los tokens
+            execute(&shell);                                                // Ejecuta el comando basado en los tokens
             free_command_list(shell.tokens);                                // Libera la lista de comandos
             shell.tokens = NULL;                                            // Establece los tokens a NULL
         }

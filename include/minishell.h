@@ -102,6 +102,7 @@ typedef struct s_cmd
 	char			**arguments;															// Lista de argumentos del comando
 	int				intfd;																	// Descriptor de archivo para entrada
 	int				outfd;																	// Descriptor de archivo para salida
+	int				pid;
 	int				pipe[2];																// Descriptor de archivo para pipes
 	struct s_redir	*redir;																	// Puntero a la estructura de redirecciones
 	struct s_cmd	*next;																	// Puntero al siguiente comando (si hay pipes)
@@ -133,7 +134,7 @@ typedef struct s_minishell
 
 //--------------FUNCIONES PARSING---------------//
 int         add_argument(char *token, int arg_index, t_cmd *cmd);                                 // Añade un argumento al comando actual
-int        contains_invalid_characters(char *input);                                             // Verifica si la entrada contiene caracteres inválidos
+int			contains_invalid_characters(char *input);                                             // Verifica si la entrada contiene caracteres inválidos
 t_cmd       *create_new_command(t_minishell *shell);                                              // Crea una nueva estructura de comando
 void        display_commands(t_cmd *cmd);                                                         // Muestra los comandos y argumentos para depuración
 void        expand_tokens(t_cmd *cmd, t_minishell *shell);                                        // Expande las variables de entorno en los tokens
@@ -211,14 +212,14 @@ char		*ft_strndup(const char *s, size_t n);											// Duplica hasta n caracte
 //------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 //--------------FUNCIONES EXECUTION-------------//
-int			execute_command(t_minishell *shell);											// Ejecuta un comando individual.
+void		execute(t_minishell *shell);											// Ejecuta un comando individual.
 int			handle_builtin(t_cmd *cmd, t_minishell *shell);									//Maneja comandos internos (built-ins)
-void		check_pipes(t_cmd *cmd);														// Maneja la ejecución de comandos conectados por pipes.
-void		handle_redirection(t_cmd *cmd);													// Maneja las redirecciones de entrada y salida.
-
+int			handle_pipe(t_cmd *cmd);														// Maneja la ejecución de comandos conectados por pipes.
+void		handle_redirection(t_minishell *shell, t_redir *redir, int fd);													// Maneja las redirecciones de entrada y salida.
+void		safe_dup2(int fd1, int fd2);
+void		safe_close(int fd);
 //---------------------UTILS-------------------//
 char		*get_command_path(char *cmd, t_minishell *shell);								//Obtiene la ruta del comando proporcionado
-
 //------------------BUILTIN-CD---------------//
 char		*get_env_value(t_env *env_list, char *key);										//Obtiene el valor de una variable de entorno
 void		update_env_var(t_env **env_list, char *key, char *value);						//Actualiza el valor de una variable de entorno

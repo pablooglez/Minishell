@@ -6,7 +6,7 @@
 #    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/11/20 18:55:02 by pabloglez        ###   ########.fr        #
+#    Updated: 2024/11/21 17:16:30 by pabloglez        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,8 +45,7 @@ SRCS_EXEC = src_exec/built-ins/built-ins.c\
 			src_exec/built-ins/export.c \
 			src_exec/built-ins/pwd.c \
 			src_exec/built-ins/unset.c \
-			src_exec/handle_pipes/check_pipes.c \
-			src_exec/handle_redirection/handle_redirection.c \
+			src_exec/redirections.c \
 			src_exec/execute.c \
 			src_exec/utils.c \
 
