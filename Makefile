@@ -6,7 +6,7 @@
 #    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/11/21 19:55:47 by pabloglez        ###   ########.fr        #
+#    Updated: 2024/11/21 20:34:45 by pabloglez        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,26 +38,26 @@ SRCS	:= src/env.c \
 			src/signals.c \
 			src/utils.c \
 
-SRCS_EXEC = src_exec/built-ins/built-ins.c\
-			src_exec/built-ins/cd.c \
-			src_exec/built-ins/echo.c \
-			src_exec/built-ins/env.c \
-			src_exec/built-ins/export.c \
-			src_exec/built-ins/pwd.c \
-			src_exec/built-ins/unset.c \
-			src_exec/redirections.c \
-			src_exec/execute.c \
-			src_exec/utils.c \
+SRCS_EXEC = src/src_exec/built-ins/built-ins.c\
+			src/src_exec/built-ins/cd.c \
+			src/src_exec/built-ins/echo.c \
+			src/src_exec/built-ins/env.c \
+			src/src_exec/built-ins/export.c \
+			src/src_exec/built-ins/pwd.c \
+			src/src_exec/built-ins/unset.c \
+			src/src_exec/redirections.c \
+			src/src_exec/execute.c \
+			src/src_exec/utils.c \
 
-SRCS_PARSER = src_parsing/tokenize.c \
-				src_parsing/parse_input.c src_parsing/handle_quotes.c \
-				src_parsing/handle_char.c src_parsing/handle_pipes.c \
-				src_parsing/command_utils.c src_parsing/code_checks.c \
-				src_parsing/handle_redirections.c \
-				src_parsing/expand_variables.c src_parsing/free_utils.c \
-				src_parsing/expand_variables_utils.c \
-				src_parsing/expand_variables_helpers.c  \
-				src_parsing/parse_utils.c \
+SRCS_PARSER = src/src_parsing/tokenize.c \
+				src/src_parsing/parse_input.c src/src_parsing/handle_quotes.c \
+				src/src_parsing/handle_char.c src/src_parsing/handle_pipes.c \
+				src/src_parsing/command_utils.c src/src_parsing/code_checks.c \
+				src/src_parsing/handle_redirections.c \
+				src/src_parsing/expand_variables.c src/src_parsing/free_utils.c \
+				src/src_parsing/expand_variables_utils.c \
+				src/src_parsing/expand_variables_helpers.c  \
+				src/src_parsing/parse_utils.c \
 
 OBJS		:= ${SRCS:.c=.o}
 OBJS_PARSER	:= ${SRCS_PARSER:.c=.o}
@@ -92,7 +92,7 @@ head:
 	@echo "\t██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗"
 	@echo "\t╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝"
 	@echo "$(END)"
-	@echo "$(YELLOW)$(BOLD)\t🛠️ 42MLG: $(END)$(WHITE)pablogon & albelope$(END)"
+	@echo "$(YELLOW)$(BOLD)\t🛠️ 42MLG: $(END)$(WHITE)albelope & pablogon$(END)"
 	@echo "$(PURPLE)\t📂 Project:$(END) $(CYAN)minishell$(END)"
 	@echo "$(GREEN)\t🔹 Commands: $(BOLD)all clean fclean re$(END)"
 	@echo "$(BLUE)\t🧰 Compiler: $(BOLD)$(CC)$(END)\n"
