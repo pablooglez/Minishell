@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_char.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 17:49:52 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/21 20:38:40 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/21 22:47:17 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	is_unimplemented_operator(char *input, int i, int in_single_quotes, int in_d
 	return (0);
 }
 
-/*int	is_invalid_token_sequence(char *input, int i, int in_single_quotes, int in_double_quotes)
+int	is_invalid_token_sequence(char *input, int i, int in_single_quotes, int in_double_quotes)
 {
 	if (!in_single_quotes && !in_double_quotes &&
 		((input[i] == ';' && input[i + 1] == ';') ||
@@ -53,7 +53,7 @@ int	is_unimplemented_operator(char *input, int i, int in_single_quotes, int in_d
 		return (1);
 	}
 	return (0);
-}*/
+}
 
 int	contains_invalid_characters(char *input)
 {

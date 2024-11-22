@@ -3,64 +3,63 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/21 19:50:03 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/22 22:12:04 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <unistd.h>																		// write,open,read,close,access,unlink,getcwd,chdir, isatty, ttyname, ttyslot, ioctl, tcsetattr, tcgetattr
-# include <stdio.h>																			//printf
-# include <stdlib.h>																		//malloc, free, getenv
-# include <stdbool.h>																		//true, false
-# include <fcntl.h>  																		//open(), O_RDONLY, O_WRONLY...etc
-# include <limits.h> 																		// INT_MAX, CHAR_MAX ...etc
-# include <sys/types.h> 																	//fork()
-# include <sys/wait.h> 																		//wait(), waitpid(), kill()
-# include <sys/stat.h> 																		//stat,lstat, fstat
-# include <signal.h> 																		//signal, sigaction, kill
-# include <dirent.h> 																		//opendir, readdir, closedir
-# include <term.h> 																			//tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
-# include <readline/readline.h> 															// readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay, add_history
-# include <readline/history.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <stdbool.h>
+# include <fcntl.h>
+# include <limits.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <sys/stat.h>
+# include <signal.h>
+# include <dirent.h>
+# include <term.h>
+# include <readline/readline.h>
 # include <errno.h>
 # include "../Libft/libft.h"
 # include <limits.h>
 
 //----------------- COLOR MACROS --------------------------//
-# define WHITE		"\033[0m"																// Código de escape ANSI para color blanco.
-# define BOLD		"\033[1m"																// Código de escape ANSI para texto en negrita.
-# define GREEN		"\033[0;32m"															// Código de escape ANSI para color verde.
-# define RED		"\033[0;31m"															// Código de escape ANSI para color rojo.
-# define BLUE		"\033[0;34m"															// Código de escape ANSI para color azul.
-# define YELLOW		"\033[33m"																// Código de escape ANSI para color amarillo.
-# define MAGENTA	"\033[35m"																// Código de escape ANSI para color magenta.
-# define CYAN		"\033[36m"																// Código de escape ANSI para color cian.
+# define WHITE		"\033[0m"
+# define BOLD		"\033[1m"
+# define GREEN		"\033[0;32m"
+# define RED		"\033[0;31m"
+# define BLUE		"\033[0;34m"
+# define YELLOW		"\033[33m"
+# define MAGENTA	"\033[35m"
+# define CYAN		"\033[36m"
 
 //----------------- GLOBAL VARIABLE -----------------------//
 
-extern volatile sig_atomic_t	g_signal;													// Variable global que se utiliza para manejar señales de forma segura.
+extern volatile sig_atomic_t	g_signal;
 
 //---------------------STRUCTURE --------------------------//
 
 // Enumeración para definir códigos de error
-typedef enum e_error 
+typedef enum e_error
 {
-	SUCCESS = 0,													// Operación exitosa
-	GENERAL_ERROR = 1,												// Error general
-	SYNTAX_ERROR = 2,												// Error de sintaxis (quotes no balanceadas, pipes mal ubicados)
-	MEMORY_ERROR = 3,												// Error de memoria (malloc fallido)
-	PERMISSION_DENIED = 126,										// Permiso denegado al ejecutar un archivo
-	CMD_NOT_FOUND = 127,											// Comando no encontrado
-	INVALID_EXIT = 128,												// Argumento inválido para el comando exit
-	EXIT_ERROR = 255,												// Error en el comando exit (fuera del rango permitido)
+	SUCCESS = 0,
+	GENERAL_ERROR = 1,
+	SYNTAX_ERROR = 2,
+	MEMORY_ERROR = 3,
+	PERMISSION_DENIED = 126,
+	CMD_NOT_FOUND = 127,
+	INVALID_EXIT = 128,
+	EXIT_ERROR = 255,
 	CD_NOT_FOUND = 24,
-	MSG = 100,
-} t_error;
+	MSG = 100
+}	t_error;
 
 // Enumeración para definir tipos de tokens
 typedef enum e_token
