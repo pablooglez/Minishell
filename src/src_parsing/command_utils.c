@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:53:22 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/19 20:09:07 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/25 13:21:39 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ t_cmd	*create_new_command(t_minishell *shell)
 	return (new_cmd);																// Retorna el nuevo comando
 }
 
-/*SE PODRIA INICIALIZAR MEMSET PARA ALGUNOS COMANDOS DE CREATE_NEW_COMMAND*/
 
 int	initialize_arguments(char **tokens, int *i, t_cmd *cmd)
 {

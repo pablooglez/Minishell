@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/21 19:43:17 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/25 13:09:43 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
 	return (0);
 }
 
-/*int	process_token(char *input, int *i, char **tokens, int *j)
+int	process_token(char *input, int *i, char **tokens, int *j)
 {
 	if (get_special_token_type(input[*i]) != UNKNOWN)
 	{
@@ -59,108 +59,15 @@ int	process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
 			return (-1);
 	}
 	return (0);
-}*/
-int process_token(char *input, int *i, char **tokens, int *j)
-{
-	int start;																						// Variable para almacenar la posición inicial de un token
-	
-    while (input[*i] && input[*i] != ' ')															// Mientras no se llegue al final de la cadena y no se encuentre un espacio
-    {
-		start = *i;																					// Guardar la posición inicial del token
-        while (input[*i] && input[*i] != ' ' && get_special_token_type(input[*i]) == UNKNOWN)		// Mientras no se llegue al final de la cadena, no se encuentre un espacio y no se encuentre un carácter especial
-            (*i)++; 																			   // Incrementar la posición del token
-
-        if (start != *i) 																				// Si la posición inicial del token es diferente a la posición actual
-        {
-            tokens[*j] = ft_substr(input, start, *i - start);										// Crear un substring con el token
-            if (!tokens[*j]) 																		// Si no se pudo crear el substring
-                return (-1);																			// Retornar -1
-            (*j)++;																						// Incrementar el índice de tokens
-        }	
-        if (get_special_token_type(input[*i]) != UNKNOWN)		                 				     //si se encuentra un char speci
-        {
-            *i = handle_special_char(input, *i, tokens, j);											// Manejar el carácter especial
-            if (*i == -1) 																			// Si no se pudo manejar el carácter especial
-                return (-1); 																		// Retornar -1
-        }
-    }
-    return (0);
 }
-
-
-/*t_cmd	*parse_input(char *input_line, t_minishell *shell)
-{
-	char	**tokens;
-	t_cmd	*cmd;
-	t_cmd	*current_cmd;																	// Variable para recorrer la lista de comandos de printf
-	int		i = 0;																			// Variable para recorrer el bucle de printf
-
-	if (is_empty_or_whitespace(input_line))                                                // Verificar si la línea está vacía o tiene solo espacios
-		return (NULL);
-	if (contains_invalid_characters(input_line))                                           // Verificar si la línea contiene caracteres inválidos
-		return (NULL);
-	//printf("[DEBUG]-->PARSE_INPUT[0.0]==> Iniciando parseo de la entrada es: 	   [%s]\n", input_line);
-	tokens = tokenize_input(input_line);
-	if (!tokens || !tokens[0])
-	{
-		free_tokens_parse(tokens);
-		return (NULL);
-	}
-	//printf("*****[DEBUG]-->PARSE_INPUT[0.1]==> Tokens generados:\n");
-	i = 0;
-	while (tokens[i])
-		i++;
-	cmd = create_new_command(shell);
-	//printf("[DEBUG]-->PARSE_INPUT[0.3]==> Comando creado:                 [%p]\n", (void *)cmd);
-	//printf("[DEBUG]-->PARSE_INPUT[0.4]==> Comando creado (cmd->path):     [%s]\n", cmd->path);
-	//printf("[DEBUG]-->PARSE_INPUT[0.5]==> Comando creado (cmd->type):     [%d]\n", cmd->type);
-	//printf("[DEBUG]-->PARSE_INPUT[0.6]==> Comando creado (cmd->arguments): [%p]\n", (void *)cmd->arguments);
-	if (!cmd)
-	{
-		free_tokens_parse(tokens);
-		return (NULL);
-	}
-	if (tokens[0][0] == '$')
-	{
-		cmd->path = ft_strdup("echo");
-		//printf("[DEBUG]-->PARSE_INPUT[0.5]==> cmd->path asignado a 'echo':             [%s]\n", cmd->path);
-	}
-	i = 0;
-	while (tokens[i])
-	{
-		//printf("***[DEBUG]-->PARSE_INPUT[0.7]==> Token[%d] antes de expandir:          [%s]\n", i, tokens[i]);
-		i++;
-		if (process_tokens(tokens, cmd, shell) == -1)
-		{
-			free_tokens_parse(tokens);
-			free_command(cmd);
-			return (NULL);
-		}
-		expand_tokens(cmd, shell);
-		//printf("***[DEBUG]-->PARSE_INPUT[0.8]==> Comandos creados y argumentos:\n");
-		current_cmd = cmd;
-		while (current_cmd)
-		{
-			i = 0;
-			while (current_cmd->arguments && current_cmd->arguments[i])
-				i++;
-			current_cmd = current_cmd->next;
-		}
-		free_tokens_parse(tokens);
-		return (cmd);
-	}
-}*/
 
 t_cmd	*parse_input(char *input_line, t_minishell *shell)
 {
 	char	**tokens;
 	t_cmd	*cmd;
-	t_cmd	*current_cmd;
-	int		i;
 
 	if (is_empty_or_whitespace(input_line)) 
 		return (NULL);
-
 	if (contains_invalid_characters(input_line)) 
 		return (NULL);
 	tokens = tokenize_input(input_line);
@@ -182,14 +89,6 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 		return (NULL);
 	}
 	expand_tokens(cmd, shell);
-	current_cmd = cmd;
-	while (current_cmd)
-	{
-		i = 0;
-		while (current_cmd->arguments && current_cmd->arguments[i])
-			i++;
-		current_cmd = current_cmd->next;
-	}
 	free_tokens_parse(tokens);
 	return (cmd);
 }

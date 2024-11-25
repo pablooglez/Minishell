@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:43:54 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/20 03:26:47 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/25 13:18:34 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,21 @@
 
 int	check_pipe_errors(char **tokens, int *i)
 {
-	// Verificar si el token es una pipe seguida de otra pipe (`||`)
 	if (tokens[*i] && ft_strlen(tokens[*i]) >= 2 && tokens[*i][0] == '|' && tokens[*i][1] == '|')
 	{
 		print_error("Minishell: syntax error near unexpected token `||'\n");
 		return (SYNTAX_ERROR);
 	}
-	// Verificar si la pipe está al principio
 	if (*i == 0)
 	{
 		print_error("Minishell: syntax error near unexpected token `|'\n");
 		return (SYNTAX_ERROR);
 	}
-
-	// Verificar si la pipe es el último token
 	if (!tokens[*i + 1])
 	{
 		print_error("Minishell: syntax error near unexpected token `|'\n");
 		return (SYNTAX_ERROR);
 	}
-
-	// Verificar si hay pipes consecutivas (`| |`)
 	if (tokens[*i + 1] && ft_strncmp(tokens[*i + 1], "|", 2) == 0)
 	{
 		print_error("Minishell: syntax error near unexpected token `|'\n");

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+         #
+#    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/11/21 20:34:45 by pabloglez        ###   ########.fr        #
+#    Updated: 2024/11/21 21:00:51 by albelope         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@
 NAME:= minishell
 
 CFLAGS:= -g -Wall -Werror -Wextra \
-		-g -fsanitize=address,undefined \
+		#-g -fsanitize=address,undefined \
 		#-Wunreachable-code -Ofast \
 
 MINISHELL = include/
