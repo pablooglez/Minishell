@@ -3,68 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/21 19:35:33 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/26 21:57:06 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int count_nodes(t_env *env_vars)
+int	count_nodes(t_env *env_vars)
 {
-    int	count;
+	int	count;
 
 	count = 0;
-    while (env_vars)
-    {
-        count++;
-        env_vars = env_vars->next;
-    }
-    return (count);
+	while (env_vars)
+	{
+		count++;
+		env_vars = env_vars->next;
+	}
+	return (count);
 }
 
-char **free_env_array(char ***env_array, int i)
+char	**free_env_array(char ***env_array, int i)
 {
 	while (i > -1)
 		free((*env_array)[i--]);
-    free(*env_array);
-    return (NULL);
+	free(*env_array);
+	return (NULL);
 }
 
-char **env_vars_to_array(t_env *env_vars)
+char	**env_vars_to_array(t_env *env_vars)
 {
 	char	**env_array;
 	int		len;
 	int		i;
 
-    env_array = malloc((count_nodes(env_vars) + 1) * sizeof(char *));
-    if (!env_array)
-        return (NULL);
-    i = 0;
-    while (env_vars)
-    {
-        len = ft_strlen(env_vars->key) + 1;
-        if (env_vars->value)
-            len += ft_strlen(env_vars->value);
-        env_array[i] = malloc((len + 1) * sizeof(char));
-        if (!env_array[i])
+	env_array = malloc((count_nodes(env_vars) + 1) * sizeof(char *));
+	if (!env_array)
+		return (NULL);
+	i = 0;
+	while (env_vars)
+	{
+		len = ft_strlen(env_vars->key) + 1;
+		if (env_vars->value)
+			len += ft_strlen(env_vars->value);
+		env_array[i] = malloc((len + 1) * sizeof(char));
+		if (!env_array[i])
 			return (free_env_array(&env_array, i));
 		env_array[i] = ft_strjoin2(env_vars->key, "=", env_vars->value);
 		if (!env_array[i])
 			return (free_env_array(&env_array, --i));
-        env_vars = env_vars->next;
-        i++;
-    }
-    env_array[i] = NULL;
-    return (env_array);
+		env_vars = env_vars->next;
+		i++;
+	}
+	env_array[i] = NULL;
+	return (env_array);
 }
 
-
-
-static void	execute_child(t_minishell *shell, t_cmd	*cmd) {
-	char	*command_path;																	// Declaración de un puntero que contendrá la ruta completa del comando a ejecutar
+static void	execute_child(t_minishell *shell, t_cmd	*cmd) 
+{
+	char	*command_path;
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -74,30 +73,31 @@ static void	execute_child(t_minishell *shell, t_cmd	*cmd) {
 	if (handle_builtin(cmd, shell))
 		exit(shell->exit_status);
 	handle_redirection(shell, cmd->redir, -1);
-	command_path = get_command_path(cmd->arguments[0], shell);					// Llama a get_command_path para buscar el comando en los directorios de PATH
-	if (!command_path)															// Si el comando no se encuentra, maneja el error
-		ft_error(shell, CMD_NOT_FOUND, cmd->arguments[0], 1);					// Imprime un error indicando que el comando no se encuentra
-	if (execve(command_path, cmd->arguments, env_vars_to_array(shell->env_vars)) == -1)					// Si execve falla, imprime un mensaje de error
+	command_path = get_command_path(cmd->arguments[0], shell);
+	if (!command_path)
+		ft_error(shell, CMD_NOT_FOUND, cmd->arguments[0], 1);
+	if (execve(command_path, cmd->arguments,
+			env_vars_to_array(shell->env_vars)) == -1)
 	{
-		ft_error(shell, CMD_NOT_FOUND, cmd->arguments[0], 1);					// Imprime un mensaje de error si execve falla
-		free(command_path);															// Libera la memoria de command_path si execve se ejecuta correctamente
+		ft_error(shell, CMD_NOT_FOUND, cmd->arguments[0], 1);
+		free(command_path);
 	}
 }
 
 static void	execute_commands(t_minishell *shell)
 {
-	t_cmd	*cmd;																			// Inicializa un puntero a la lista de comandos (tokens) en la estructura del shell
+	t_cmd	*cmd;
 
-	cmd = shell->tokens;																	// Asigna el inicio de la lista de comandos a la variable cmd
+	cmd = shell->tokens;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	while (cmd)																				// Comienza un bucle que continúa mientras haya comandos para procesar
+	while (cmd)
 	{
 		if (handle_pipe(cmd) == 1)
 			ft_error(shell, MEMORY_ERROR, NULL, 1);
-		cmd->pid = fork();																	// Crea un nuevo proceso hijo con fork()
-		if (cmd->pid < 0)																// Si fork() falla, verifica que pid sea menor que 0 (indica un error)
-			ft_error(shell, MEMORY_ERROR, NULL, 1);											// Si hubo un error al crear el proceso, maneja el error de memoria
+		cmd->pid = fork();
+		if (cmd->pid < 0)
+			ft_error(shell, MEMORY_ERROR, NULL, 1);
 		else if (cmd->pid == 0)																	// Verifica si el proceso actual es el hijo (pid == 0 significa proceso hijo)
 			execute_child(shell, cmd);
 		safe_close(cmd->pipe[0]);
