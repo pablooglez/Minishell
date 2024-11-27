@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:55:18 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/26 21:45:35 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:01:52 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	ft_error(t_minishell *shell, int code, char *value, int should_exit)
 {
 	fatal(code, value);
 	built_ins(code, value);
-
 	if (code != MSG && value)
 		free(value);
 	if (should_exit)

@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 18:05:45 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/26 21:43:45 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:01:59 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,10 @@ void	create_env_vars(t_minishell *shell, char **env)
 	int	i;
 
 	i = 0;
-
 	while (env && env[i] != NULL)
 	{
 		t_env *node;
 		node = safe_malloc(shell, sizeof(t_env));
-
 		char *equal_sign = ft_strchr(env[i], '=');
 		if (equal_sign)
 		{

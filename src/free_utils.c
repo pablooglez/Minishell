@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:48:22 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/26 21:54:49 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:01:42 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	free_array(char ***array)
 	int	i;
 
 	i = -1;
-
 	if (*array)
 	{
 		while ((*array)[++i])
@@ -71,10 +70,8 @@ void	*free_shell(t_minishell **shell)
 {
 	if ((*shell)->env)
 		free_array(&(*shell)->env);
-
 	if ((*shell)->env_vars)
 		free_env_list(&(*shell)->env_vars);
-
 	close((*shell)->original_stdin);
 	close((*shell)->original_stdout);
 	return (NULL);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
+#    By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/11/21 21:00:51 by albelope         ###   ########.fr        #
+#    Updated: 2024/11/27 18:03:57 by pablogon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ HEADERS := -I include -I$(LIBFT_DIR)
 ##                              SOURCE AND OBJECTS                            ##
 ################################################################################
 
-SRCS	:= src/env.c \
+SRCS	:= src/env_vars.c \
 			src/error.c \
 			src/free_utils.c \
 			src/main.c \

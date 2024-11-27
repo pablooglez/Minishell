@@ -6,13 +6,13 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/26 21:51:24 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/27 17:02:45 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_signal;
+volatile sig_atomic_t	g_signal = 0;
 
 void	exit_shell(t_minishell *shell)
 {

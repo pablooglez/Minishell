@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/26 21:57:06 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/27 17:05:22 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	**env_vars_to_array(t_env *env_vars)
 	return (env_array);
 }
 
-static void	execute_child(t_minishell *shell, t_cmd	*cmd) 
+static void	execute_child(t_minishell *shell, t_cmd	*cmd)
 {
 	char	*command_path;
 
@@ -98,11 +98,11 @@ static void	execute_commands(t_minishell *shell)
 		cmd->pid = fork();
 		if (cmd->pid < 0)
 			ft_error(shell, MEMORY_ERROR, NULL, 1);
-		else if (cmd->pid == 0)																	// Verifica si el proceso actual es el hijo (pid == 0 significa proceso hijo)
+		else if (cmd->pid == 0)
 			execute_child(shell, cmd);
 		safe_close(cmd->pipe[0]);
 		safe_close(cmd->pipe[1]);
-		cmd = cmd->next;																	// Avanza al siguiente comando en la lista de comandos
+		cmd = cmd->next;
 	}
 }
 
@@ -111,7 +111,8 @@ void	execute(t_minishell *shell)
 	t_cmd	*cmd;
 
 	cmd = shell->tokens;
-	if ((!cmd->prev || cmd->prev->type != 3) && cmd->type != 3 && handle_builtin(cmd, shell))								// Verifica si el comando es un built-in (comandos internos como echo, cd, etc.)
+	if ((!cmd->prev || cmd->prev->type != 3)
+		&& cmd->type != 3 && handle_builtin(cmd, shell))
 	{
 		dup2(shell->original_stdin, STDIN_FILENO);
 		dup2(shell->original_stdout, STDOUT_FILENO);
@@ -123,18 +124,18 @@ void	execute(t_minishell *shell)
 		{
 			if (cmd->pid != -1)
 			{
-				waitpid(cmd->pid, &shell->exit_status, 0);										// Espera a que el proceso hijo termine su ejecución
-				if (WIFEXITED(shell->exit_status))											// Si el proceso terminó normalmente (sin señal)
-					shell->exit_status = WEXITSTATUS(shell->exit_status);					// Obtiene el código de salida del proceso hijo
-				else if (WIFSIGNALED(shell->exit_status))									// Si el proceso terminó debido a una señal
-					shell->exit_status = 128 + WTERMSIG(shell->exit_status);				// Obtiene el número de la señal que lo finalizó
+				waitpid(cmd->pid, &shell->exit_status, 0);
+				if (WIFEXITED(shell->exit_status))
+					shell->exit_status = WEXITSTATUS(shell->exit_status);
+				else if (WIFSIGNALED(shell->exit_status))
+					shell->exit_status = 128 + WTERMSIG(shell->exit_status);
 			}
 			cmd = cmd->next;
 		}
 	}
 	if (shell->exit_status >= 128)
 		write(1, "\n", 1);
-	signal(SIGINT, signal_handler);                                         // Configura el manejador de señal para SIGINT
-	signal(SIGQUIT, SIG_IGN);                                               // Ignora SIGQUIT para evitar que el shell termine
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
 

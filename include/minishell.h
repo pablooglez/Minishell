@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/26 21:39:04 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/27 17:33:38 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <fcntl.h>
-# include <limits.h>
+# include <linux/limits.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>

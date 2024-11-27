@@ -3,29 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:11 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/21 19:50:25 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/27 17:54:48 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_env_vars(t_env *env_list)														//Función auxiliar para imprimir las variables de entorno
+void	print_env_vars(t_env *env_list)
 {
-	t_env	*current_env = env_list;														//Inicializa un puntero que apunta a la lista de variables de entorno
+	t_env	*current_env;
 
-	while (current_env)																		//Bucle para recorrer toda la lista de variables de entorno
+	current_env = env_list;
+	while (current_env)
 	{
-		if (current_env->key)																//Verifica que la clave de la variable de entorno existe
+		if (current_env->key)
 		{
-			if (current_env->value)															//Si la variable tiene un valor asociado
-				printf("declare -x %s=\"%s\"\n", current_env->key, current_env->value);		//Imprimir en formato: declare -x KEY="VALUE"
+			if (current_env->value)
+				printf("declare -x %s=\"%s\"\n",
+					current_env->key, current_env->value);
 			else
-				printf ("declare -x %s\n", current_env->key);								//Si no tiene valor, imprime solo la clave: declare -x KEY
+				printf ("declare -x %s\n", current_env->key);
 		}
-		current_env = current_env->next;													//Avanza al siguiente nodo de la lista de variables de entorno
+		current_env = current_env->next;
 	}
 }
 
@@ -33,40 +35,39 @@ int	ft_export(t_minishell *shell, char **arg)
 {
 	int	i;
 
-	i = 1;																					//Inicializa el índice a 1 pq arg[0] es el propio comando "export"
-	
-	if (!arg[1])																			//Si no hay argumentos después de "export", imprime todas las variables de entorno
+	i = 1;
+	if (!arg[1])
 	{
-		print_env_vars(shell->env_vars);													//Llama a la función auxiliar para imprimir todas las variables de entorno
-		return (0);																				//Sale de la función después de imprimir
+		print_env_vars(shell->env_vars);
+		return (0);
 	}
-
-	while (arg && arg[i])																	//Bucle para recorrer los argumentos que siguen al comando "export"
+	while (arg && arg[i])
 	{
-		char *equal_sign = ft_strchr(arg[i], '=');											//Busca el simbolo '=' en el argumento actual
-
-		if (equal_sign)																		//Si encuentra un '=' en el argumento, significa que es el tipo "KEY=VALUE"
+		char *equal_sign = ft_strchr(arg[i], '=');
+		if (equal_sign)
 		{
-			char *key = ft_strndup(arg[i], equal_sign - arg[i]);							//Extrae la clave (lo que está antes del '=')
-			char *value = ft_strdup(equal_sign + 1);										//Extrae el valor (lo que está después del '=')
+			char *key = ft_strndup(arg[i], equal_sign - arg[i]);
+			char *value = ft_strdup(equal_sign + 1);
 			if (!is_valid_identifier(key))
 			{
 				free(key);
 				free(value);
-				return (ft_error(shell, MSG, "export: not a valid identifier\n", 0));
+				return (ft_error(shell, MSG,
+						"export: not a valid identifier\n", 0));
 			}
-			update_env_var(&(shell->env_vars), key, value);									//Actualiza o añade la variable de entorno con clave y valor
-			free(key);																		//Libera la memoria asignada a la clave
-			free(value);																	//Libera la memoria asignada al valor
+			update_env_var(&(shell->env_vars), key, value);
+			free(key);
+			free(value);
 		}
-		else																				//Si no hay un '=', es solo un nombre de variable sin valor
+		else
 		{
-			if (is_valid_identifier(arg[i]))												//Verifica si es un identificador válido (ejemplo: solo letras y guiones bajos)
-				update_env_var(&(shell->env_vars), arg[i], "");								//Añade la variable sin valor asociado (se establece a NULL)
+			if (is_valid_identifier(arg[i]))
+				update_env_var(&(shell->env_vars), arg[i], "");
 			else
-				return (ft_error(shell, MSG, "export: not a valid identifier\n", 0));		//Muestra un error si el identificador no es válido
+				return (ft_error(shell, MSG,
+						"export: not a valid identifier\n", 0));
 		}
-		i++;																				//Avanza al siguiente argumento en la lista
-	 }
-	 return (0);
+		i++;
+	}
+	return (0);
 }

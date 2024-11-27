@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 19:48:11 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/26 20:45:08 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:01:22 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,3 @@ void	signal_handler(int signal)
 	rl_on_new_line();
 	rl_redisplay();
 }
-
