@@ -23,40 +23,10 @@ int get_redirection_type(char *token)
 	else if (ft_strncmp(token, "<", 1) == 0 && ft_strlen(token) == 1)														// Verifica si el token es "<" (entrada)
 		return (INFILE);																									// Retorna tipo INFILE
 	else if (ft_strncmp(token, "<<", 2) == 0 && ft_strlen(token) == 2)														// Verifica si el token es "<<" (here-document)
-	{ 
-		
 		return (HEREDOC);																									// Retorna tipo HEREDOC
-	}
 	return (NOT_REDIR);																										// Si no coincide con ninguna, retorna -1
 }
 
-int parse_heredoc(char **tokens, int *i, t_cmd *cmd)
-{
-	t_redir *new_redir;																										// Puntero para la nueva redirección
-	t_redir *current;																										// Puntero para recorrer la lista de redirecciones existentes
-
-	new_redir = malloc(sizeof(t_redir));																					// Asigna memoria para la nueva redirección
-	if (!new_redir)																											// Verifica si la asignación falló
-		return (-1);																										// Retorna -1 en caso de error
-	new_redir->type = HEREDOC;																								// Establece el tipo de redirección
-	new_redir->file = ft_strdup(tokens[*i + 1]);																			// Duplica el delimitador
-	if (!new_redir->file)																									// Verifica si la duplicación falló
-	{
-		free(new_redir);																									// Libera la memoria asignada a la redirección si hubo error
-		return (-1);																										// Retorna -1 en caso de error
-	}
-	new_redir->next = NULL;																									// Establece el puntero `next` como NULL
-	if (!cmd->redir)																										// Si no hay redirecciones previas en el comando
-		cmd->redir = new_redir;																								// Asigna la nueva redirección como la primera
-	else																													// Si ya existen redirecciones
-	{
-		current = cmd->redir;																								// Inicia en la primera redirección
-		while (current->next)																								// Recorre la lista hasta el último elemento
-			current = current->next;																						// Avanza al siguiente
-		current->next = new_redir;																							// Añade la nueva redirección al final de la lista
-	}	*i += 1;																												// Incrementa el índice
-	return (0);																												// Retorna 0 si todo ha sido correctamente procesado
-}
 int create_and_add_redirection(t_cmd *cmd, int type, char *file)
 {
     t_redir *new_redir; 																			// Puntero para la nueva redirección
@@ -106,7 +76,6 @@ int validate_redirection_syntax(char **tokens, int *i)
     return (0);
 }
 
-
 int process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
 {
 	int		type;																												// Tipo de redirección
@@ -123,12 +92,7 @@ int process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
 		return (-1);																										// Retorna -1 en caso de error
 	}
 	if (type == HEREDOC)																									// Si el tipo de redirección es HEREDOC
-	{
-		if (parse_heredoc(tokens, i, cmd) == -1)																			// Procesa la redirección HEREDOC
-			return (-1);																									// Retorna -1 en caso de error
-		(*i)++;																												// Incrementa el índice
-		return (0);																											// Retorna 0 si se procesó correctamente
-	}
+		return (parse_heredoc(shell, tokens, i, cmd));
 	expanded_filename = expand_string(tokens[*i + 1], shell);																// Expande el nombre del archivo
 	if (!expanded_filename || is_empty_or_whitespace(expanded_filename))													// Verifica si la expansión falló
 		return (-1);																										// Retorna -1 en caso de error

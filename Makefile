@@ -6,7 +6,7 @@
 #    By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/11/27 18:03:57 by pablogon         ###   ########.fr        #
+#    Updated: 2024/11/28 01:00:01 by pablogon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ HEADERS := -I include -I$(LIBFT_DIR)
 SRCS	:= src/env_vars.c \
 			src/error.c \
 			src/free_utils.c \
+			src/heredoc.c \
 			src/main.c \
 			src/signals.c \
 			src/utils.c \

@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/27 17:05:22 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 01:46:29 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	**env_vars_to_array(t_env *env_vars)
 	return (env_array);
 }
 
-static void	execute_child(t_minishell *shell, t_cmd	*cmd)
+static void	execute_child(t_minishell *shell, t_cmd *cmd)
 {
 	char	*command_path;
 
@@ -70,9 +70,11 @@ static void	execute_child(t_minishell *shell, t_cmd	*cmd)
 	safe_dup2(cmd->pipe[0], STDIN_FILENO);
 	safe_dup2(cmd->pipe[1], STDOUT_FILENO);
 	safe_close(cmd->intfd);
-	if (handle_builtin(cmd, shell))
+	if (cmd->arguments && handle_builtin(cmd, shell))
 		exit(shell->exit_status);
 	handle_redirection(shell, cmd->redir, -1);
+	if (!cmd->arguments)
+		exit(shell->exit_status);
 	command_path = get_command_path(cmd->arguments[0], shell);
 	if (!command_path)
 		ft_error(shell, CMD_NOT_FOUND, cmd->arguments[0], 1);
@@ -111,7 +113,7 @@ void	execute(t_minishell *shell)
 	t_cmd	*cmd;
 
 	cmd = shell->tokens;
-	if ((!cmd->prev || cmd->prev->type != 3)
+	if (cmd->arguments && (!cmd->prev || cmd->prev->type != 3)
 		&& cmd->type != 3 && handle_builtin(cmd, shell))
 	{
 		dup2(shell->original_stdin, STDIN_FILENO);
@@ -133,6 +135,7 @@ void	execute(t_minishell *shell)
 			cmd = cmd->next;
 		}
 	}
+	delete_heredoc(shell);
 	if (shell->exit_status >= 128)
 		write(1, "\n", 1);
 	signal(SIGINT, signal_handler);

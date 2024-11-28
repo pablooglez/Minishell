@@ -6,13 +6,13 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/27 17:02:45 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 01:45:38 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_signal = 0;
+int	g_signal = 0;
 
 void	exit_shell(t_minishell *shell)
 {
@@ -47,12 +47,9 @@ int	main(int argc, char **argv, char **env)
 	init_minishell(&shell, env);
 	while (argc && argv)
 	{
-		if (g_signal)
-		{
-			g_signal = 0;
-			printf("\n");
-		}
 		input = readline("\001\033[1;36m\002Minishell ➜ \001\033[0m\002");
+		if (g_signal != 0)
+			g_signal = 0;
 		if (!input)
 		{
 			printf("exit\n");
@@ -65,13 +62,18 @@ int	main(int argc, char **argv, char **env)
 		}
 		add_history(input);
 		shell.tokens = parse_input(input, &shell);
-		if (shell.tokens)
+		if (shell.tokens && g_signal == 0)
 		{
 			execute(&shell);
 			free_command_list(shell.tokens);
 			shell.tokens = NULL;
 		}
 		free(input);
+		if (g_signal != 0)
+		{
+			shell.exit_status = 128 + g_signal;
+			g_signal = 0;
+		}
 	}
 	exit_shell(&shell);
 }

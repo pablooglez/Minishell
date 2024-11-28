@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/27 17:33:38 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 01:16:54 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 
 //----------------- GLOBAL VARIABLE -----------------------//
 
-extern volatile sig_atomic_t	g_signal;
+extern int	g_signal;
 
 //---------------------STRUCTURE --------------------------//
 
@@ -205,6 +205,11 @@ void		free_redir(t_redir **redir);
 void		free_env_list(t_env	**l_env);
 void		*free_shell(t_minishell **shell);
 void		*free_tokens(t_cmd **tokens);
+
+//-----------------HEREDOC---------------------//
+int			parse_heredoc(t_minishell *shell,
+				char **tokens, int *i, t_cmd *cmd);
+void		delete_heredoc(t_minishell *shell);
 
 //-------------FUNCIONES MAIN------------------//
 void		exit_shell(t_minishell *shell);
