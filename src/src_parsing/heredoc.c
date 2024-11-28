@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 01:10:19 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/28 19:25:50 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/29 00:29:38 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/ioctl.h>
 
 void	sigint_heredoc(int sig)
 {
@@ -26,10 +25,6 @@ static	void	read_heredoc(int fd, char *delimiter)
 
 	signal(SIGINT, sigint_heredoc);
 	line = NULL;
-	write(1, "——————————————————\n", 56);
-	write(1, "Delimiter is: ", 15);
-	write(1, delimiter, ft_strlen(delimiter));
-	write(1, "\n——————————————————\n", 57);
 	line = readline("> ");
 	while (line && strcmp(delimiter, line) && g_signal == 0)
 	{

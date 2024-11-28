@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variables.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:02:04 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/25 13:20:17 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:12:15 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,102 +14,102 @@
 
 char	*find_env_value(t_env *env_vars, const char *key)
 {
-	size_t	key_len;														// Para almacenar la longitud de la key
-	size_t	current_key_len;												// Para almacenar la longitud de la key actual
+	size_t	key_len;
+	size_t	current_key_len;
 
-	if (!key || !env_vars)													// Verifica si la key o env_vars es NULL
+	if (!key || !env_vars)
 		return (NULL);
-	key_len = ft_strlen(key); 												// Obtiene la longitud de la key
-	while (env_vars != NULL)												// Recorre la lista de variables de entorno
+	key_len = ft_strlen(key);
+	while (env_vars != NULL)
 	{
-		current_key_len = ft_strlen(env_vars->key);							// Obtiene la longitud de la key actual
-		if (current_key_len == key_len)										// COmparala longitud de la key actual con la key dada
+		current_key_len = ft_strlen(env_vars->key);
+		if (current_key_len == key_len)
 		{
-			if (ft_strncmp(env_vars->key, key, key_len) == 0)				// Compara la key actual con la key dada env_vars->key es la key actual, key es la key dada, y key_len es la longitud de la key
-				return (env_vars->value);									// Retorna el valor si las keys son iguales
+			if (ft_strncmp(env_vars->key, key, key_len) == 0)
+				return (env_vars->value);
 		}
-		env_vars = env_vars->next;											// Avanza al siguiente nodo de la lista
+		env_vars = env_vars->next;
 	}
-	return (NULL);															// Retorna NULL si no se encuentra la key
+	return (NULL);
 }
 
-char *get_expanded_value(const char *variable, t_minishell *shell)
+char	*get_expanded_value(const char *variable, t_minishell *shell)
 {
-	char *value;
+	char	*value;
 
-	if (ft_strncmp(variable, "?", 2) == 0)									// Verifica si la variable es "?"
-		return (ft_itoa(shell->exit_status));								// Retorna el valor del estado de salida como string
+	if (ft_strncmp(variable, "?", 2) == 0)
+		return (ft_itoa(shell->exit_status));
 
-	value = find_env_value(shell->env_vars, variable);						// Busca el valor de la variable en env_vars
+	value = find_env_value(shell->env_vars, variable);
 	if (value)
-		return (ft_strdup(value));											// Retorna una copia del valor si existe
-	return (ft_strdup(""));													// Retorna una cadena vacía si no existe
+		return (ft_strdup(value));
+	return (ft_strdup(""));
 }
 
-char *expand_var_or_char(const char *str, int *i, t_minishell *shell)
+char	*expand_var_or_char(const char *str, int *i, t_minishell *shell)
 {
-	char *expanded;
+	char	*expanded;
 
-	if (str[*i] == '\\' && str[*i + 1] == '$')								// Verifica si hay un dólar escapado		
-		expanded = handle_escaped_dollar(i);								// Maneja el carácter '$' escapado	
-	else if (str[*i] == '$')												// Verifica si es un símbolo de dólar		
-		expanded = handle_dollar_sign(str, i, shell);						// Expande la variable después de '$'
-	else		
-		expanded = handle_regular_char(str, i);								// Trata cualquier otro carácter
-	return (expanded);														// Retorna el carácter expandido
+	if (str[*i] == '\\' && str[*i + 1] == '$')
+		expanded = handle_escaped_dollar(i);
+	else if (str[*i] == '$')
+		expanded = handle_dollar_sign(str, i, shell);
+	else
+		expanded = handle_regular_char(str, i);
+	return (expanded);
 }
 
-char *expand_string(const char *str, t_minishell *shell)
+char	*expand_string(const char *str, t_minishell *shell)
 {
 	char	*result;
 	char	*expanded;
 	char	*temp;
 	int		i;
 
-	result = ft_strdup("");													// Inicializa result con una cadena vacía
+	result = ft_strdup("");
 	if (!result)
-		return (NULL);														// Retorna NULL si falla la asignación
+		return (NULL);
 	i = 0;
-	while (str[i] != '\0')													// Recorre cada carácter de la cadena
+	while (str[i] != '\0')
 	{
-		expanded = expand_var_or_char(str, &i, shell);						// Expande el carácter actual o variable
+		expanded = expand_var_or_char(str, &i, shell);
 		if (!expanded)
 		{
-			free(result);													// Libera result si falla la expansión
+			free(result);
 			return (NULL);
 		}
-		temp = ft_strjoin(result, expanded);								// Concatena el resultado actual con el nuevo expandido
+		temp = ft_strjoin(result, expanded);
 		free(result);
 		free(expanded);
 		if (!temp)
-			return (NULL);													// Retorna NULL si falla la concatenación
-		result = temp;														// Actualiza result con la concatenación
+			return (NULL);
+		result = temp;
 	}
-	return (result);														// Retorna la cadena expandida completa
+	return (result);
 }
 
-char *expand_entire_input(const char *input, t_minishell *shell)
+char	*expand_entire_input(const char *input, t_minishell *shell)
 {
-	char *expanded;
+	char	*expanded;
 
-	expanded = expand_string(input, shell);									// Expande toda la cadena input
-	if (expanded != NULL && access(expanded, X_OK) == 0)					// Verifica si la expansión es ejecutable
-		return (expanded);													// Retorna la cadena expandida si es ejecutable
-	free(expanded);															// Libera expanded si no es ejecutable
-	return (NULL);															// Retorna NULL si no se puede ejecutar
+	expanded = expand_string(input, shell);
+	if (expanded != NULL && access(expanded, X_OK) == 0)
+		return (expanded);
+	free(expanded);
+	return (NULL);
 }
 
-void expand_tokens(t_cmd *cmd, t_minishell *shell)
+void	expand_tokens(t_cmd *cmd, t_minishell *shell)
 {
 	int		i;
 	char	*expanded;
 
 	i = 0;
-	while (cmd->arguments && cmd->arguments[i] != NULL)						// Recorre cada argumento en cmd
+	while (cmd->arguments && cmd->arguments[i] != NULL)
 	{
-		expanded = expand_argument(cmd->arguments[i], shell);				// Expande el argumento actual
-		free(cmd->arguments[i]);											// Libera el argumento original
-		cmd->arguments[i] = expanded;										// Actualiza el argumento con la expansión
+		expanded = expand_argument(cmd->arguments[i], shell);
+		free(cmd->arguments[i]);
+		cmd->arguments[i] = expanded;
 		i++;
 	}
 }

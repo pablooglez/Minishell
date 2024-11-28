@@ -50,7 +50,7 @@ SRCS_EXEC = src/src_exec/built-ins/built-ins.c\
 			src/src_exec/execute.c \
 			src/src_exec/utils.c \
 
-SRCS_PARSER = src/src_parsing/tokenize.c \
+SRCS_PARSER = src/src_parsing/tokenize.c src/src_parsing/handle_token.c \
 				src/src_parsing/parse_input.c src/src_parsing/handle_quotes.c \
 				src/src_parsing/handle_char.c src/src_parsing/handle_pipes.c \
 				src/src_parsing/command_utils.c src/src_parsing/code_checks.c \

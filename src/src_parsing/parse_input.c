@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/28 19:28:52 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/29 00:24:22 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
+int	process_arguments(char **tokens, int *i,
+			t_cmd *cmd, t_minishell *shell)
 {
 	int	arg_index;
 	int	ret;
@@ -54,7 +55,10 @@ int	process_token(char *input, char **tokens, int *j, t_minishell *shell)
 	}
 	else
 	{
-		shell->i = handle_token(input, tokens, j, shell);
+		shell->input = input;
+		shell->j = *j;
+		shell->i = handle_token(tokens, shell);
+		*j = shell->j;
 		if (shell->i == -1)
 			return (-1);
 	}

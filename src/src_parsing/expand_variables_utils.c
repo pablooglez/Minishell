@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variables_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:03:33 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/25 13:20:39 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:09:47 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*expand_argument(const char *arg, t_minishell *shell)
 {
 	char	*unquoted;
 	char	*expanded;
-	
+
 	if (ft_strncmp(arg, "__NO_EXPAND__", 13) == 0)
 		return (ft_strdup(arg + 13));
 	if (arg[0] == '$')

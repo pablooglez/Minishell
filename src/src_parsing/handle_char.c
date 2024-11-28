@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_char.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 17:49:52 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/21 20:42:02 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/29 00:18:02 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,33 +23,40 @@ t_token	get_special_token_type(char c)
 	return (UNKNOWN);
 }
 
-int	is_unimplemented_operator(char *input, int i, int in_single_quotes, int in_double_quotes)
+int	is_unimplemented_operator(char *input, int i,
+			int in_single_quotes, int in_double_quotes)
 {
-	if (!in_single_quotes && !in_double_quotes &&
-		((input[i] == '&' && input[i + 1] == '&') || (input[i] == '|' && input[i + 1] == '|')))
+	if (!in_single_quotes && !in_double_quotes
+		&& ((input[i] == '&' && input[i + 1] == '&')
+			|| (input[i] == '|' && input[i + 1] == '|')))
 	{
 		if (input[i] == '&')
-			print_error("Minishell: syntax error logic operator not implemented `&&'\n");
+			print_error
+			("Minishell: syntax error logic operator not implemented `&&'\n");
 		else
-			print_error("Minishell: syntax error logic operator not implemented `||'\n");
+			print_error
+			("Minishell: syntax error logic operator not implemented `||'\n");
 		return (1);
 	}
 	return (0);
 }
 
-int	is_invalid_token_sequence(char *input, int i, int in_single_quotes, int in_double_quotes)
+int	is_invalid_token_sequence(char *input, int i,
+			int in_single_quotes, int in_double_quotes)
 {
-	if (!in_single_quotes && !in_double_quotes &&
-		((input[i] == ';' && input[i + 1] == ';') ||
-		(input[i] == '>' && input[i + 1] == '>' && input[i + 2] == '>') ||
-		(input[i] == '<' && input[i + 1] == '<' && input[i + 2] == '<')))
+	if (!in_single_quotes && !in_double_quotes
+		&& ((input[i] == ';' && input[i + 1] == ';')
+			|| (input[i] == '>' && input[i + 1] == '>' && input[i + 2] == '>')
+			|| (input[i] == '<' && input[i + 1] == '<' && input[i + 2] == '<')))
 	{
 		if (input[i] == ';')
 			print_error("Minishell: syntax error near unexpected token `;;'\n");
 		else if (input[i] == '>')
-			print_error("Minishell: syntax error near unexpected token `>>>'\n");
+			print_error
+			("Minishell: syntax error near unexpected token `>>>'\n");
 		else
-			print_error("Minishell: syntax error near unexpected token `<<<'\n");
+			print_error
+			("Minishell: syntax error near unexpected token `<<<'\n");
 		return (1);
 	}
 	return (0);
@@ -58,9 +65,11 @@ int	is_invalid_token_sequence(char *input, int i, int in_single_quotes, int in_d
 int	contains_invalid_characters(char *input)
 {
 	int	i;
-	int	in_single_quotes = 0;
-	int	in_double_quotes = 0;
+	int	in_single_quotes;
+	int	in_double_quotes;
 
+	in_single_quotes = 0;
+	in_double_quotes = 0;
 	i = 0;
 	while (input[i])
 	{
@@ -68,8 +77,9 @@ int	contains_invalid_characters(char *input)
 			in_single_quotes = !in_single_quotes;
 		else if (input[i] == '\"' && !in_single_quotes)
 			in_double_quotes = !in_double_quotes;
-		if (is_unimplemented_operator(input, i, in_single_quotes, in_double_quotes) ||
-			is_invalid_token_sequence(input, i, in_single_quotes, in_double_quotes))
+		if (is_unimplemented_operator(input, i, in_single_quotes,
+				in_double_quotes) || is_invalid_token_sequence(input, i,
+				in_single_quotes, in_double_quotes))
 			return (SYNTAX_ERROR);
 
 		i++;
@@ -84,7 +94,8 @@ int	handle_special_char(char *input, int i, char **tokens, int *j)
 
 	type = get_special_token_type(input[i]);
 	temp = NULL;
-	if ((input[i] == '>' && input[i + 1] == '>') || (input[i] == '<' && input[i + 1] == '<'))
+	if ((input[i] == '>' && input[i + 1] == '>')
+		|| (input[i] == '<' && input[i + 1] == '<'))
 	{
 		temp = ft_substr(input, i, 2);
 		if (!temp)

@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/28 18:28:37 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 00:23:21 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include <linux/limits.h>
+# include <limits.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
@@ -28,8 +29,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
+# include <sys/ioctl.h>
 # include "../Libft/libft.h"
-# include <limits.h>
 
 //----------------- COLOR MACROS --------------------------//
 # define WHITE		"\033[0m"
@@ -126,11 +127,14 @@ typedef struct s_minishell
 	int				exit_status;
 	int				original_stdin;
 	int				original_stdout;
-	int				i;
 	bool			is_child;
 	char			**env;
 	struct s_env	*env_vars;
 	struct s_cmd	*tokens;
+    char            *input;
+    int             i;
+    int             j;
+    int             e;
 }	t_minishell;
 
 //----------------------------------------------------------------------------//
@@ -157,7 +161,7 @@ int			handle_single_quotes(char *input, int i,
 char		*handle_dollar_sign(const char *str, int *i, t_minishell *shell);
 char		*handle_regular_char(const char *str, int *i);
 int			handle_special_char(char *input, int i, char **tokens, int *j);
-int			handle_token(char *input, char **tokens, int *j, t_minishell *shell);
+int			handle_token(char **tokens, t_minishell *shell);
 bool		is_quote(char c);
 int			is_empty_or_whitespace(char *str);
 int			initialize_arguments(char **tokens, int *i, t_cmd *cmd);
@@ -183,6 +187,7 @@ int			print_error_and_return(const char *msg);
 void		print_error_and_exit(const char *msg, int exit_code);
 int			error_handler(const char *msg, int exit_code);
 int			expand_variable(char *input, char *buffer, int *buf_index, t_minishell *shell);
+t_token     classify_special_token(char c);
 
 //---------------------------------------------------------------------------//
 
@@ -244,6 +249,5 @@ void		ft_unset(t_minishell *shell, char **arg);
 //------------------BUILTIN-ENV----------------//
 void		ft_env(t_minishell *shell);
 //------------------BUILTIN-EXIT---------------//
-void		ft_exit(t_minishell *shell, char **arg);
-
+void        ft_exit(t_minishell *shell, char **arg);
 #endif

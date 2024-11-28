@@ -3,59 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:53:22 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/25 13:21:39 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:06:48 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cmd	*create_new_command(t_minishell *shell)											
+t_cmd	*create_new_command(t_minishell *shell)
 {
 	t_cmd	*new_cmd;
 
-	new_cmd = safe_malloc(shell, sizeof(t_cmd));									// Asigna memoria para un nuevo comando
-	if (!new_cmd)																	// Verifica si la asignación falló
+	new_cmd = safe_malloc(shell, sizeof(t_cmd));
+	if (!new_cmd)
 		return (NULL);
-	new_cmd->path = NULL;															// Inicializa el path del comando
-	new_cmd->arguments = NULL;														// Inicializa los argumentos del comando
-	new_cmd->redir = NULL;															// Inicializa las redirecciones del comando
-	new_cmd->pipe[0] = -1;															// Inicializa el pipe de entrada
-	new_cmd->pipe[1] = -1;															// Inicializa el pipe de salida
-	new_cmd->next = NULL;															// Inicializa el puntero al siguiente comando
-	new_cmd->prev = NULL;															// Inicializa el puntero al comando anterior
-	new_cmd->intfd = -1;																// Inicializa el descriptor de archivo de entrada														
+	new_cmd->path = NULL;
+	new_cmd->arguments = NULL;
+	new_cmd->redir = NULL;
+	new_cmd->pipe[0] = -1;
+	new_cmd->pipe[1] = -1;
+	new_cmd->next = NULL;
+	new_cmd->prev = NULL;
+	new_cmd->intfd = -1;
 	new_cmd->outfd = -1;
-	new_cmd->type = CMD;															// Inicializa el tipo de comando												
-	return (new_cmd);																// Retorna el nuevo comando
+	new_cmd->type = CMD;
+	return (new_cmd);
 }
-
 
 int	initialize_arguments(char **tokens, int *i, t_cmd *cmd)
 {
-	if (!cmd->path)																	// Verifica si el path del comando no ha sido asignado
+	if (!cmd->path)
 	{
-		/*if (tokens[0][0] == '$')													// Verifica si el primer token es una variable
-			cmd->path = ft_strdup("echo");*/											// Asigna el comando "echo" al path
-		//else
-			cmd->path = ft_strdup(tokens[*i]);										// Duplica el token actual al path
-		if (!cmd->path)																// Verifica si la asignación falló
-			return (-1);															// Retorna -1 en caso de error
-		(*i)++;																		// Incrementa el índice
+		cmd->path = ft_strdup(tokens[*i]);
+		if (!cmd->path)
+			return (-1);
+		(*i)++;
 	}
-	cmd->arguments = ft_calloc(100, sizeof(char *));								// Asigna memoria para los argumentos del comando
-	if (!cmd->arguments)															// Verifica si la asignación falló
-		return (-1);																// Retorna -1 en caso de error
+	cmd->arguments = ft_calloc(100, sizeof(char *));
+	if (!cmd->arguments)
+		return (-1);
 	return (0);
 }
 
 int	add_argument(char *token, int arg_index, t_cmd *cmd)
 {
-	cmd->arguments[arg_index] = ft_strdup(token);									// Duplica el token al array de argumentos
-	if (!cmd->arguments[arg_index])													// Verifica si la asignación falló		
-		return (-1);																// Retorna -1 en caso de error
+	cmd->arguments[arg_index] = ft_strdup(token);
+	if (!cmd->arguments[arg_index])
+		return (-1);
 	return (0);
 }
-

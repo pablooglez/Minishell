@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:43:54 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/25 13:18:34 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/29 00:19:31 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	check_pipe_errors(char **tokens, int *i)
 {
-	if (tokens[*i] && ft_strlen(tokens[*i]) >= 2 && tokens[*i][0] == '|' && tokens[*i][1] == '|')
+	if (tokens[*i] && ft_strlen(tokens[*i]) >= 2
+		&& tokens[*i][0] == '|' && tokens[*i][1] == '|')
 	{
 		print_error("Minishell: syntax error near unexpected token `||'\n");
 		return (SYNTAX_ERROR);
