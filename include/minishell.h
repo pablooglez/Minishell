@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/28 01:16:54 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:36:11 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ typedef struct s_minishell
 	int				original_stdout;
 	int				running;
     int             i;
+	bool			is_child;
 	char			**env;
 	struct s_env	*env_vars;
 	struct s_cmd	*tokens;

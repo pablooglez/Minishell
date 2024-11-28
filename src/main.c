@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/28 01:45:38 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:44:49 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	exit_shell(t_minishell *shell)
 	if (shell->tokens)
 		free_tokens(&shell->tokens);
 	free_shell(&shell);
-	//rl_clear_history();
 	close(shell->original_stdin);
 	close(shell->original_stdout);
 	exit(status);
@@ -32,7 +31,7 @@ void	init_minishell(t_minishell *shell, char **env)
 {
 	ft_memset(shell, 0, sizeof(t_minishell));
 	create_env_vars(shell, env);
-	//shell->running = 1;
+	shell->is_child = false;
 	signal(SIGINT, signal_handler);
 	signal(SIGQUIT, SIG_IGN);
 }

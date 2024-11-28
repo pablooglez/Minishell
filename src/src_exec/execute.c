@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/28 01:46:29 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:40:06 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ char	**env_vars_to_array(t_env *env_vars)
 
 static void	execute_child(t_minishell *shell, t_cmd *cmd)
 {
+	shell->is_child = true;
 	char	*command_path;
 
 	signal(SIGINT, SIG_DFL);
