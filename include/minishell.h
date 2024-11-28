@@ -127,6 +127,7 @@ typedef struct s_minishell
 	int				original_stdin;
 	int				original_stdout;
 	int				running;
+    int             i;
 	char			**env;
 	struct s_env	*env_vars;
 	struct s_cmd	*tokens;
@@ -138,7 +139,6 @@ typedef struct s_minishell
 int			add_argument(char *token, int arg_index, t_cmd *cmd);
 int			contains_invalid_characters(char *input);
 t_cmd		*create_new_command(t_minishell *shell);
-void		display_commands(t_cmd *cmd);
 void		expand_tokens(t_cmd *cmd, t_minishell *shell);
 char		*expand_argument(const char *arg, t_minishell *shell);
 char		*expand_entire_input(const char *input, t_minishell *shell);
@@ -152,17 +152,14 @@ int			handle_double_quotes(char *input, int i,
 				char *buffer, int *buf_index);
 int			handle_escape(char *input, int i, char *buffer, int *buf_index);
 char		*handle_escaped_dollar(int *i);
-int			handle_quotes(char *input, int i, char **tokens, int *j);
 int			handle_single_quotes(char *input, int i,
 				char *buffer, int *buf_index);
 char		*handle_dollar_sign(const char *str, int *i, t_minishell *shell);
 char		*handle_regular_char(const char *str, int *i);
 int			handle_special_char(char *input, int i, char **tokens, int *j);
-int			handle_token(char *input, int i, char **tokens, int *j);
+int			handle_token(char *input, char **tokens, int *j, t_minishell *shell);
 bool		is_quote(char c);
 int			is_empty_or_whitespace(char *str);
-int			is_special_char(char c);
-t_cmd		*initialize_first_command(t_minishell *shell);
 int			initialize_arguments(char **tokens, int *i, t_cmd *cmd);
 t_cmd		*parse_input(char *input_line, t_minishell *shell);
 void		print_command(t_cmd *cmd);
@@ -170,7 +167,7 @@ int			process_arguments(char **tokens, int *i,
 				t_cmd *cmd, t_minishell *shell);
 int			process_redirection(char **tokens, int *i,
 				t_cmd *cmd, t_minishell *shell);
-int			process_token(char *input, int *i, char **tokens, int *j);
+int			process_token(char *input, char **tokens, int *j, t_minishell *shell);
 int			process_token_pipe(char **tokens, int *i,
 				t_cmd **cmd, t_minishell *shell);
 int			process_tokens(char **tokens, t_cmd *current_cmd,
@@ -180,14 +177,12 @@ void		free_command(t_cmd *cmd);
 void		free_command_list(t_cmd *cmd);
 void		free_redirections(t_redir *redir);
 void		free_tokens_parse(char **tokens);
-char		**tokenize_input(char *input);
-void		replace_tabs_with_spaces(char *input);
-int			remove_extra_spaces(char *input, char *norm);
+char		**tokenize_input(char *input, t_minishell *shell);
 void		print_error(const char *msg);
 int			print_error_and_return(const char *msg);
 void		print_error_and_exit(const char *msg, int exit_code);
 int			error_handler(const char *msg, int exit_code);
-int			expand_variable(char *input, int i, char *buffer, int *buf_index);
+int			expand_variable(char *input, char *buffer, int *buf_index, t_minishell *shell);
 
 //---------------------------------------------------------------------------//
 
@@ -236,7 +231,7 @@ char		*get_env_value(t_env *env_list, char *key);
 void		update_env_var(t_env **env_list, char *key, char *value);
 int			ft_cd(t_minishell *shell, char **arg);
 //------------------BUILTIN-ECHO---------------//
-void		ft_echo(t_minishell *shell, char **arg);
+void		ft_echo(char **arg);
 //------------------BUILTIN-PWD----------------//
 int			ft_pwd(t_minishell *shell);
 //------------------BUILTIN-EXPORT-------------//
@@ -248,6 +243,6 @@ void		delete_env_var(t_env **env_list, const char *key);
 void		ft_unset(t_minishell *shell, char **arg);
 //------------------BUILTIN-ENV----------------//
 void		ft_env(t_minishell *shell);
-
-
+//------------------BUILTIN-EXIT---------------//
+void        ft_exit(t_minishell *shell, char **arg);
 #endif

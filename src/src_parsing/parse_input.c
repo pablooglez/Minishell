@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/25 13:09:43 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/28 16:40:17 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,18 @@ int	process_arguments(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
 	return (0);
 }
 
-int	process_token(char *input, int *i, char **tokens, int *j)
+int	process_token(char *input, char **tokens, int *j, t_minishell *shell)
 {
-	if (get_special_token_type(input[*i]) != UNKNOWN)
+	if (get_special_token_type(input[shell->i]) != UNKNOWN)
 	{
-		*i = handle_special_char(input, *i, tokens, j);
-		if (*i == -1)
+		shell->i = handle_special_char(input, shell->i, tokens, j);
+		if (shell->i == -1)
 			return (-1);
 	}
 	else
 	{
-		*i = handle_token(input, *i, tokens, j);
-		if (*i == -1)
+		shell->i = handle_token(input, tokens, j, shell);
+		if (shell->i == -1)
 			return (-1);
 	}
 	return (0);
@@ -70,7 +70,7 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 		return (NULL);
 	if (contains_invalid_characters(input_line)) 
 		return (NULL);
-	tokens = tokenize_input(input_line);
+	tokens = tokenize_input(input_line, shell);
 	if (!tokens || !tokens[0])
 	{
 		free_tokens_parse(tokens);
@@ -92,4 +92,3 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 	free_tokens_parse(tokens);
 	return (cmd);
 }
-

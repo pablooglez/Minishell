@@ -79,7 +79,7 @@ int	handle_escape(char *input, int i, char *buffer, int *buf_index)
     return (i);
 }
 
-int	expand_variable(char *input, int i, char *buffer, int *buf_index)
+int	expand_variable(char *input, char *buffer, int *buf_index, t_minishell *shell)
 {
 	char	var_name[256];
 	int		var_len;
@@ -88,79 +88,83 @@ int	expand_variable(char *input, int i, char *buffer, int *buf_index)
 	char	*value;
 
 	var_len = 0;
-	i++; 
-	if (input[i] == '\0' || input[i] == ' ')
+	shell->i++; 
+	if (input[shell->i] == '\0' || input[shell->i] == ' ')
 	{
 		buffer[(*buf_index)++] = '$';
-		return (i);
+		return (shell->i);
 	}
-	if (input[i] == '$')
+	if (input[shell->i] == '$')
 	{
-		i++;
+		shell->i++;
 		pid = ft_itoa(getpid());
 		k = 0;
 		while (pid[k])
 			buffer[(*buf_index)++] = pid[k++];
 		free(pid);
-		return (i);
+		return (shell->i);
 	}
-	while (input[i] && (ft_isalnum(input[i]) || input[i] == '_'))
-		var_name[var_len++] = input[i++];
-	var_name[var_len] = '\0';
-	value = getenv(var_name);
+	while (input[shell->i] && (ft_isalnum(input[shell->i]) || input[shell->i] == '_' || input[shell->i] == '?'))
+		var_name[var_len++] = input[shell->i++];
+	var_name[var_len] = '\0';                                                   //  ********** KOBAYASHI **********
+    if (ft_strncmp(var_name, "?", 1) == 0)                                      //  Esto trata $?, pero creo que get_env_value devuelve un puntero, pero itoa hace malloc ademas, por lo
+		value = ft_itoa(shell->exit_status);                                    //  tanto, es probable que haya un leak si no se trata. La cosa es como determinar cuando liberar value, porque
+	else                                                                        //  no se deberia liberar si se usa con get_env_value, pero si cuando es itoa.
+        value = ft_strdup(get_env_value(shell->env_vars, var_name));            //  Al final haciendo un strdup, abajo se libera value y todos contentos.
 	if (value)
 	{
 		k = 0;
 		while (value[k])
 			buffer[(*buf_index)++] = value[k++];
+        free(value);                                                            //  Liberamos value
 	}
-	return (i);
+	return (shell->i);
 }
 
 
-int	handle_token(char *input, int i, char **tokens, int *j)
+int	handle_token(char *input, char **tokens, int *j, t_minishell *shell)
 {
 	char	buffer[1024];
 	int		buf_index = 0;
 	int		no_expand = 0;
 
-	while (input[i] && input[i] != ' ')
+	while (input[shell->i] && input[shell->i] != ' ')
 	{
-		if (input[i] == '\'')
+		if (input[shell->i] == '\'')
 		{
 			no_expand = 1;
-			i++; 
-			while (input[i] && input[i] != '\'')
-				buffer[buf_index++] = input[i++];
-			if (input[i] != '\'')
+			shell->i++; 
+			while (input[shell->i] && input[shell->i] != '\'')
+				buffer[buf_index++] = input[shell->i++];
+			if (input[shell->i] != '\'')
 				return (-1);
-			i++;
+			shell->i++;
 		}
-		else if (input[i] == '"')
+		else if (input[shell->i] == '"')
 		{
-			i++;
-			while (input[i] && input[i] != '"')
+			shell->i++;
+			while (input[shell->i] && input[shell->i] != '"')
 			{
-				if (input[i] == '$') 
+				if (input[shell->i] == '$') 
 				{
-					i = expand_variable(input, i, buffer, &buf_index);
-					if (i == -1)
+					shell->i = expand_variable(input, buffer, &buf_index, shell);
+					if (shell->i == -1)
 						return (-1);
 				}
 				else
-					buffer[buf_index++] = input[i++];
+					buffer[buf_index++] = input[shell->i++];
 			}
-			if (input[i] != '"') 
+			if (input[shell->i] != '"') 
 				return (-1);
-			i++; 
+			shell->i++; 
 		}
-		else if (input[i] == '$')
+		else if (input[shell->i] == '$')
 		{
-			i = expand_variable(input, i, buffer, &buf_index);
-			if (i == -1)
+			shell->i = expand_variable(input, buffer, &buf_index, shell);
+			if (shell->i == -1)
 				return (-1);
 		}
-		else if (classify_special_token(input[i]) != UNKNOWN)
+		else if (classify_special_token(input[shell->i]) != UNKNOWN)
 		{
 			if (buf_index > 0)
 			{
@@ -174,18 +178,18 @@ int	handle_token(char *input, int i, char **tokens, int *j)
 				(*j)++;
 				buf_index = 0;
 			}
-			tokens[*j] = ft_substr(input, i, 1);
+			tokens[*j] = ft_substr(input, shell->i, 1);
 			if (!tokens[*j])
 			{
 				free_tokens_parse(tokens);
 				return (-1);
 			}
 			(*j)++;
-			i++;
-			return i;
+			shell->i++;
+			return (shell->i);
 		}
 		else
-			buffer[buf_index++] = input[i++];
+			buffer[buf_index++] = input[shell->i++];
 	}
 	buffer[buf_index] = '\0';
 	if (buf_index > 0)
@@ -201,26 +205,25 @@ int	handle_token(char *input, int i, char **tokens, int *j)
 		}
 		(*j)++;
 	}
-	return (i);
+	return (shell->i);
 }
 
 
-char	**tokenize_input(char *input)
+char	**tokenize_input(char *input, t_minishell *shell)
 {
 	char	**tokens;
-	int		i;
 	int		j;
 
-	i = 0;
+	shell->i = 0;
 	j = 0;
 	tokens = ft_calloc(100, sizeof(char *));
 	if (!tokens)
 		return (NULL);
-	while (input[i])
+	while (input[shell->i])
 	{
-		while (input[i] == ' ')
-			i++;
-		if (process_token(input, &i, tokens, &j) == -1)
+		while (input[shell->i] == ' ')
+			shell->i++;
+		if (process_token(input, tokens, &j, shell) == -1)
 		{
 			free_tokens_parse(tokens);
 			return (NULL);

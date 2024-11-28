@@ -12,26 +12,38 @@
 
 #include "minishell.h"
 
-void	ft_echo(t_minishell *shell, char **arg)
+static void print_nl(int new_line)
 {
-	bool	newline_flag;
-	int		i;
+    if (new_line != 0)
+	    printf("\n");
+    fflush(stdout);
+}
 
-	(void)shell;
-	newline_flag = true;
-	i = 1;
-	if (arg[1] && ft_strncmp(arg[1], "-n", 3) == 0)
-	{
-		newline_flag = false;
-		i = 2;
+void	ft_echo(char **arg)
+{
+	int     new_line;
+	int     i;
+    int     j;
+    bool    is_text;
+
+	new_line = 1;
+    is_text = false;
+	i = 0;
+    while (arg[++i])
+    {
+        j = 0;
+        if (!is_text && arg[i] && arg[i][j] == '-')
+            while (arg[i][++j])
+                if (arg[i][j] != 'n')
+                    break;
+        if (!is_text && arg[i] && !arg[i][j])
+            new_line = 0;
+        else
+        {
+            is_text = printf("%s",  arg[i]);
+		    if (arg[i] && arg[i + 1])
+			    printf(" ");
+        }
 	}
-	while (arg[i])
-	{
-		printf("%s", arg[i]);
-		i++;
-		if (arg[i])
-			printf(" ");
-	}
-	if (newline_flag)
-		printf("\n");
+    print_nl(new_line);
 }

@@ -34,7 +34,6 @@ HEADERS := -I include -I$(LIBFT_DIR)
 SRCS	:= src/env_vars.c \
 			src/error.c \
 			src/free_utils.c \
-			src/heredoc.c \
 			src/main.c \
 			src/signals.c \
 			src/utils.c \
@@ -46,6 +45,7 @@ SRCS_EXEC = src/src_exec/built-ins/built-ins.c\
 			src/src_exec/built-ins/export.c \
 			src/src_exec/built-ins/pwd.c \
 			src/src_exec/built-ins/unset.c \
+			src/src_exec/built-ins/exit.c \
 			src/src_exec/redirections.c \
 			src/src_exec/execute.c \
 			src/src_exec/utils.c \
@@ -54,7 +54,7 @@ SRCS_PARSER = src/src_parsing/tokenize.c \
 				src/src_parsing/parse_input.c src/src_parsing/handle_quotes.c \
 				src/src_parsing/handle_char.c src/src_parsing/handle_pipes.c \
 				src/src_parsing/command_utils.c src/src_parsing/code_checks.c \
-				src/src_parsing/handle_redirections.c \
+				src/src_parsing/handle_redirections.c src/src_parsing/heredoc.c \
 				src/src_parsing/expand_variables.c src/src_parsing/free_utils.c \
 				src/src_parsing/expand_variables_utils.c \
 				src/src_parsing/expand_variables_helpers.c  \
@@ -82,7 +82,7 @@ WHITE=\033[37m
 ##                                   RULES                                    ##
 ################################################################################
 
-all: head libft $(NAME)
+all: head libft line $(NAME)
 
 head:
 	@echo "$(CYAN)$(BOLD)"
@@ -99,13 +99,13 @@ head:
 	@echo "$(BLUE)\t🧰 Compiler: $(BOLD)$(CC)$(END)\n"
 
 libft:
-	@echo "$(CYAN)🔧 Building Libft...$(END)"
+	@echo "$(CYAN)🔧 Building Libft...$(END)\n"
 	@make -s -C $(LIBFT_DIR)
 
-$(NAME): line $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC)
-	@echo "$(BLUE)✦ ---------------------- ✦$(END)"
+$(NAME): $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC)
+	@echo "$(BLUE)✦ ---------------------- ✦$(END)\n"
 	@$(CC) $(CFLAGS) $(OBJS) $(OBJS_PARSER) $(OBJS_EXEC) $(LIBFT) $(HEADERS) $(LINK) -lreadline -o $(NAME)
-	@echo "$(GREEN)✓ $(NAME) built successfully!$(END)"
+	@echo "$(GREEN)✓ $(NAME) built successfully!$(END)\n"
 
 %.o: %.c $(MINISHELL)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)

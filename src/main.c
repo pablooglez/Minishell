@@ -60,7 +60,8 @@ int	main(int argc, char **argv, char **env)
 			free(input);
 			continue ;
 		}
-		add_history(input);
+        if (history_length == 0 || ft_strcmp(history_get(history_length)->line, input))
+		    add_history(input);
 		shell.tokens = parse_input(input, &shell);
 		if (shell.tokens && g_signal == 0)
 		{
