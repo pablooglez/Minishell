@@ -6,77 +6,63 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/25 13:23:38 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:39:39 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
 t_token	classify_special_token(char c)
 {
-	if (c == '|')																			// Verifica si el carcates es un Pipe
-		return (PIPE);																		// Retorna PIPE si el carácter es un Pipe
-	if (c == '>')																			// Verifica si el Caracter es una Redireccion
+	if (c == '|')
+		return (PIPE);
+	if (c == '>')
 		return (REDIR);
 	if (c == '<')
 		return (REDIR);
 	return (UNKNOWN);
 }
 
-int process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
+int	process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
 {
-    int i = 0;
+	int	i;
+	int	redir_type;
 
-    while (tokens[i])
-    {
-        int redir_type = get_redirection_type(tokens[i]);
-        
-        if (redir_type != NOT_REDIR)
-        {
-            if (process_redirection(tokens, &i, current_cmd, shell) == -1)
-                return (-1);
-        }
-        else if (ft_strncmp(tokens[i], "|", 1) == 0)
-        {
-            if (process_token_pipe(tokens, &i, &current_cmd, shell) == -1)
-                return (-1);
-        }
-        else
-        {
-            if (process_arguments(tokens, &i, current_cmd, shell) == -1)
-                return (-1);
-        }
-
-        if (tokens[i] && current_cmd->type == PIPE)
-        {
-            if (!current_cmd->next)
-                return (-1);
-            current_cmd = current_cmd->next;
-        }
-    }
-    return (0);
+	i = 0;
+	while (tokens[i])
+	{
+		redir_type = get_redirection_type(tokens[i]);
+		if (redir_type != NOT_REDIR)
+		{
+			if (process_redirection(tokens, &i, current_cmd, shell) == -1)
+				return (-1);
+		}
+		else if (ft_strncmp(tokens[i], "|", 1) == 0)
+		{
+			if (process_token_pipe(tokens, &i, &current_cmd, shell) == -1)
+				return (-1);
+		}
+		else
+		{
+			if (process_arguments(tokens, &i, current_cmd, shell) == -1)
+				return (-1);
+		}
+		if (tokens[i] && current_cmd->type == PIPE)
+		{
+			if (!current_cmd->next)
+				return (-1);
+			current_cmd = current_cmd->next;
+		}
+	}
+	return (0);
 }
-
 
 int	handle_escape(char *input, int i, char *buffer, int *buf_index)
 {
-
-	/*i++;																	// Incrementa el índice para pasar al siguiente carácter
-	if (input[i] == '"' || input[i] == '\'' || input[i] == '\\')			// Verifica si el carácter es una comilla doble, comilla simple o barra invertida
-		buffer[(*buf_index)++] = input[i++];								// Añade el carácter al buffer y aumenta el índice
-	else												
-	{
-		buffer[(*buf_index)++] = '\\';										// Añade una barra invertida al buffer
-		buffer[(*buf_index)++] = input[i++];								// Añade el carácter al buffer	
-	}
-	return (i);*/																// Retorna el índice actualizado
 	buffer[(*buf_index)++] = input[i++];
-    if (input[i]) 
-	{ 
-        buffer[(*buf_index)++] = input[i++];
-    }
-    return (i);
+	if (input[i])
+		buffer[(*buf_index)++] = input[i++];
+	return (i);
 }
 
 int	expand_variable(char *input, char *buffer, int *buf_index, t_minishell *shell)
@@ -88,7 +74,7 @@ int	expand_variable(char *input, char *buffer, int *buf_index, t_minishell *shel
 	char	*value;
 
 	var_len = 0;
-	shell->i++; 
+	shell->i++;
 	if (input[shell->i] == '\0' || input[shell->i] == ' ')
 	{
 		buffer[(*buf_index)++] = '$';
@@ -104,7 +90,8 @@ int	expand_variable(char *input, char *buffer, int *buf_index, t_minishell *shel
 		free(pid);
 		return (shell->i);
 	}
-	while (input[shell->i] && (ft_isalnum(input[shell->i]) || input[shell->i] == '_' || input[shell->i] == '?'))
+	while (input[shell->i] && (ft_isalnum(input[shell->i])
+			|| input[shell->i] == '_' || input[shell->i] == '?'))
 		var_name[var_len++] = input[shell->i++];
 	var_name[var_len] = '\0';                                                   //  ********** KOBAYASHI **********
     if (ft_strncmp(var_name, "?", 1) == 0)                                      //  Esto trata $?, pero creo que get_env_value devuelve un puntero, pero itoa hace malloc ademas, por lo
@@ -121,19 +108,20 @@ int	expand_variable(char *input, char *buffer, int *buf_index, t_minishell *shel
 	return (shell->i);
 }
 
-
 int	handle_token(char *input, char **tokens, int *j, t_minishell *shell)
 {
 	char	buffer[1024];
-	int		buf_index = 0;
-	int		no_expand = 0;
+	int		buf_index;
+	int		no_expand;
 
+	buf_index = 0;
+	no_expand = 0;
 	while (input[shell->i] && input[shell->i] != ' ')
 	{
 		if (input[shell->i] == '\'')
 		{
 			no_expand = 1;
-			shell->i++; 
+			shell->i++;
 			while (input[shell->i] && input[shell->i] != '\'')
 				buffer[buf_index++] = input[shell->i++];
 			if (input[shell->i] != '\'')
@@ -145,7 +133,7 @@ int	handle_token(char *input, char **tokens, int *j, t_minishell *shell)
 			shell->i++;
 			while (input[shell->i] && input[shell->i] != '"')
 			{
-				if (input[shell->i] == '$') 
+				if (input[shell->i] == '$')
 				{
 					shell->i = expand_variable(input, buffer, &buf_index, shell);
 					if (shell->i == -1)
@@ -154,9 +142,9 @@ int	handle_token(char *input, char **tokens, int *j, t_minishell *shell)
 				else
 					buffer[buf_index++] = input[shell->i++];
 			}
-			if (input[shell->i] != '"') 
+			if (input[shell->i] != '"')
 				return (-1);
-			shell->i++; 
+			shell->i++;
 		}
 		else if (input[shell->i] == '$')
 		{
@@ -193,12 +181,12 @@ int	handle_token(char *input, char **tokens, int *j, t_minishell *shell)
 	}
 	buffer[buf_index] = '\0';
 	if (buf_index > 0)
-	{ 
+	{
 		if (no_expand)
 			tokens[*j] = ft_strjoin("__NO_EXPAND__", buffer);
 		else
 			tokens[*j] = ft_strdup(buffer);
-		if (!tokens[*j]) 
+		if (!tokens[*j])
 		{
 			free_tokens_parse(tokens);
 			return (-1);
@@ -207,7 +195,6 @@ int	handle_token(char *input, char **tokens, int *j, t_minishell *shell)
 	}
 	return (shell->i);
 }
-
 
 char	**tokenize_input(char *input, t_minishell *shell)
 {

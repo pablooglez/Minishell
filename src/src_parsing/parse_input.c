@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/28 16:40:17 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:28:52 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ t_cmd	*parse_input(char *input_line, t_minishell *shell)
 	char	**tokens;
 	t_cmd	*cmd;
 
-	if (is_empty_or_whitespace(input_line)) 
+	if (is_empty_or_whitespace(input_line))
 		return (NULL);
-	if (contains_invalid_characters(input_line)) 
+	if (contains_invalid_characters(input_line))
 		return (NULL);
 	tokens = tokenize_input(input_line, shell);
 	if (!tokens || !tokens[0])

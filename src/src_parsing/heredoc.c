@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 01:10:19 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/28 17:51:25 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:25:50 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ static	void	read_heredoc(int fd, char *delimiter)
 
 static int	create_heredoc(t_redir *redir)
 {
-	int				fd;
-	static int	unique;
-	char	*st_unique;
-	char	*delimiter;
+	int					fd;
+	static int			unique;
+	char				*st_unique;
+	char				*delimiter;
 
 	fd = -1;
 	while (redir && redir->next)
