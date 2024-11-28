@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:41:21 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/28 17:37:40 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:28:47 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_exit(t_minishell *shell, char **args)
 {
 	int	exit_code;
 
-	if (!shell->running)
+	if (!shell->is_child)
 		ft_putendl_fd("exit", STDERR_FILENO);
 	if (args[1] && args[2])
 	{

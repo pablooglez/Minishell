@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/28 17:36:11 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:28:37 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,7 @@ typedef struct s_minishell
 	int				exit_status;
 	int				original_stdin;
 	int				original_stdout;
-	int				running;
-    int             i;
+	int				i;
 	bool			is_child;
 	char			**env;
 	struct s_env	*env_vars;
@@ -245,5 +244,6 @@ void		ft_unset(t_minishell *shell, char **arg);
 //------------------BUILTIN-ENV----------------//
 void		ft_env(t_minishell *shell);
 //------------------BUILTIN-EXIT---------------//
-void        ft_exit(t_minishell *shell, char **arg);
+void		ft_exit(t_minishell *shell, char **arg);
+
 #endif

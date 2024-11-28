@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:15:09 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/27 17:31:42 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:59:01 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	handle_builtin(t_cmd *cmd, t_minishell *shell)
 		ft_pwd(shell);
 		return (1);
 	}
-	else if(ft_strcmp(cmd->arguments[0], "export") == 0)
+	else if (ft_strcmp(cmd->arguments[0], "export") == 0)
 	{
 		ft_export(shell, cmd->arguments);
 		return (1);
@@ -48,8 +48,7 @@ int	handle_builtin(t_cmd *cmd, t_minishell *shell)
 	}
 	else if (ft_strcmp(cmd->arguments[0], "exit") == 0)
 	{
-        ft_exit(shell, cmd->arguments);
-		//exit_shell(shell);
+		ft_exit(shell, cmd->arguments);
 		return (1);
 	}
 	return (0);

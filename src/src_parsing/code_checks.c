@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   code_checks.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:16:23 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/19 16:30:59 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/28 18:25:17 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void print_command(t_cmd *cmd)
+void	print_command(t_cmd *cmd)
 {
     int     i;
     t_redir *redir;
