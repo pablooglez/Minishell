@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 01:10:19 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/28 01:32:01 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:51:25 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	delete_heredoc(t_minishell *shell)
 		redir = cmd->redir;
 		while (redir)
 		{
-			if (!strncmp(redir->file, "/tmp/hd_", 9))
+			if (!ft_strcmp(redir->file, "/tmp/hd_"))
 				unlink (redir->file);
 			redir = redir->next;
 		}

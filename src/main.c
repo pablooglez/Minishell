@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/28 17:44:49 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:52:46 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ int	main(int argc, char **argv, char **env)
 			free(input);
 			continue ;
 		}
-        if (history_length == 0 || ft_strcmp(history_get(history_length)->line, input))
-		    add_history(input);
+		if (history_length == 0
+			|| ft_strcmp(history_get(history_length)->line, input))
+			add_history(input);
 		shell.tokens = parse_input(input, &shell);
 		if (shell.tokens && g_signal == 0)
 		{
