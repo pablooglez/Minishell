@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 01:10:19 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 00:29:38 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 01:11:50 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@ void	sigint_heredoc(int sig)
 {
 	(void) sig;
 	g_signal = 2;
+
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
 static	void	read_heredoc(int fd, char *delimiter)
@@ -26,7 +30,7 @@ static	void	read_heredoc(int fd, char *delimiter)
 	signal(SIGINT, sigint_heredoc);
 	line = NULL;
 	line = readline("> ");
-	while (line && strcmp(delimiter, line) && g_signal == 0)
+	while (line && ft_strcmp(delimiter, line) && g_signal == 0)
 	{
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
