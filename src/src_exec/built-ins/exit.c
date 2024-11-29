@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:41:21 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/28 18:28:47 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 20:02:41 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	is_numeric(const char *str)
 	int	i;
 
 	i = 0;
-
 	if (str[i] == '+' || str[i] == '-')
 		i++;
 	while (str[i])
@@ -27,6 +26,12 @@ static int	is_numeric(const char *str)
 		i++;
 	}
 	return (1);
+}
+
+void	handle_no_args(t_minishell *shell)
+{
+	free_shell(&shell);
+	exit(shell->exit_status);
 }
 
 void	ft_exit(t_minishell *shell, char **args)
@@ -42,15 +47,11 @@ void	ft_exit(t_minishell *shell, char **args)
 		return ;
 	}
 	if (!args[1])
-	{
-		free_shell(&shell);
-		exit(shell->exit_status);
-	}
+		handle_no_args(shell);
 	if (is_numeric(args[1]))
 	{
 		exit_code = ft_atoi(args[1]) % 256;
-		free_shell(&shell);
-		exit(exit_code);
+		handle_no_args(shell);
 	}
 	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	ft_putstr_fd(args[1], STDERR_FILENO);
@@ -58,5 +59,3 @@ void	ft_exit(t_minishell *shell, char **args)
 	free_shell(&shell);
 	exit(255);
 }
-
-

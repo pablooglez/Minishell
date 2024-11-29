@@ -6,7 +6,7 @@
 #    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/11/29 22:02:42 by albelope         ###   ########.fr        #
+#    Updated: 2024/11/29 22:59:10 by albelope         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,9 +46,11 @@ SRCS_EXEC = src/src_exec/built-ins/built-ins.c\
 			src/src_exec/built-ins/pwd.c \
 			src/src_exec/built-ins/unset.c \
 			src/src_exec/built-ins/exit.c \
-			src/src_exec/redirections.c \
+			src/src_exec/env_utils.c \
 			src/src_exec/execute.c \
+			src/src_exec/redirections.c \
 			src/src_exec/utils.c \
+			src/src_exec/utils2.c \
 
 SRCS_PARSER = src/src_parsing/tokenize.c src/src_parsing/handle_token.c \
 				src/src_parsing/parse_input.c src/src_parsing/handle_quotes.c \

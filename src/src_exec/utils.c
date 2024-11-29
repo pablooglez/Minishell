@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 17:17:32 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/27 17:25:01 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 20:03:31 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,52 +22,6 @@ char	*check_absolute_or_relative_path(char *cmd)
 		else
 			return (NULL);
 	}
-	return (NULL);
-}
-
-char	*get_command_path(char *cmd, t_minishell *shell)
-{
-	char	*path_env;
-	char	**paths;
-	char	*full_path;
-	char	*temp_path;
-	int		i;
-
-	full_path = check_absolute_or_relative_path(cmd);
-	if (full_path)
-		return (full_path);
-
-	path_env = get_env_value(shell->env_vars, "PATH");
-	if (!path_env)
-		return (NULL);
-
-	paths = ft_split(path_env, ':');
-	if (!paths)
-		return (NULL);
-
-	i = 0;
-	while (paths[i])
-	{
-		temp_path = ft_strjoin(paths[i], "/");
-		if (!temp_path)
-		{
-			free_array(&paths);
-			return (NULL);
-		}
-
-		full_path = ft_strjoin(temp_path, cmd);
-		free(temp_path);
-
-		if (access(full_path, X_OK) == 0)
-		{
-			free_array(&paths);
-			return (full_path);
-		}
-
-		free(full_path);
-		i++;
-	}
-	free_array(&paths);
 	return (NULL);
 }
 
@@ -92,7 +46,6 @@ void	update_env_var(t_env **env_list, char *key, char *value)
 
 	new_env_var = (t_env *)malloc(sizeof(t_env));
 	current_env = *env_list;
-
 	while (current_env)
 	{
 		if (ft_strncmp(current_env->key, key, ft_strlen(key) + 1) == 0)
@@ -127,6 +80,3 @@ int	is_valid_identifier(const char *str)
 	}
 	return (1);
 }
-
-
-
