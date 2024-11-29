@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:55:18 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/27 18:01:52 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:11:43 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ static void	fatal(int code, char *value)
 	{
 		write(2, "Minishell: error: Memory allocation failed\n", 43);
 		exit(EXIT_FAILURE);
+	}
+	else if (code == FD_NOT_FOUND)
+	{
+		write(2, "Minishell: No such file or directory\n", 38);
+		exit(129);
 	}
 	else if (code == CMD_NOT_FOUND)
 	{

@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:15:09 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/28 17:59:01 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:25:30 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 int	handle_builtin(t_cmd *cmd, t_minishell *shell)
 {
 	if (ft_strnstr("echo|cd|pwd|export|unset|env|exit", cmd->arguments[0], 34))
-		handle_redirection(shell, cmd->redir, -1);
+	{
+		if (handle_redirection(shell, cmd->redir, -1) == 1)
+			return (1);
+	}
 	if (ft_strcmp(cmd->arguments[0], "echo") == 0)
 	{
 		ft_echo(cmd->arguments);

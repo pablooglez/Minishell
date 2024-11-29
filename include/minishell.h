@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 14:44:23 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/29 17:11:36 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef enum e_error
 	CMD_NOT_FOUND = 127,
 	INVALID_EXIT = 128,
 	EXIT_ERROR = 255,
+	FD_NOT_FOUND = 129,
 	CD_NOT_FOUND = 24,
 	MSG = 100,
 }	t_error;
@@ -228,7 +229,7 @@ char		*ft_strndup(const char *s, size_t n);
 void		execute(t_minishell *shell);
 int			handle_builtin(t_cmd *cmd, t_minishell *shell);
 int			handle_pipe(t_cmd *cmd);
-void		handle_redirection(t_minishell *shell, t_redir *redir, int fd);
+int			handle_redirection(t_minishell *shell, t_redir *redir, int fd);
 void		safe_dup2(int fd1, int fd2);
 void		safe_close(int fd);
 //---------------------UTILS-------------------//

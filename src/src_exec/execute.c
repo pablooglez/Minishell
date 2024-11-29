@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/28 17:58:21 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:27:35 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ static void	execute_child(t_minishell *shell, t_cmd *cmd)
 	safe_close(cmd->intfd);
 	if (cmd->arguments && handle_builtin(cmd, shell))
 		exit(shell->exit_status);
-	handle_redirection(shell, cmd->redir, -1);
+	if (handle_redirection(shell, cmd->redir, -1) == 1)
+		exit(1);
 	if (!cmd->arguments)
 		exit(shell->exit_status);
 	command_path = get_command_path(cmd->arguments[0], shell);
