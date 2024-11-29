@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:43:54 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/29 00:19:31 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 01:15:40 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,3 @@ int	process_token_pipe(char **tokens, int *i, t_cmd **cmd, t_minishell *shell)
 	}
 	return (1);
 }
-

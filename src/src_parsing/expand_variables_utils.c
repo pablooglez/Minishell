@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variables_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:03:33 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/28 19:09:47 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 01:15:27 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,3 @@ char	*expand_argument(const char *arg, t_minishell *shell)
 	expanded = expand_string(arg, shell);
 	return (expanded);
 }
-
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_char.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 17:49:52 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/29 00:18:02 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 01:14:42 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ int	contains_invalid_characters(char *input)
 				in_double_quotes) || is_invalid_token_sequence(input, i,
 				in_single_quotes, in_double_quotes))
 			return (SYNTAX_ERROR);
-
 		i++;
 	}
 	return (0);
@@ -115,6 +114,3 @@ int	handle_special_char(char *input, int i, char **tokens, int *j)
 	}
 	return (-1);
 }
-
-
-

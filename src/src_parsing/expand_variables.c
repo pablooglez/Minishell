@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variables.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:02:04 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/28 19:12:15 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 01:13:21 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ char	*get_expanded_value(const char *variable, t_minishell *shell)
 
 	if (ft_strncmp(variable, "?", 2) == 0)
 		return (ft_itoa(shell->exit_status));
-
 	value = find_env_value(shell->env_vars, variable);
 	if (value)
 		return (ft_strdup(value));

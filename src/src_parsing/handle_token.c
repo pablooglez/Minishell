@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 00:20:12 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 00:22:33 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 01:22:01 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static int	fin(char **tokens, char *buffer, int *buf_index, t_minishell *shell)
 			tokens[shell->j] = ft_strjoin("__NO_EXPAND__", buffer);
 		else
 			tokens[shell->j] = ft_strdup(buffer);
-		if (!tokens[shell->j]) 
+		if (!tokens[shell->j])
 		{
 			free_tokens_parse(tokens);
 			return (-1);

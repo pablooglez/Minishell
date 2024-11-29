@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 00:23:21 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 01:09:25 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,10 @@ typedef struct s_minishell
 	char			**env;
 	struct s_env	*env_vars;
 	struct s_cmd	*tokens;
-    char            *input;
-    int             i;
-    int             j;
-    int             e;
+	char			*input;
+	int				i;
+	int				j;
+	int				e;
 }	t_minishell;
 
 //----------------------------------------------------------------------------//
@@ -171,7 +171,8 @@ int			process_arguments(char **tokens, int *i,
 				t_cmd *cmd, t_minishell *shell);
 int			process_redirection(char **tokens, int *i,
 				t_cmd *cmd, t_minishell *shell);
-int			process_token(char *input, char **tokens, int *j, t_minishell *shell);
+int			process_token(char *input, char **tokens, int *j,
+				t_minishell *shell);
 int			process_token_pipe(char **tokens, int *i,
 				t_cmd **cmd, t_minishell *shell);
 int			process_tokens(char **tokens, t_cmd *current_cmd,
@@ -186,8 +187,9 @@ void		print_error(const char *msg);
 int			print_error_and_return(const char *msg);
 void		print_error_and_exit(const char *msg, int exit_code);
 int			error_handler(const char *msg, int exit_code);
-int			expand_variable(char *input, char *buffer, int *buf_index, t_minishell *shell);
-t_token     classify_special_token(char c);
+int			expand_variable(char *input, char *buffer, int *buf_index,
+				t_minishell *shell);
+t_token		classify_special_token(char c);
 
 //---------------------------------------------------------------------------//
 
@@ -249,5 +251,5 @@ void		ft_unset(t_minishell *shell, char **arg);
 //------------------BUILTIN-ENV----------------//
 void		ft_env(t_minishell *shell);
 //------------------BUILTIN-EXIT---------------//
-void        ft_exit(t_minishell *shell, char **arg);
+void		ft_exit(t_minishell *shell, char **arg);
 #endif

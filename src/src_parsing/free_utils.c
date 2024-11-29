@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 13:30:05 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/29 00:13:31 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 01:10:40 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	free_arguments(char **args)
 	int	i;
 
 	i = 0;
-
 	if (!args)
 		return ;
 	while (args[i])
@@ -68,7 +67,6 @@ void	free_tokens_parse(char **tokens)
 	int	i;
 
 	i = 0;
-
 	if (!tokens)
 		return ;
 	while (tokens[i])
@@ -104,4 +102,3 @@ int	error_handler(const char *msg, int exit_code)
 		exit(exit_code);
 	return (exit_code);
 }
-
