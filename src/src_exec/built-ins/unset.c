@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:48 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/27 17:58:15 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:24:28 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	delete_env_var(t_env **env_list, const char *key)
+static void	delete_env_var(t_env **env_list, const char *key)
 {
 	t_env	*current_env;
 

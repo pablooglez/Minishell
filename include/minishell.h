@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 23:12:05 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:28:46 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <fcntl.h>
-# include <linux/limits.h>
+//# include <linux/limits.h>
 # include <limits.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -221,15 +221,8 @@ int			ft_error(t_minishell *shell, int code,
 
 //-----------------FREE_UTILS---------------------//
 void		free_array(char ***array);
-void		free_redir(t_redir **redir);
-void		free_env_list(t_env	**l_env);
 void		*free_shell(t_minishell **shell);
 void		*free_tokens(t_cmd **tokens);
-
-//-------------FUNCIONES MAIN------------------//
-void		exit_shell(t_minishell *shell);
-void		init_minishell(t_minishell *shell, char **env);
-void		execute_cmd(t_minishell *shell, char *input);
 
 //-----------------SIGNALS---------------------//
 void		signal_handler(int signal);
@@ -237,11 +230,6 @@ void		signal_handler(int signal);
 //-------------------UTILS---------------------//
 char		*ft_strncpy(char *dest, const char *src, size_t n);
 char		*ft_strndup(const char *s, size_t n);
-
-//-------------------ENV_UTILS---------------------//
-int			count_nodes(t_env *env_vars);
-char		**free_env_array(char ***env_array, int i);
-char		**env_vars_to_array(t_env *env_vars);
 
 //--------------FUNCIONES EXECUTION-------------//
 void		execute(t_minishell *shell);
@@ -251,12 +239,6 @@ int			handle_pipe(t_cmd *cmd);
 int			handle_redirection(t_minishell *shell, t_redir *redir, int fd);
 void		safe_dup2(int fd1, int fd2);
 void		safe_close(int fd);
-
-//---------------------UTILS-------------------//
-char		*check_absolute_or_relative_path(char *cmd);
-char		*get_env_value(t_env *env_list, char *key);
-void		update_env_var(t_env **env_list, char *key, char *value);
-int			is_valid_identifier(const char *str);
 
 //---------------------UTILS2-------------------//
 char		*get_command_path(char *cmd, t_minishell *shell);
@@ -274,20 +256,14 @@ void		ft_echo(char **arg);
 void		ft_env(t_minishell *shell);
 
 //------------------BUILTIN-EXIT---------------//
-void		handle_no_args(t_minishell *shell);
 void		ft_exit(t_minishell *shell, char **arg);
 
 //------------------BUILTIN-EXPORT-------------//
-void		print_env_vars(t_env *env_list);
-void		handle_invalid_identifier(t_minishell *shell,
-				char *key, char *value);
-void		update_env_var_from_arg(t_minishell *shell, char *arg);
 int			ft_export(t_minishell *shell, char **arg);
 
 //------------------BUILTIN-PWD----------------//
 int			ft_pwd(t_minishell *shell);
 
 //------------------BUILTIN-UNSET--------------//
-void		delete_env_var(t_env **env_list, const char *key);
 void		ft_unset(t_minishell *shell, char **arg);
 #endif

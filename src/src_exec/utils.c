@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 17:17:32 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/29 20:03:31 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:25:26 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*check_absolute_or_relative_path(char *cmd)
+static char	*check_absolute_or_relative_path(char *cmd)
 {
 	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/')
 		|| (cmd[0] == '.' && cmd[1] == '.' && cmd[2] == '/'))
@@ -25,7 +25,7 @@ char	*check_absolute_or_relative_path(char *cmd)
 	return (NULL);
 }
 
-char	*get_env_value(t_env *env_list, char *key)
+static char	*get_env_value(t_env *env_list, char *key)
 {
 	t_env	*current_env;
 
@@ -39,7 +39,7 @@ char	*get_env_value(t_env *env_list, char *key)
 	return (NULL);
 }
 
-void	update_env_var(t_env **env_list, char *key, char *value)
+static void	update_env_var(t_env **env_list, char *key, char *value)
 {
 	t_env	*current_env;
 	t_env	*new_env_var;
@@ -65,7 +65,7 @@ void	update_env_var(t_env **env_list, char *key, char *value)
 	*env_list = new_env_var;
 }
 
-int	is_valid_identifier(const char *str)
+static int	is_valid_identifier(const char *str)
 {
 	int	i;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:55:18 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 20:49:58 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:21:34 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,7 @@ static void	fatal(int code, char *value)
 		exit(EXIT_FAILURE);
 	}
 	else if (code == FD_NOT_FOUND)
-	{
 		write(2, "Minishell: No such file or directory\n", 38);
-		exit(129);
-	}
 	else if (code == CMD_NOT_FOUND)
 	{
 		write(2, "Minishell: command not found: ", 30);
@@ -76,5 +73,7 @@ int	ft_error(t_minishell *shell, int code, char *value, int should_exit)
 		free(value);
 	if (should_exit)
 		exit(shell->exit_status);
+	if (code == FD_NOT_FOUND)
+		shell->exit_status = 1;
 	return (1);
 }

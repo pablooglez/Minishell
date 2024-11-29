@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:48:22 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/27 18:01:42 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:26:16 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	free_array(char ***array)
 	}
 }
 
-void	free_redir(t_redir **redir)
+static void	free_redir(t_redir **redir)
 {
 	t_redir	*next;
 
@@ -49,7 +49,7 @@ void	free_redir(t_redir **redir)
 	}
 }
 
-void	free_env_list(t_env **env_var)
+static void	free_env_list(t_env **env_var)
 {
 	t_env	*next;
 
