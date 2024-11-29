@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 23:31:31 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/29 23:56:41 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,10 @@ void		signal_handler(int signal);
 char		*ft_strncpy(char *dest, const char *src, size_t n);
 char		*ft_strndup(const char *s, size_t n);
 
-//--------------FUNCIONES EXECUTION-------------//
+//-------------------ENV_UTILS-------------//
+char		**env_vars_to_array(t_env *env_vars);
+
+//--------------EXECUTE-------------//
 void		execute(t_minishell *shell);
 
 //--------------REDIRECTIONS-------------//
@@ -232,6 +235,12 @@ int			handle_pipe(t_cmd *cmd);
 int			handle_redirection(t_minishell *shell, t_redir *redir, int fd);
 void		safe_dup2(int fd1, int fd2);
 void		safe_close(int fd);
+
+//---------------------UTILS-------------------//
+char		*check_absolute_or_relative_path(char *cmd);
+char		*get_env_value(t_env *env_list, char *key);
+void		update_env_var(t_env **env_list, char *key, char *value);
+int			is_valid_identifier(const char *str);
 
 //---------------------UTILS2-------------------//
 char		*get_command_path(char *cmd, t_minishell *shell);

@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 21:17:39 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 23:24:55 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/29 23:50:51 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	**free_env_array(char ***env_array, int i)
 	return (NULL);
 }
 
-static char	**env_vars_to_array(t_env *env_vars)
+char	**env_vars_to_array(t_env *env_vars)
 {
 	char	**env_array;
 	int		len;
