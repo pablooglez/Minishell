@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 00:20:12 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 14:41:02 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/29 22:45:13 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	qts(int *no_expand, char *buffer,
 	return (0);
 }
 
-static int	spec(char **tokens, char *buffer,
+int	spec(char **tokens, char *buffer,
 			int *buf_index, t_minishell *shell)
 {
 	if (*buf_index > 0)
@@ -103,27 +103,16 @@ int	handle_token(char **tokens, t_minishell *shell)
 	char	buffer[1024];
 	int		buf_index;
 	int		no_expand;
+	int		result;
 
 	buf_index = 0;
 	no_expand = 0;
 	while (shell->input[shell->i] && shell->input[shell->i] != ' ')
 	{
 		shell->e = qts(&no_expand, buffer, &buf_index, shell);
-		if (shell->e)
-		{
-			if (shell->e == -1)
-				return (-1);
-		}
-		else if (shell->input[shell->i] == '$')
-		{
-			shell->i = expand_variable(shell->input, buffer, &buf_index, shell);
-			if (shell->i == -1)
-				return (-1);
-		}
-		else if (classify_special_token(shell->input[shell->i]) != UNKNOWN)
-			return (spec(tokens, buffer, &buf_index, shell));
-		else
-			buffer[buf_index++] = shell->input[shell->i++];
+		result = process_input_character(tokens, buffer, &buf_index, shell);
+		if (result != 0)
+			return (result);
 	}
 	shell->e = no_expand;
 	return (fin(tokens, buffer, &buf_index, shell));

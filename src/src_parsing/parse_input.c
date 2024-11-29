@@ -3,47 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 21:23:53 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/29 00:24:22 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 20:04:12 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	process_arguments(char **tokens, int *i,
-			t_cmd *cmd, t_minishell *shell)
-{
-	int	arg_index;
-	int	ret;
-
-	if (initialize_arguments(tokens, i, cmd) == -1)
-		return (-1);
-	arg_index = 0;
-	cmd->arguments[arg_index] = ft_strdup(cmd->path);
-	if (!cmd->arguments[arg_index])
-		return (-1);
-	arg_index++;
-	while (tokens[*i] && ft_strncmp(tokens[*i], "|", 2) != 0)
-	{
-		if (get_redirection_type(tokens[*i]) != NOT_REDIR)
-		{
-			ret = process_redirection(tokens, i, cmd, shell);
-			if (ret == -1)
-				return (-1);
-		}
-		else
-		{
-			if (add_argument(tokens[*i], arg_index, cmd) == -1)
-				return (-1);
-			arg_index++;
-			(*i)++;
-		}
-	}
-	cmd->arguments[arg_index] = NULL;
-	return (0);
-}
 
 int	process_token(char *input, char **tokens, int *j, t_minishell *shell)
 {
@@ -65,21 +32,38 @@ int	process_token(char *input, char **tokens, int *j, t_minishell *shell)
 	return (0);
 }
 
-t_cmd	*parse_input(char *input_line, t_minishell *shell)
+int	validate_input(char *input)
+{
+	if (is_empty_or_whitespace(input))
+		return (0);
+	if (contains_invalid_characters(input))
+		return (0);
+	return (1);
+}
+
+char	**validate_and_tokenize(char *input_line, t_minishell *shell)
 {
 	char	**tokens;
-	t_cmd	*cmd;
 
-	if (is_empty_or_whitespace(input_line))
-		return (NULL);
-	if (contains_invalid_characters(input_line))
-		return (NULL);
 	tokens = tokenize_input(input_line, shell);
 	if (!tokens || !tokens[0])
 	{
 		free_tokens_parse(tokens);
 		return (NULL);
 	}
+	return (tokens);
+}
+
+t_cmd	*parse_input(char *input_line, t_minishell *shell)
+{
+	char	**tokens;
+	t_cmd	*cmd;
+
+	if (!validate_input(input_line))
+		return (NULL);
+	tokens = validate_and_tokenize(input_line, shell);
+	if (!tokens)
+		return (NULL);
 	cmd = create_new_command(shell);
 	if (!cmd)
 	{

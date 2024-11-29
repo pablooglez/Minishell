@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:02:04 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/29 01:13:21 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/29 22:45:40 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,30 +85,4 @@ char	*expand_string(const char *str, t_minishell *shell)
 		result = temp;
 	}
 	return (result);
-}
-
-char	*expand_entire_input(const char *input, t_minishell *shell)
-{
-	char	*expanded;
-
-	expanded = expand_string(input, shell);
-	if (expanded != NULL && access(expanded, X_OK) == 0)
-		return (expanded);
-	free(expanded);
-	return (NULL);
-}
-
-void	expand_tokens(t_cmd *cmd, t_minishell *shell)
-{
-	int		i;
-	char	*expanded;
-
-	i = 0;
-	while (cmd->arguments && cmd->arguments[i] != NULL)
-	{
-		expanded = expand_argument(cmd->arguments[i], shell);
-		free(cmd->arguments[i]);
-		cmd->arguments[i] = expanded;
-		i++;
-	}
 }

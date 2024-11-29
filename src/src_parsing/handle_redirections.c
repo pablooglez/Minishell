@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 11:57:47 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/28 19:24:16 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/29 21:34:45 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,13 @@ int	create_and_add_redirection(t_cmd *cmd, int type, char *file)
 
 	new_redir = malloc(sizeof(t_redir));
 	if (!new_redir)
-	{
-		perror("[ERROR] create_and_add_redirection: Memory allocation failed");
 		return (-1);
-	}
 	new_redir->type = type;
 	new_redir->file = ft_strdup(file);
 	new_redir->next = NULL;
 	if (!new_redir->file)
 	{
 		free(new_redir);
-		perror("[ERROR] create_and_add_redirection: File duplication failed");
 		return (-1);
 	}
 	if (!cmd->redir)
@@ -74,6 +70,15 @@ int	validate_redirection_syntax(char **tokens, int *i)
 	return (0);
 }
 
+int	validate_and_expand(char **expanded_filename, char *token,
+		t_minishell *shell)
+{
+	*expanded_filename = expand_string(token, shell);
+	if (!*expanded_filename || is_empty_or_whitespace(*expanded_filename))
+		return (-1);
+	return (0);
+}
+
 int	process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
 {
 	int		type;
@@ -91,8 +96,7 @@ int	process_redirection(char **tokens, int *i, t_cmd *cmd, t_minishell *shell)
 	}
 	if (type == HEREDOC)
 		return (parse_heredoc(shell, tokens, i, cmd));
-	expanded_filename = expand_string(tokens[*i + 1], shell);
-	if (!expanded_filename || is_empty_or_whitespace(expanded_filename))
+	if (validate_and_expand(&expanded_filename, tokens[*i + 1], shell) == -1)
 		return (-1);
 	if (create_and_add_redirection(cmd, type, expanded_filename) == -1)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 17:11:36 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 22:43:33 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,9 @@ int			error_handler(const char *msg, int exit_code);
 int			expand_variable(char *input, char *buffer, int *buf_index,
 				t_minishell *shell);
 t_token		classify_special_token(char c);
+int			handle_special_token_cases(char **tokens, char *buffer, int *buf_index, t_minishell *shell);
+int			spec(char **tokens, char *buffer, int *buf_index, t_minishell *shell);
+int			process_input_character(char **tokens, char *buffer, int *buf_index, t_minishell *shell);
 
 //---------------------------------------------------------------------------//
 

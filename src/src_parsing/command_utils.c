@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:53:22 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/28 19:06:48 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 15:05:27 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,4 @@ t_cmd	*create_new_command(t_minishell *shell)
 	new_cmd->outfd = -1;
 	new_cmd->type = CMD;
 	return (new_cmd);
-}
-
-int	initialize_arguments(char **tokens, int *i, t_cmd *cmd)
-{
-	if (!cmd->path)
-	{
-		cmd->path = ft_strdup(tokens[*i]);
-		if (!cmd->path)
-			return (-1);
-		(*i)++;
-	}
-	cmd->arguments = ft_calloc(100, sizeof(char *));
-	if (!cmd->arguments)
-		return (-1);
-	return (0);
-}
-
-int	add_argument(char *token, int arg_index, t_cmd *cmd)
-{
-	cmd->arguments[arg_index] = ft_strdup(token);
-	if (!cmd->arguments[arg_index])
-		return (-1);
-	return (0);
 }

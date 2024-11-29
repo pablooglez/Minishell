@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/29 01:20:42 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/29 22:56:02 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,14 @@ int	process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
 	while (tokens[i])
 	{
 		redir_type = get_redirection_type(tokens[i]);
-		if (redir_type != NOT_REDIR)
-		{
-			if (process_redirection(tokens, &i, current_cmd, shell) == -1)
-				return (-1);
-		}
-		else if (ft_strncmp(tokens[i], "|", 1) == 0)
-		{
-			if (process_token_pipe(tokens, &i, &current_cmd, shell) == -1)
-				return (-1);
-		}
-		else if (process_arguments(tokens, &i, current_cmd, shell) == -1)
+		if (redir_type != NOT_REDIR
+			&& process_redirection(tokens, &i, current_cmd, shell) == -1)
+			return (-1);
+		else if (ft_strncmp(tokens[i], "|", 1) == 0
+			&& process_token_pipe(tokens, &i, &current_cmd, shell) == -1)
+			return (-1);
+		else if (redir_type == NOT_REDIR
+			&& process_arguments(tokens, &i, current_cmd, shell) == -1)
 			return (-1);
 		if (tokens[i] && current_cmd->type == PIPE)
 		{
@@ -62,13 +59,11 @@ int	handle_escape(char *input, int i, char *buffer, int *buf_index)
 	return (i);
 }
 
-int	expand_variable(char *input, char *buffer, int *buf_index, t_minishell *shell)
+int	expand_variable(char *input, char *buffer, int *buf_index,
+	t_minishell *shell)
 {
 	char	var_name[256];
 	int		var_len;
-	char	*pid;
-	int		k;
-	char	*value;
 
 	var_len = 0;
 	shell->i++;
@@ -80,27 +75,13 @@ int	expand_variable(char *input, char *buffer, int *buf_index, t_minishell *shel
 	if (input[shell->i] == '$')
 	{
 		shell->i++;
-		pid = ft_itoa(getpid());
-		k = 0;
-		while (pid[k])
-			buffer[(*buf_index)++] = pid[k++];
-		free(pid);
+		if (handle_dollar_case(buffer, buf_index, shell) == -1)
+			return (-1);
 		return (shell->i);
 	}
-	while (input[shell->i] && (ft_isalnum(input[shell->i]) || input[shell->i] == '_' || input[shell->i] == '?'))
-		var_name[var_len++] = input[shell->i++];
-	var_name[var_len] = '\0';
-	if (ft_strncmp(var_name, "?", 1) == 0)                                      //  Esto trata $?, pero creo que get_env_value devuelve un puntero, pero itoa hace malloc ademas, por lo
-		value = ft_itoa(shell->exit_status);                                    //  tanto, es probable que haya un leak si no se trata. La cosa es como determinar cuando liberar value, porque
-	else																		//  no se deberia liberar si se usa con get_env_value, pero si cuando es itoa.
-		value = ft_strdup(get_env_value(shell->env_vars, var_name));            //  Al final haciendo un strdup, abajo se libera value y todos contentos.
-	if (value)
-	{
-		k = 0;
-		while (value[k])
-			buffer[(*buf_index)++] = value[k++];
-		free(value);                                                            //  Liberamos value
-	}
+	if (get_variable_name(input, var_name, &var_len, shell) == -1)
+		return (-1);
+	copy_variable_value(var_name, buffer, buf_index, shell);
 	return (shell->i);
 }
 
