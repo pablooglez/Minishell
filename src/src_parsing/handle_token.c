@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 00:20:12 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 01:22:01 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/29 14:41:02 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	s_q(int *no_expand, char *buffer,
 	*no_expand = 1;
 	shell->i++;
 	while (shell->input[shell->i] && shell->input[shell->i] != '\'')
-		buffer[*buf_index++] = shell->input[shell->i++];
+		buffer[(*buf_index)++] = shell->input[shell->i++];
 	if (shell->input[shell->i] != '\'')
 		return (-1);
 	shell->i++;
@@ -43,7 +43,7 @@ static int	qts(int *no_expand, char *buffer,
 					return (-1);
 			}
 			else
-				buffer[*buf_index++] = shell->input[shell->i++];
+				buffer[(*buf_index)++] = shell->input[shell->i++];
 		}
 		if (shell->input[shell->i] != '"')
 			return (-1);
