@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/29 22:56:02 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/30 00:05:32 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
 		if (redir_type != NOT_REDIR
 			&& process_redirection(tokens, &i, current_cmd, shell) == -1)
 			return (-1);
-		else if (ft_strncmp(tokens[i], "|", 1) == 0
+		else if (tokens[i] && ft_strncmp(tokens[i], "|", 1) == 0
 			&& process_token_pipe(tokens, &i, &current_cmd, shell) == -1)
 			return (-1);
 		else if (redir_type == NOT_REDIR
