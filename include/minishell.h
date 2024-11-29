@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 23:00:31 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:12:05 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,12 @@ int			handle_special_token_cases(char **tokens, char *buffer,
 int			spec(char **tokens, char *buffer, int *buf_index,
 				t_minishell *shell);
 int			process_input_character(char **tokens, char *buffer,
+				int *buf_index, t_minishell *shell);
+int			handle_dollar_case(char *buffer, int *buf_index,
+				t_minishell *shell);
+int			get_variable_name(char *input, char *var_name,
+				int *var_len, t_minishell *shell);
+int			copy_variable_value(char *var_name, char *buffer,
 				int *buf_index, t_minishell *shell);
 
 //-----------------HEREDOC---------------------//

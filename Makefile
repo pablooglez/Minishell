@@ -6,7 +6,7 @@
 #    By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/01 19:11:08 by pablogon          #+#    #+#              #
-#    Updated: 2024/11/29 22:59:10 by albelope         ###   ########.fr        #
+#    Updated: 2024/11/29 23:10:59 by albelope         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,12 +55,14 @@ SRCS_EXEC = src/src_exec/built-ins/built-ins.c\
 SRCS_PARSER = src/src_parsing/tokenize.c src/src_parsing/handle_token.c \
 				src/src_parsing/parse_input.c src/src_parsing/handle_quotes.c \
 				src/src_parsing/handle_char.c src/src_parsing/handle_pipes.c \
-				src/src_parsing/command_utils.c src/src_parsing/handle_token_utils.c \
+				src/src_parsing/command_utils.c src/src_parsing/free_utils_two.c \
+				src/src_parsing/handle_token_utils.c \
 				src/src_parsing/handle_redirections.c src/src_parsing/heredoc.c \
 				src/src_parsing/expand_variables.c src/src_parsing/free_utils.c \
 				src/src_parsing/expand_variables_utils.c \
-				src/src_parsing/expand_variables_helpers.c  \
-				src/src_parsing/parse_utils.c  src/src_parsing/arguments.c\
+				src/src_parsing/expand_variables_helpers.c \
+				src/src_parsing/parse_utils.c  src/src_parsing/arguments.c \
+				src/src_parsing/tokenize_utils.c \
 
 OBJS		:= ${SRCS:.c=.o}
 OBJS_PARSER	:= ${SRCS_PARSER:.c=.o}
