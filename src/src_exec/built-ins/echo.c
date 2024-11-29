@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 17:35:48 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/28 18:03:02 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 19:15:33 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_echo(char **arg)
 			new_line = 0;
 		else
 		{
-			is_text = printf("%s",  arg[i]);
+			is_text = printf("%s", arg[i]);
 			if (arg[i] && arg[i + 1])
 				printf(" ");
 		}

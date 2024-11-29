@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:41 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/27 17:41:05 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 20:11:12 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_env(t_minishell *shell)
 	current_env = shell->env_vars;
 	while (current_env)
 	{
-		if (current_env->key && current_env->value)
+		if (current_env->key && current_env->value && current_env->value[0])
 			printf("%s=%s\n", current_env->key, current_env->value);
 		current_env = current_env->next;
 	}

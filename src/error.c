@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:55:18 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 17:11:43 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 20:49:58 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,26 @@ static void	built_ins(int code, char *value)
 		write(2, "cd: ", 4);
 		write(2, value, ft_strlen(value));
 		write(2, ": No such file or directory\n", 29);
+	}
+}
+
+static void	handle_error(int code, const char *value)
+{
+	if (code == SYNTAX_ERROR)
+	{
+		write(2, "Minishell: syntax error near unexpected token `", 47);
+		if (value)
+			write(2, value, ft_strlen(value));
+		write(2, "'\n", 2);
+		exit(2);
+	}
+	else if (code == PERMISSION_DENIED)
+	{
+		write(2, "Minishell: permission denied: ", 31);
+		if (value)
+			write(2, value, ft_strlen(value));
+		write(2, "\n", 1);
+		exit(126);
 	}
 }
 
@@ -44,22 +64,8 @@ static void	fatal(int code, char *value)
 		write(2, "\n", 1);
 		exit(127);
 	}
-	else if (code == SYNTAX_ERROR)
-	{
-		write(2, "Minishell: syntax error near unexpected token `", 47);
-		if (value)
-			write(2, value, ft_strlen(value));
-		write(2, "'\n", 2);
-		exit(2);
-	}
-	else if (code == PERMISSION_DENIED)
-	{
-		write(2, "Minishell: permission denied: ", 31);
-		if (value)
-			write(2, value, ft_strlen(value));
-		write(2, "\n", 1);
-		exit(126);
-	}
+	else
+		handle_error(code, value);
 }
 
 int	ft_error(t_minishell *shell, int code, char *value, int should_exit)

@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/28 17:57:20 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 18:02:13 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,26 @@ void	init_minishell(t_minishell *shell, char **env)
 	signal(SIGQUIT, SIG_IGN);
 }
 
+void	execute_cmd(t_minishell *shell, char *input)
+{
+	if (is_empty_or_whitespace(input))
+	{
+		free(input);
+		return ;
+	}
+	if (history_length == 0
+		|| ft_strcmp(history_get(history_length)->line, input))
+		add_history(input);
+	shell->tokens = parse_input(input, shell);
+	if (shell->tokens && g_signal == 0)
+	{
+		execute(shell);
+		free_command_list(shell->tokens);
+		shell->tokens = NULL;
+	}
+	free(input);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_minishell	shell;
@@ -54,22 +74,7 @@ int	main(int argc, char **argv, char **env)
 			printf("exit\n");
 			exit_shell(&shell);
 		}
-		if (is_empty_or_whitespace(input))
-		{
-			free(input);
-			continue ;
-		}
-		if (history_length == 0
-			|| ft_strcmp(history_get(history_length)->line, input))
-			add_history(input);
-		shell.tokens = parse_input(input, &shell);
-		if (shell.tokens && g_signal == 0)
-		{
-			execute(&shell);
-			free_command_list(shell.tokens);
-			shell.tokens = NULL;
-		}
-		free(input);
+		execute_cmd(&shell, input);
 		if (g_signal != 0)
 		{
 			shell.exit_status = 128 + g_signal;

@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 17:11:36 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 21:39:27 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,9 +192,14 @@ int			expand_variable(char *input, char *buffer, int *buf_index,
 				t_minishell *shell);
 t_token		classify_special_token(char c);
 
+//-----------------HEREDOC---------------------//
+int			parse_heredoc(t_minishell *shell,
+				char **tokens, int *i, t_cmd *cmd);
+void		delete_heredoc(t_minishell *shell);
+
 //---------------------------------------------------------------------------//
 
-//---------------------ENV-------------------------//
+//---------------------ENV_VARS-------------------------//
 void		*safe_malloc(t_minishell *shell, size_t size);
 void		create_env_vars(t_minishell *shell, char **env);
 
@@ -209,14 +214,10 @@ void		free_env_list(t_env	**l_env);
 void		*free_shell(t_minishell **shell);
 void		*free_tokens(t_cmd **tokens);
 
-//-----------------HEREDOC---------------------//
-int			parse_heredoc(t_minishell *shell,
-				char **tokens, int *i, t_cmd *cmd);
-void		delete_heredoc(t_minishell *shell);
-
 //-------------FUNCIONES MAIN------------------//
 void		exit_shell(t_minishell *shell);
 void		init_minishell(t_minishell *shell, char **env);
+void		execute_cmd(t_minishell *shell, char *input);
 
 //-----------------SIGNALS---------------------//
 void		signal_handler(int signal);
@@ -225,32 +226,56 @@ void		signal_handler(int signal);
 char		*ft_strncpy(char *dest, const char *src, size_t n);
 char		*ft_strndup(const char *s, size_t n);
 
+//-------------------ENV_UTILS---------------------//
+int			count_nodes(t_env *env_vars);
+char		**free_env_array(char ***env_array, int i);
+char		**env_vars_to_array(t_env *env_vars);
+
 //--------------FUNCIONES EXECUTION-------------//
 void		execute(t_minishell *shell);
-int			handle_builtin(t_cmd *cmd, t_minishell *shell);
+
+//--------------REDIRECTIONS-------------//
 int			handle_pipe(t_cmd *cmd);
 int			handle_redirection(t_minishell *shell, t_redir *redir, int fd);
 void		safe_dup2(int fd1, int fd2);
 void		safe_close(int fd);
+
 //---------------------UTILS-------------------//
-char		*get_command_path(char *cmd, t_minishell *shell);
-//------------------BUILTIN-CD---------------//
+char		*check_absolute_or_relative_path(char *cmd);
 char		*get_env_value(t_env *env_list, char *key);
 void		update_env_var(t_env **env_list, char *key, char *value);
+int			is_valid_identifier(const char *str);
+
+//---------------------UTILS2-------------------//
+char		*get_command_path(char *cmd, t_minishell *shell);
+
+//------------------BUILTIN-INS---------------//
+int			handle_builtin(t_cmd *cmd, t_minishell *shell);
+
+//------------------BUILTIN-CD---------------//
 int			ft_cd(t_minishell *shell, char **arg);
+
 //------------------BUILTIN-ECHO---------------//
 void		ft_echo(char **arg);
+
+//------------------BUILTIN-ENV----------------//
+void		ft_env(t_minishell *shell);
+
+//------------------BUILTIN-EXIT---------------//
+void		handle_no_args(t_minishell *shell);
+void		ft_exit(t_minishell *shell, char **arg);
+
+//------------------BUILTIN-EXPORT-------------//
+void		print_env_vars(t_env *env_list);
+void		handle_invalid_identifier(t_minishell *shell,
+				char *key, char *value);
+void		update_env_var_from_arg(t_minishell *shell, char *arg);
+int			ft_export(t_minishell *shell, char **arg);
+
 //------------------BUILTIN-PWD----------------//
 int			ft_pwd(t_minishell *shell);
-//------------------BUILTIN-EXPORT-------------//
-int			is_valid_identifier(const char *str);
-void		print_env_vars(t_env *env_list);
-int			ft_export(t_minishell *shell, char **arg);
+
 //------------------BUILTIN-UNSET--------------//
 void		delete_env_var(t_env **env_list, const char *key);
 void		ft_unset(t_minishell *shell, char **arg);
-//------------------BUILTIN-ENV----------------//
-void		ft_env(t_minishell *shell);
-//------------------BUILTIN-EXIT---------------//
-void		ft_exit(t_minishell *shell, char **arg);
 #endif
