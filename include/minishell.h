@@ -6,7 +6,7 @@
 /*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 23:28:46 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/29 23:31:31 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <fcntl.h>
-//# include <linux/limits.h>
+# include <linux/limits.h>
 # include <limits.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -48,7 +48,6 @@ extern int	g_signal;
 
 //---------------------STRUCTURE --------------------------//
 
-// Enumeración para definir códigos de error
 typedef enum e_error
 {
 	SUCCESS = 0,
@@ -64,7 +63,6 @@ typedef enum e_error
 	MSG = 100,
 }	t_error;
 
-// Enumeración para definir tipos de tokens
 typedef enum e_token
 {
 	CMD = 0,
@@ -78,7 +76,6 @@ typedef enum e_token
 	UNKNOWN = -1,
 }	t_token;
 
-// Enumeración para definir tipos de redirección
 typedef enum e_type_redir
 {
 	INFILE = 10,
@@ -88,7 +85,6 @@ typedef enum e_type_redir
 	NOT_REDIR = -1,
 }	t_type_redir;
 
-// Estructura para manejar redirecciones
 typedef struct s_redir
 {
 	enum e_type_redir		type;
@@ -98,7 +94,6 @@ typedef struct s_redir
 	struct s_redir			*prev;
 }	t_redir;
 
-// Estructura para comandos y sus atributos
 typedef struct s_cmd
 {
 	enum e_token	type;
@@ -113,7 +108,6 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 }	t_cmd;
 
-// Estructura para las variables de entorno
 typedef struct s_env
 {
 	char			*key;
@@ -122,7 +116,6 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
-// Estructura principal del minishell
 typedef struct s_minishell
 {
 	int				exit_status;
