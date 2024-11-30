@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 21:17:39 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 21:31:37 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:50:51 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	count_nodes(t_env *env_vars)
+static int	count_nodes(t_env *env_vars)
 {
 	int	count;
 
@@ -25,7 +25,7 @@ int	count_nodes(t_env *env_vars)
 	return (count);
 }
 
-char	**free_env_array(char ***env_array, int i)
+static char	**free_env_array(char ***env_array, int i)
 {
 	while (i > -1)
 		free((*env_array)[i--]);

@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/30 12:01:56 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/30 12:30:32 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ extern int	g_signal;
 
 //---------------------STRUCTURE --------------------------//
 
-// Enumeración para definir códigos de error
 typedef enum e_error
 {
 	SUCCESS = 0,
@@ -64,7 +63,6 @@ typedef enum e_error
 	MSG = 100,
 }	t_error;
 
-// Enumeración para definir tipos de tokens
 typedef enum e_token
 {
 	CMD = 0,
@@ -78,7 +76,6 @@ typedef enum e_token
 	UNKNOWN = -1,
 }	t_token;
 
-// Enumeración para definir tipos de redirección
 typedef enum e_type_redir
 {
 	INFILE = 10,
@@ -88,7 +85,6 @@ typedef enum e_type_redir
 	NOT_REDIR = -1,
 }	t_type_redir;
 
-// Estructura para manejar redirecciones
 typedef struct s_redir
 {
 	enum e_type_redir		type;
@@ -98,7 +94,6 @@ typedef struct s_redir
 	struct s_redir			*prev;
 }	t_redir;
 
-// Estructura para comandos y sus atributos
 typedef struct s_cmd
 {
 	enum e_token	type;
@@ -113,7 +108,6 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 }	t_cmd;
 
-// Estructura para las variables de entorno
 typedef struct s_env
 {
 	char			*key;
@@ -122,7 +116,6 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
-// Estructura principal del minishell
 typedef struct s_minishell
 {
 	int				exit_status;
@@ -222,15 +215,8 @@ int			ft_error(t_minishell *shell, int code,
 
 //-----------------FREE_UTILS---------------------//
 void		free_array(char ***array);
-void		free_redir(t_redir **redir);
-void		free_env_list(t_env	**l_env);
 void		*free_shell(t_minishell **shell);
 void		*free_tokens(t_cmd **tokens);
-
-//-------------FUNCIONES MAIN------------------//
-void		exit_shell(t_minishell *shell);
-void		init_minishell(t_minishell *shell, char **env);
-void		execute_cmd(t_minishell *shell, char *input);
 
 //-----------------SIGNALS---------------------//
 void		signal_handler(int signal);
@@ -239,12 +225,10 @@ void		signal_handler(int signal);
 char		*ft_strncpy(char *dest, const char *src, size_t n);
 char		*ft_strndup(const char *s, size_t n);
 
-//-------------------ENV_UTILS---------------------//
-int			count_nodes(t_env *env_vars);
-char		**free_env_array(char ***env_array, int i);
+//-------------------ENV_UTILS-------------//
 char		**env_vars_to_array(t_env *env_vars);
 
-//--------------FUNCIONES EXECUTION-------------//
+//--------------EXECUTE-------------//
 void		execute(t_minishell *shell);
 
 //--------------REDIRECTIONS-------------//
@@ -275,20 +259,14 @@ void		ft_echo(char **arg);
 void		ft_env(t_minishell *shell);
 
 //------------------BUILTIN-EXIT---------------//
-void		handle_no_args(t_minishell *shell);
 void		ft_exit(t_minishell *shell, char **arg);
 
 //------------------BUILTIN-EXPORT-------------//
-void		print_env_vars(t_env *env_list);
-void		handle_invalid_identifier(t_minishell *shell,
-				char *key, char *value);
-void		update_env_var_from_arg(t_minishell *shell, char *arg);
 int			ft_export(t_minishell *shell, char **arg);
 
 //------------------BUILTIN-PWD----------------//
 int			ft_pwd(t_minishell *shell);
 
 //------------------BUILTIN-UNSET--------------//
-void		delete_env_var(t_env **env_list, const char *key);
 void		ft_unset(t_minishell *shell, char **arg);
 #endif

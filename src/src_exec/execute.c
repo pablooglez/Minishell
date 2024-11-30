@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:59:29 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/29 21:31:45 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:22:20 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static void	execute_child(t_minishell *shell, t_cmd *cmd)
 	safe_close(cmd->intfd);
 	if (cmd->arguments && handle_builtin(cmd, shell))
 		exit(shell->exit_status);
-	handle_redirection(shell, cmd->redir, -1);
+	if (handle_redirection(shell, cmd->redir, -1))
+		exit(shell->exit_status);
 	if (!cmd->arguments)
 		exit(shell->exit_status);
 	command_path = get_command_path(cmd->arguments[0], shell);

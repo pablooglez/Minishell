@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:11 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/29 19:30:55 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:24:18 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_env_vars(t_env *env_list)
+static void	print_env_vars(t_env *env_list)
 {
 	t_env	*current_env;
 
@@ -31,14 +31,14 @@ void	print_env_vars(t_env *env_list)
 	}
 }
 
-void	handle_invalid_identifier(t_minishell *shell, char *key, char *value)
+static void	handle_invalid_identifier(t_minishell *shell, char *key, char *value)
 {
 	free(key);
 	free(value);
 	ft_error(shell, MSG, "export: not a valid identifier\n", 0);
 }
 
-void	update_env_var_from_arg(t_minishell *shell, char *arg)
+static void	update_env_var_from_arg(t_minishell *shell, char *arg)
 {
 	char	*equal_sign;
 	char	*key;

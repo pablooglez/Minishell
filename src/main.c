@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 18:02:13 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/29 23:25:54 by pabloglez        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_signal = 0;
 
-void	exit_shell(t_minishell *shell)
+static void	exit_shell(t_minishell *shell)
 {
 	int	status;
 
@@ -27,7 +27,7 @@ void	exit_shell(t_minishell *shell)
 	exit(status);
 }
 
-void	init_minishell(t_minishell *shell, char **env)
+static void	init_minishell(t_minishell *shell, char **env)
 {
 	ft_memset(shell, 0, sizeof(t_minishell));
 	create_env_vars(shell, env);
@@ -36,7 +36,7 @@ void	init_minishell(t_minishell *shell, char **env)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	execute_cmd(t_minishell *shell, char *input)
+static void	execute_cmd(t_minishell *shell, char *input)
 {
 	if (is_empty_or_whitespace(input))
 	{
@@ -70,10 +70,7 @@ int	main(int argc, char **argv, char **env)
 		if (g_signal != 0)
 			g_signal = 0;
 		if (!input)
-		{
-			printf("exit\n");
-			exit_shell(&shell);
-		}
+			break ;
 		execute_cmd(&shell, input);
 		if (g_signal != 0)
 		{
