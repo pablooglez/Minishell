@@ -6,7 +6,7 @@
 /*   By: vzurera- <vzurera-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 01:10:19 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/30 19:43:29 by vzurera-         ###   ########.fr       */
+/*   Updated: 2024/11/30 21:07:40 by vzurera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 void	sigint_heredoc(int sig)
 {
-	(void) sig;
-	g_signal = 2;
-	ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	g_signal = sig;
+	rl_done = 1;
 }
 
 static void	read_heredoc(int fd, char *delimiter, t_minishell *shell)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: vzurera- <vzurera-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 19:48:11 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/30 00:09:49 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/30 21:19:41 by vzurera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,13 @@
 void	signal_handler(int sig)
 {
 	g_signal = sig;
-	write (1, "\n", 1);
-	rl_replace_line("", 0);
+	write (1, "\n", STDOUT_FILENO);
 	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+int	event_hook_readline(void)
+{
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vzurera- <vzurera-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/30 20:41:49 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/30 21:19:45 by vzurera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,7 @@ void		*free_tokens(t_cmd **tokens);
 
 //-----------------SIGNALS---------------------//
 void		signal_handler(int signal);
-
+int			event_hook_readline(void);
 //-------------------UTILS---------------------//
 char		*ft_strncpy(char *dest, const char *src, size_t n);
 char		*ft_strndup(const char *s, size_t n);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vzurera- <vzurera-@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/30 20:18:51 by vzurera-         ###   ########.fr       */
+/*   Updated: 2024/11/30 21:33:01 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	main(int argc, char **argv, char **env)
 	shell.original_stdin = dup(STDIN_FILENO);
 	shell.original_stdout = dup(STDOUT_FILENO);
 	init_minishell(&shell, env);
+	rl_event_hook = event_hook_readline;
 	while (argc && argv)
 	{
 		input = readline("\001\033[1;36m\002Minishell ➜ \001\033[0m\002");
@@ -74,5 +75,6 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		execute_cmd(&shell, input);
 	}
+	write (1, "exit\n", 5);
 	exit_shell(&shell);
 }
