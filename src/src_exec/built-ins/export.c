@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:11 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/29 23:24:18 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/30 17:06:14 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ static void	print_env_vars(t_env *env_list)
 	}
 }
 
-static void	handle_invalid_identifier(t_minishell *shell, char *key, char *value)
+static void	handle_invalid_identifier(t_minishell *shell,
+		char *key, char *value)
 {
 	free(key);
 	free(value);

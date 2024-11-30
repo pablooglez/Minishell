@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:41:21 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 23:23:50 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/30 17:25:46 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static int	is_numeric(const char *str)
 
 static void	handle_no_args(t_minishell *shell)
 {
+	if (shell->is_child == false)
+		delete_heredoc(shell);
 	free_shell(&shell);
 	exit(shell->exit_status);
 }
@@ -54,6 +56,6 @@ void	ft_exit(t_minishell *shell, char **args)
 	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	ft_putstr_fd(args[1], STDERR_FILENO);
 	ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-	free_shell(&shell);
-	exit(255);
+	shell->exit_status = 255;
+	handle_no_arg(shell);
 }
