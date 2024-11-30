@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 17:17:32 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/29 23:51:11 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/30 20:49:19 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	update_env_var(t_env **env_list, char *key, char *value)
 	{
 		if (ft_strncmp(current_env->key, key, ft_strlen(key) + 1) == 0)
 		{
+			free(new_env_var);
 			free(current_env->value);
 			current_env->value = ft_strdup(value);
 			return ;
