@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 16:41:21 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/30 17:25:46 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/30 17:30:31 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,5 @@ void	ft_exit(t_minishell *shell, char **args)
 	ft_putstr_fd(args[1], STDERR_FILENO);
 	ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 	shell->exit_status = 255;
-	handle_no_arg(shell);
+	handle_no_args(shell);
 }
