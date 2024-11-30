@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 01:10:19 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 16:15:36 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/30 12:05:31 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,26 @@ void	sigint_heredoc(int sig)
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 }
 
-static	void	read_heredoc(int fd, char *delimiter)
+static void	read_heredoc(int fd, char *delimiter, t_minishell *shell)
 {
 	char	*line;
+	char	*expanded_line;
+	int		expand;
 
+	expand = !heredoc_quoted(delimiter);
+	delimiter = ft_strtrim(delimiter, "'\"");
 	signal(SIGINT, sigint_heredoc);
-	line = NULL;
 	line = readline("> ");
 	while (line && ft_strcmp(delimiter, line) && g_signal == 0)
 	{
-		write(fd, line, ft_strlen(line));
+		if (expand)
+			expanded_line = expand_string(line, shell);
+		else
+			expanded_line = ft_strdup(line);
+		write(fd, expanded_line, ft_strlen(expanded_line));
 		write(fd, "\n", 1);
 		free(line);
+		free(expanded_line);
 		line = readline("> ");
 	}
 	close(fd);
@@ -40,12 +48,12 @@ static	void	read_heredoc(int fd, char *delimiter)
 	signal(SIGINT, signal_handler);
 }
 
-static int	create_heredoc(t_redir *redir)
+static int	create_heredoc(t_redir *redir, t_minishell *shell)
 {
-	int					fd;
-	static int			unique;
-	char				*st_unique;
-	char				*delimiter;
+	int			fd;
+	static int	unique;
+	char		*st_unique;
+	char		*delimiter;
 
 	fd = -1;
 	while (redir && redir->next)
@@ -60,7 +68,7 @@ static int	create_heredoc(t_redir *redir)
 		if (fd == -1)
 			return (0);
 		redir->type = INFILE;
-		read_heredoc(fd, delimiter);
+		read_heredoc(fd, delimiter, shell);
 	}
 	return ((g_signal != 0) * -1);
 }
@@ -91,7 +99,7 @@ int	parse_heredoc(t_minishell *shell, char **tokens, int *i, t_cmd *cmd)
 		current->next = new_redir;
 	}
 	*i += 2;
-	return (create_heredoc(cmd->redir));
+	return (create_heredoc(cmd->redir, shell));
 }
 
 void	delete_heredoc(t_minishell *shell)

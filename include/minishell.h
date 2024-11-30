@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 23:12:05 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/30 12:01:56 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ int			get_variable_name(char *input, char *var_name,
 				int *var_len, t_minishell *shell);
 int			copy_variable_value(char *var_name, char *buffer,
 				int *buf_index, t_minishell *shell);
+int			heredoc_quoted(const char *str);
 
 //-----------------HEREDOC---------------------//
 int			parse_heredoc(t_minishell *shell,

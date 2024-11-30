@@ -6,7 +6,7 @@
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:32:11 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/29 01:12:27 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/30 12:01:23 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,15 @@ int	handle_double_quotes(char *input, int i, char *buffer, int *buf_index)
 	if (input[i] != '"')
 		return (error_handler("Minishell: syntax error\n", SYNTAX_ERROR));
 	return (i + 1);
+}
+
+int	heredoc_quoted(const char *str)
+{
+	if (!str)
+		return (0);
+	if (str[0] == '\'' && str[strlen(str) - 1] == '\'')
+		return (1);
+	if (str[0] == '"' && str[strlen(str) - 1] == '"')
+		return (2);
+	return (0);
 }
