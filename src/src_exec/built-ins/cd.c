@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vzurera- <vzurera-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:54:51 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/27 17:35:19 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/30 19:52:51 by vzurera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,9 @@ int	ft_cd(t_minishell *shell, char **arg)
 	dir = special_paths(shell, arg);
 	if (!dir && arg[1] && arg[1][0])
 		dir = arg[1];
-	if (dir)
-		change_dir(shell, dir);
+	if (!dir || change_dir(shell, dir))
+		shell->exit_status = 1;
+	else
+		shell->exit_status = 0;
 	return (0);
 }

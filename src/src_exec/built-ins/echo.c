@@ -3,23 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vzurera- <vzurera-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 17:35:48 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 19:15:33 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/30 19:47:22 by vzurera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	print_nl(int new_line)
+static void	print_nl(t_minishell *shell, int new_line)
 {
 	if (new_line != 0)
 		printf("\n");
 	fflush(stdout);
+	shell->exit_status = 0;
 }
 
-void	ft_echo(char **arg)
+void	ft_echo(t_minishell *shell, char **arg)
 {
 	int		new_line;
 	int		i;
@@ -45,5 +46,5 @@ void	ft_echo(char **arg)
 				printf(" ");
 		}
 	}
-	print_nl(new_line);
+	print_nl(shell, new_line);
 }

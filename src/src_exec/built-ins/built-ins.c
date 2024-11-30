@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built-ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vzurera- <vzurera-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 19:15:09 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/29 21:09:13 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/30 19:48:40 by vzurera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	is_builtin(const char *cmd)
 static int	execute_builtin(t_cmd *cmd, t_minishell *shell)
 {
 	if (ft_strcmp(cmd->arguments[0], "echo") == 0)
-		ft_echo(cmd->arguments);
+		ft_echo(shell, cmd->arguments);
 	else if (ft_strcmp(cmd->arguments[0], "cd") == 0)
 		ft_cd(shell, cmd->arguments);
 	else if (ft_strcmp(cmd->arguments[0], "pwd") == 0)

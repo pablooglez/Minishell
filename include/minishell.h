@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/30 12:30:32 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/30 20:41:49 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,7 @@ int			handle_builtin(t_cmd *cmd, t_minishell *shell);
 int			ft_cd(t_minishell *shell, char **arg);
 
 //------------------BUILTIN-ECHO---------------//
-void		ft_echo(char **arg);
+void		ft_echo(t_minishell *shell, char **arg);
 
 //------------------BUILTIN-ENV----------------//
 void		ft_env(t_minishell *shell);

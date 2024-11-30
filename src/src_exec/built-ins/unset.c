@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: vzurera- <vzurera-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:48 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/29 23:24:28 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/30 19:54:44 by vzurera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,5 @@ void	ft_unset(t_minishell *shell, char **arg)
 			write(2, "unset: not a valid identifier\n", 30);
 		i++;
 	}
+	shell->exit_status = 0;
 }

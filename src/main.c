@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: vzurera- <vzurera-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 20:02:47 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/29 23:25:54 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/11/30 20:18:51 by vzurera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,11 @@ int	main(int argc, char **argv, char **env)
 	{
 		input = readline("\001\033[1;36m\002Minishell ➜ \001\033[0m\002");
 		if (g_signal != 0)
-			g_signal = 0;
+			shell.exit_status = 128 + g_signal;
+		g_signal = 0;
 		if (!input)
 			break ;
 		execute_cmd(&shell, input);
-		if (g_signal != 0)
-		{
-			shell.exit_status = 128 + g_signal;
-			g_signal = 0;
-		}
 	}
 	exit_shell(&shell);
 }

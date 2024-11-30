@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: vzurera- <vzurera-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 01:10:19 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/30 12:05:31 by albelope         ###   ########.fr       */
+/*   Updated: 2024/11/30 19:43:29 by vzurera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,14 @@ static int	create_heredoc(t_redir *redir, t_minishell *shell)
 		free(st_unique);
 		fd = open(redir->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd == -1)
+		{
+			free(delimiter);
 			return (0);
+		}
 		redir->type = INFILE;
 		read_heredoc(fd, delimiter, shell);
 	}
+	free(delimiter);
 	return ((g_signal != 0) * -1);
 }
 

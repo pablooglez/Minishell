@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vzurera- <vzurera-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:00:41 by pabloglez         #+#    #+#             */
-/*   Updated: 2024/11/29 20:11:12 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/30 19:49:53 by vzurera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,5 @@ void	ft_env(t_minishell *shell)
 			printf("%s=%s\n", current_env->key, current_env->value);
 		current_env = current_env->next;
 	}
+	shell->exit_status = 0;
 }
