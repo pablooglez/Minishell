@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vzurera- <vzurera-@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/30 21:19:45 by vzurera-         ###   ########.fr       */
+/*   Updated: 2024/12/01 13:15:57 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,10 +133,7 @@ typedef struct s_minishell
 
 //----------------------------------------------------------------------------//
 
-//--------------FUNCIONES PARSING---------------//
-int			add_argument(char *token, int arg_index, t_cmd *cmd);
-int			contains_invalid_characters(char *input);
-t_cmd		*create_new_command(t_minishell *shell);
+//--------------EXPANSION FUNCTIONS---------------//
 void		expand_tokens(t_cmd *cmd, t_minishell *shell);
 char		*expand_argument(const char *arg, t_minishell *shell);
 char		*expand_entire_input(const char *input, t_minishell *shell);
@@ -144,59 +141,66 @@ char		*expand_env_vars(char *input, char **env);
 char		*expand_string(const char *str, t_minishell *shell);
 char		*expand_var_or_char(const char *str, int *i, t_minishell *shell);
 char		*get_expanded_value(const char *variable, t_minishell *shell);
-int			get_redirection_type(char *token);
-t_token		get_special_token_type(char c);
-int			handle_double_quotes(char *input, int i,
-				char *buffer, int *buf_index);
-int			handle_escape(char *input, int i, char *buffer, int *buf_index);
-char		*handle_escaped_dollar(int *i);
-int			handle_single_quotes(char *input, int i,
-				char *buffer, int *buf_index);
-char		*handle_dollar_sign(const char *str, int *i, t_minishell *shell);
-char		*handle_regular_char(const char *str, int *i);
-int			handle_special_char(char *input, int i, char **tokens, int *j);
+int			expand_variable(char *input, char *buffer, int *buf_index,
+				t_minishell *shell);
+
+//--------------TOKEN FUNCTIONS---------------//
 int			handle_token(char **tokens, t_minishell *shell);
-bool		is_quote(char c);
-int			is_empty_or_whitespace(char *str);
-int			initialize_arguments(char **tokens, int *i, t_cmd *cmd);
-t_cmd		*parse_input(char *input_line, t_minishell *shell);
-void		print_command(t_cmd *cmd);
-int			process_arguments(char **tokens, int *i,
-				t_cmd *cmd, t_minishell *shell);
-int			process_redirection(char **tokens, int *i,
-				t_cmd *cmd, t_minishell *shell);
+t_token		get_special_token_type(char c);
 int			process_token(char *input, char **tokens, int *j,
 				t_minishell *shell);
-int			process_token_pipe(char **tokens, int *i,
-				t_cmd **cmd, t_minishell *shell);
+int			process_token_pipe(char **tokens, int *i, t_cmd **cmd,
+				t_minishell *shell);
 int			process_tokens(char **tokens, t_cmd *current_cmd,
 				t_minishell *shell);
-char		*remove_quotes(const char *arg);
+t_token		classify_special_token(char c);
+int			handle_special_token_cases(char **tokens, char *buffer,
+				int *buf_index,
+				t_minishell *shell);
+int			spec(char **tokens, char *buffer, int *buf_index,
+				t_minishell *shell);
+int			process_input_character(char **tokens, char *buffer, int *buf_index,
+				t_minishell *shell);
+char		**tokenize_input(char *input, t_minishell *shell);
+
+//--------------COMMAND AND REDIRECTION FUNCTIONS---------------//
+t_cmd		*create_new_command(t_minishell *shell);
+int			add_argument(char *token, int arg_index, t_cmd *cmd);
+int			initialize_arguments(char **tokens, int *i, t_cmd *cmd);
+int			process_arguments(char **tokens, int *i, t_cmd *cmd,
+				t_minishell *shell);
+int			process_redirection(char **tokens, int *i, t_cmd *cmd,
+				t_minishell *shell);
+int			get_redirection_type(char *token);
 void		free_command(t_cmd *cmd);
 void		free_command_list(t_cmd *cmd);
 void		free_redirections(t_redir *redir);
 void		free_tokens_parse(char **tokens);
-char		**tokenize_input(char *input, t_minishell *shell);
+
+//--------------ERROR FUNCTIONS---------------//
 void		print_error(const char *msg);
 int			print_error_and_return(const char *msg);
 void		print_error_and_exit(const char *msg, int exit_code);
 int			error_handler(const char *msg, int exit_code);
-int			expand_variable(char *input, char *buffer, int *buf_index,
-				t_minishell *shell);
-t_token		classify_special_token(char c);
-int			handle_special_token_cases(char **tokens, char *buffer,
-				int *buf_index, t_minishell *shell);
-int			spec(char **tokens, char *buffer, int *buf_index,
-				t_minishell *shell);
-int			process_input_character(char **tokens, char *buffer,
-				int *buf_index, t_minishell *shell);
+
+//--------------UTILITY FUNCTIONS---------------//
+int			contains_invalid_characters(char *input);
+int			is_empty_or_whitespace(char *str);
+int			handle_escape(char *input, int i, char *buffer, int *buf_index);
+char		*handle_escaped_dollar(int *i);
+char		*handle_dollar_sign(const char *str, int *i, t_minishell *shell);
+char		*handle_regular_char(const char *str, int *i);
+int			handle_special_char(char *input, int i, char **tokens, int *j);
 int			handle_dollar_case(char *buffer, int *buf_index,
 				t_minishell *shell);
-int			get_variable_name(char *input, char *var_name,
-				int *var_len, t_minishell *shell);
-int			copy_variable_value(char *var_name, char *buffer,
-				int *buf_index, t_minishell *shell);
+int			get_variable_name(char *input, char *var_name, int *var_len,
+				t_minishell *shell);
+int			copy_variable_value(char *var_name, char *buffer, int *buf_index,
+				t_minishell *shell);
+char		*remove_quotes(const char *arg);
 int			heredoc_quoted(const char *str);
+t_cmd		*parse_input(char *input_line, t_minishell *shell);
+void		print_command(t_cmd *cmd);
 
 //-----------------HEREDOC---------------------//
 int			parse_heredoc(t_minishell *shell,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 20:39:51 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/30 00:05:32 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/12/01 13:17:53 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,6 @@ int	process_tokens(char **tokens, t_cmd *current_cmd, t_minishell *shell)
 		}
 	}
 	return (0);
-}
-
-int	handle_escape(char *input, int i, char *buffer, int *buf_index)
-{
-	buffer[(*buf_index)++] = input[i++];
-	if (input[i])
-		buffer[(*buf_index)++] = input[i++];
-	return (i);
 }
 
 int	expand_variable(char *input, char *buffer, int *buf_index,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_char.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 17:49:52 by albelope          #+#    #+#             */
-/*   Updated: 2024/11/30 21:49:00 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/12/01 12:24:18 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	contains_invalid_characters(char *input)
 	}
 	if (in_single_quotes || in_double_quotes)
 	{
-		write (2, "Minishell: unclosed quotes\n", 29);
+		write (2, "Minishell: unclosed quotes\n", 28);
 		return (2);
 	}
 	return (0);
