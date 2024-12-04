@@ -465,7 +465,39 @@ ls -l | wc -l > output.txt | ls > output2.txt
 ├── Makefile
 └── src
     ├── src_exec
+	├── built-ins
+		└── cd.c
+		└── echo.c
+		└── env.c
+		└── exit.c
+		└── export.c
+		└── pwd.c
+		└── unset.c
+		
+	└── env_utils.c
+	└── execute.c
+	└── redirections.c
+	└── utils.c
+	└── utils2.c
     ├── src_parsing
+	└── arguments.c
+	└── command_utils.c
+	└── expand_variables.c
+	└── expand_variables_helpers.c
+	└── expand_variables_utils.c
+	└── free_utils.c
+	└── free_utils_two.c
+	└── handle_char.c
+	└── handle_pipes.c
+	└── handle_quotes.c
+	└── handle_redirections.c
+	└── handle_token.c
+	└── handle_token_utils.c
+	└── heredoc.c
+	└── parse_input.c
+	└── parse_utils.c
+	└── tokenize.c
+	└── tokenize_utils.c
     ├── env_vars.c
     ├── error.c
     ├── free_utils.c
