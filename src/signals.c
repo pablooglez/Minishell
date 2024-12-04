@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: vzurera- <vzurera-@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/07 13:38:50 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/22 20:20:22 by pabloglez        ###   ########.fr       */
+/*   Created: 2024/10/23 19:48:11 by pabloglez         #+#    #+#             */
+/*   Updated: 2024/11/30 21:19:41 by vzurera-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t n)
+void	signal_handler(int sig)
 {
-	size_t	i;
+	g_signal = sig;
+	write (1, "\n", STDOUT_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
-	i = 0;
-	while (src && *(src + i))
-		i++;
-	if (!n)
-		return (i);
-	while (--n && src && *src)
-		*dest++ = *src++;
-	*dest = '\0';
-	return (i);
+int	event_hook_readline(void)
+{
+	return (0);
 }

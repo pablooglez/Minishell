@@ -3,174 +3,274 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 19:22:17 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/15 20:47:56 by pabloglez        ###   ########.fr       */
+/*   Updated: 2024/12/01 13:15:57 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <unistd.h>											// write,open,read,close,access,unlink,getcwd,chdir, isatty, ttyname, ttyslot, ioctl, tcsetattr, tcgetattr
-# include <stdio.h>												//printf
-# include <stdlib.h>											//malloc, free, getenv
-# include <stdbool.h>											//true, false
-# include <fcntl.h>  											//open(), O_RDONLY, O_WRONLY...etc
-# include <limits.h> 											// INT_MAX, CHAR_MAX ...etc
-# include <sys/types.h> 										//fork()
-# include <sys/wait.h> 											//wait(), waitpid(), kill()
-# include <sys/stat.h> 											//stat,lstat, fstat
-# include <signal.h> 											//signal, sigaction, kill
-# include <dirent.h> 											//opendir, readdir, closedir
-# include <term.h> 												//tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
-# include <readline/readline.h> 								// readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay, add_history
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <stdbool.h>
+# include <fcntl.h>
+# include <linux/limits.h>
+# include <limits.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <sys/stat.h>
+# include <signal.h>
+# include <dirent.h>
+# include <term.h>
+# include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
+# include <sys/ioctl.h>
 # include "../Libft/libft.h"
 
 //----------------- COLOR MACROS --------------------------//
-# define WHITE		"\033[0m"									// Código de escape ANSI para color blanco.
-# define BOLD		"\033[1m"									// Código de escape ANSI para texto en negrita.
-# define GREEN		"\033[0;32m"								// Código de escape ANSI para color verde.
-# define RED		"\033[0;31m"								// Código de escape ANSI para color rojo.
-# define BLUE		"\033[0;34m"								// Código de escape ANSI para color azul.
-# define YELLOW		"\033[33m"									// Código de escape ANSI para color amarillo.
-# define MAGENTA	"\033[35m"									// Código de escape ANSI para color magenta.
-# define CYAN		"\033[36m"									// Código de escape ANSI para color cian.
+# define WHITE		"\033[0m"
+# define BOLD		"\033[1m"
+# define GREEN		"\033[0;32m"
+# define RED		"\033[0;31m"
+# define BLUE		"\033[0;34m"
+# define YELLOW		"\033[33m"
+# define MAGENTA	"\033[35m"
+# define CYAN		"\033[36m"
 
 //----------------- GLOBAL VARIABLE -----------------------//
 
-extern volatile sig_atomic_t	g_signal; 						// Variable global que se utiliza para manejar señales de forma segura.
+extern int	g_signal;
 
 //---------------------STRUCTURE --------------------------//
 
-// Enumeración para definir códigos de error
-typedef enum e_error 
+typedef enum e_error
 {
-	MEMORY = 20,												// Error de memoria
-	CMD_NOT_FOUND = 21											// Error de comando no encontrado
+	SUCCESS = 0,
+	GENERAL_ERROR = 1,
+	SYNTAX_ERROR = 2,
+	MEMORY_ERROR = 3,
+	PERMISSION_DENIED = 126,
+	CMD_NOT_FOUND = 127,
+	INVALID_EXIT = 128,
+	EXIT_ERROR = 255,
+	FD_NOT_FOUND = 129,
+	CD_NOT_FOUND = 24,
+	MSG = 100,
 }	t_error;
 
-// Enumeración para definir tipos de tokens
 typedef enum e_token
 {
-	CMD = 0,													// Token para un comando
-	AND = 1,													// Token para el operador lógico AND
-	OR = 2,														// Token para el operador lógico OR
-	PIPE = 3,													// Token para un pipe (|)
-	OPEN_PAR = 5,												// Token para un paréntesis abierto
-	CLOSE_PAR = 6,												// Token para un paréntesis cerrado
-	REDIR = 7,													// Token para redirección
-	UNKNOWN = -1,												// Token desconocido
+	CMD = 0,
+	AND = 1,
+	OR = 2,
+	PIPE = 3,
+	REDIR = 4,
+	OPEN_PAR = 5,
+	CLOSE_PAR = 6,
+	END_OF_INPUT = 7,
+	UNKNOWN = -1,
 }	t_token;
 
-// Enumeración para definir tipos de redirección
 typedef enum e_type_redir
 {
-	INFILE = 10,												// Redirección de archivo de entrada (<)
-	APPEND = 11,												// Redirección con append (>>)
-	OUTFILE = 12,												// Redirección de archivo de salida (>)
-	HEREDOC = 13,												// Redirección heredoc (<<)
-	NOT_REDIR = -1,												// No es una redirección
+	INFILE = 10,
+	APPEND = 11,
+	OUTFILE = 12,
+	HEREDOC = 13,
+	NOT_REDIR = -1,
 }	t_type_redir;
 
-// Estructura para manejar redirecciones
 typedef struct s_redir
 {
-	enum e_type_redir		type;								// Tipo de redirección (<, >, >>, <<)
-	char					*file;								// Ruta del archivo a redirigir
-	int						fd;									// Descriptor de archivo
-	struct s_redir			*next;								// Puntero al siguiente elemento en la lista
-	struct s_redir			*prev;								// Puntero al elemento anterior en la lista
+	enum e_type_redir		type;
+	char					*file;
+	int						fd;
+	struct s_redir			*next;
+	struct s_redir			*prev;
 }	t_redir;
 
-// Estructura para comandos y sus atributos
 typedef struct s_cmd
 {
-	enum e_token	type;										// Tipo de token (comando, operador, etc.)
-	char			*path;										// Ruta del comando ejecutable (ej: "/bin/ls")
-	char			**arguments;								// Lista de argumentos del comando
-	int				intfd;										// Descriptor de archivo para entrada
-	int				outfd;										// Descriptor de archivo para salida
-	int				pipe[2];									// Descriptor de archivo para pipes
-	struct s_redir	*redir;										// Puntero a la estructura de redirecciones
-	struct s_cmd	*next;										// Puntero al siguiente comando (si hay pipes)
-	struct s_cmd	*prev;										// Puntero al comando anterior (si hay pipes)
+	enum e_token	type;
+	char			*path;
+	char			**arguments;
+	int				intfd;
+	int				outfd;
+	int				pid;
+	int				pipe[2];
+	struct s_redir	*redir;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
 }	t_cmd;
 
-// Estructura para las variables de entorno
 typedef struct s_env
 {
-	char			*key;										// Nombre de la variable de entorno (ej: "PATH")
-	char			*value;										// Valor de la variable de entorno
-	struct s_env	*next;										// Puntero al siguiente nodo de la lista de variables de entorno
-	struct s_env	*prev;										// Puntero al nodo anterior de la lista de variables de entorno
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+	struct s_env	*prev;
 }	t_env;
 
-// Estructura principal del minishell
 typedef struct s_minishell
 {
-	int				exit_status;								// Último estado de salida de un comando ejecutado
-	int				original_stdin;								// Descriptor de archivo original de la entrada estándar
-	int				original_stdout;							// Descriptor de archivo original de la salida estándar
-	int				running;									// Estado de ejecución del shell
-	char			**env;										// Copia del entorno del sistema
-	struct s_env	*env_vars;									// Lista dinámica de variables de entorno
-	struct s_cmd	*tokens;									// Lista de comandos o tokens actuales
+	int				exit_status;
+	int				original_stdin;
+	int				original_stdout;
+	bool			is_child;
+	char			**env;
+	struct s_env	*env_vars;
+	struct s_cmd	*tokens;
+	char			*input;
+	int				i;
+	int				j;
+	int				e;
 }	t_minishell;
 
-//-------------FUNCIONES MAIN------------------//
-void		exit_shell(t_minishell *shell);						// Función para salir del shell limpiamente.
-void		init_minishell(t_minishell *shell, char **env);		// Inicializa el shell con las variables de entorno.
-int			add_history(const char *);							//Añade un comando al historial
+//----------------------------------------------------------------------------//
 
-//---------------------ENV-------------------------//
-void		*safe_malloc(t_minishell *shell, size_t size);		// Asigna memoria de forma segura, manejando errores.
-void		create_env_vars(t_minishell *shell, char **env);	// Crea una lista de variables de entorno desde el entorno del sistema.
+//--------------EXPANSION FUNCTIONS---------------//
+void		expand_tokens(t_cmd *cmd, t_minishell *shell);
+char		*expand_argument(const char *arg, t_minishell *shell);
+char		*expand_entire_input(const char *input, t_minishell *shell);
+char		*expand_env_vars(char *input, char **env);
+char		*expand_string(const char *str, t_minishell *shell);
+char		*expand_var_or_char(const char *str, int *i, t_minishell *shell);
+char		*get_expanded_value(const char *variable, t_minishell *shell);
+int			expand_variable(char *input, char *buffer, int *buf_index,
+				t_minishell *shell);
+
+//--------------TOKEN FUNCTIONS---------------//
+int			handle_token(char **tokens, t_minishell *shell);
+t_token		get_special_token_type(char c);
+int			process_token(char *input, char **tokens, int *j,
+				t_minishell *shell);
+int			process_token_pipe(char **tokens, int *i, t_cmd **cmd,
+				t_minishell *shell);
+int			process_tokens(char **tokens, t_cmd *current_cmd,
+				t_minishell *shell);
+t_token		classify_special_token(char c);
+int			handle_special_token_cases(char **tokens, char *buffer,
+				int *buf_index,
+				t_minishell *shell);
+int			spec(char **tokens, char *buffer, int *buf_index,
+				t_minishell *shell);
+int			process_input_character(char **tokens, char *buffer, int *buf_index,
+				t_minishell *shell);
+char		**tokenize_input(char *input, t_minishell *shell);
+
+//--------------COMMAND AND REDIRECTION FUNCTIONS---------------//
+t_cmd		*create_new_command(t_minishell *shell);
+int			add_argument(char *token, int arg_index, t_cmd *cmd);
+int			initialize_arguments(char **tokens, int *i, t_cmd *cmd);
+int			process_arguments(char **tokens, int *i, t_cmd *cmd,
+				t_minishell *shell);
+int			process_redirection(char **tokens, int *i, t_cmd *cmd,
+				t_minishell *shell);
+int			get_redirection_type(char *token);
+void		free_command(t_cmd *cmd);
+void		free_command_list(t_cmd *cmd);
+void		free_redirections(t_redir *redir);
+void		free_tokens_parse(char **tokens);
+
+//--------------ERROR FUNCTIONS---------------//
+void		print_error(const char *msg);
+int			print_error_and_return(const char *msg);
+void		print_error_and_exit(const char *msg, int exit_code);
+int			error_handler(const char *msg, int exit_code);
+
+//--------------UTILITY FUNCTIONS---------------//
+int			contains_invalid_characters(char *input);
+int			is_empty_or_whitespace(char *str);
+int			handle_escape(char *input, int i, char *buffer, int *buf_index);
+char		*handle_escaped_dollar(int *i);
+char		*handle_dollar_sign(const char *str, int *i, t_minishell *shell);
+char		*handle_regular_char(const char *str, int *i);
+int			handle_special_char(char *input, int i, char **tokens, int *j);
+int			handle_dollar_case(char *buffer, int *buf_index,
+				t_minishell *shell);
+int			get_variable_name(char *input, char *var_name, int *var_len,
+				t_minishell *shell);
+int			copy_variable_value(char *var_name, char *buffer, int *buf_index,
+				t_minishell *shell);
+char		*remove_quotes(const char *arg);
+int			heredoc_quoted(const char *str);
+t_cmd		*parse_input(char *input_line, t_minishell *shell);
+void		print_command(t_cmd *cmd);
+
+//-----------------HEREDOC---------------------//
+int			parse_heredoc(t_minishell *shell,
+				char **tokens, int *i, t_cmd *cmd);
+void		delete_heredoc(t_minishell *shell);
+
+//---------------------------------------------------------------------------//
+
+//---------------------ENV_VARS-------------------------//
+void		*safe_malloc(t_minishell *shell, size_t size);
+void		create_env_vars(t_minishell *shell, char **env);
 
 //----------------------ERROR-----------------------//
-void		fatal(int code, char *value);						// Maneja errores críticos que requieren la salida inmediata del shell.
-void		ft_error(t_minishell *shell, int code, char * value, int should_exit); // Maneja errores y opcionalmente termina la ejecución.
+int			ft_error(t_minishell *shell, int code,
+				char *value, int should_exit);
 
 //-----------------FREE_UTILS---------------------//
-void		*free_tokens(t_cmd **tokens);						// Libera la memoria asociada a los tokens.
-void		free_array(char ***array);							// Libera la memoria de un array de strings.
-void		free_redir(t_redir **redir);						// Libera la memoria asociada a las redirecciones.
-void		*free_shell(t_minishell **shell);					// Libera toda la memoria del shell.
-void		free_env_list(t_env	**l_env);						// Libera la memoria de la lista de variables de entorno.
+void		free_array(char ***array);
+void		*free_shell(t_minishell **shell);
+void		*free_tokens(t_cmd **tokens);
 
+//-----------------SIGNALS---------------------//
+void		signal_handler(int signal);
+int			event_hook_readline(void);
 //-------------------UTILS---------------------//
 char		*ft_strncpy(char *dest, const char *src, size_t n);
 char		*ft_strndup(const char *s, size_t n);
 
-//--------------FUNCIONES PARSING---------------//
-t_cmd		*parse_input(char *input_line, t_minishell *shell); // Función para separar la línea de entrada en tokens (comandos y operadores).
+//-------------------ENV_UTILS-------------//
+char		**env_vars_to_array(t_env *env_vars);
 
-//--------------FUNCIONES EXECUTION-------------//
-int			heardoc(t_minishell *shell);						// Implementación del heredoc para redirección.
-int			execute_command(t_minishell *shell);				// Ejecuta un comando individual.
-int			handle_builtin(t_cmd *cmd, t_minishell *shell);		// Maneja la ejecución de comandos internos (builtins).
-void		handle_redirection(t_cmd *cmd);						// Maneja las redirecciones de entrada y salida.
-void		handle_pipes(t_cmd *cmd);							// Maneja la ejecución de comandos conectados por pipes.
-void		signal_handler(int signal);							// Función para manejar señales del sistema como Ctrl+C o Ctrl+D.
+//--------------EXECUTE-------------//
+void		execute(t_minishell *shell);
 
-//--------------BUILT-INS----------------------//
-//------------------CD---------------//
+//--------------REDIRECTIONS-------------//
+int			handle_pipe(t_cmd *cmd);
+int			handle_redirection(t_minishell *shell, t_redir *redir, int fd);
+void		safe_dup2(int fd1, int fd2);
+void		safe_close(int fd);
+
+//---------------------UTILS-------------------//
+char		*check_absolute_or_relative_path(char *cmd);
 char		*get_env_value(t_env *env_list, char *key);
 void		update_env_var(t_env **env_list, char *key, char *value);
-void		ft_cd(t_minishell *shell, char **arg);
-//------------------ECHO---------------//
-void		ft_echo(t_minishell *shell, char **arg);
-//------------------PWD----------------//
-void		ft_pwd(t_minishell *shell);
-//------------------EXPORT-------------//
-void		ft_export(t_minishell *shell, char **arg);
-//------------------UNSET--------------//
-void		ft_unset(t_minishell *shell, char **arg);
-//------------------ENV----------------//
-void		ft_env(t_minishell *shell);
-//------------------EXIT---------------//
-void		ft_exit(t_minishell *shell);
+int			is_valid_identifier(const char *str);
 
+//---------------------UTILS2-------------------//
+char		*get_command_path(char *cmd, t_minishell *shell);
+
+//------------------BUILTIN-INS---------------//
+int			handle_builtin(t_cmd *cmd, t_minishell *shell);
+
+//------------------BUILTIN-CD---------------//
+int			ft_cd(t_minishell *shell, char **arg);
+
+//------------------BUILTIN-ECHO---------------//
+void		ft_echo(t_minishell *shell, char **arg);
+
+//------------------BUILTIN-ENV----------------//
+void		ft_env(t_minishell *shell);
+
+//------------------BUILTIN-EXIT---------------//
+void		ft_exit(t_minishell *shell, char **arg);
+
+//------------------BUILTIN-EXPORT-------------//
+int			ft_export(t_minishell *shell, char **arg);
+
+//------------------BUILTIN-PWD----------------//
+int			ft_pwd(t_minishell *shell);
+
+//------------------BUILTIN-UNSET--------------//
+void		ft_unset(t_minishell *shell, char **arg);
 #endif

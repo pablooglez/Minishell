@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/07 13:38:50 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/22 20:20:22 by pabloglez        ###   ########.fr       */
+/*   Created: 2024/11/11 19:28:02 by albelope          #+#    #+#             */
+/*   Updated: 2024/11/28 19:30:37 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t n)
+int	is_empty_or_whitespace(char *str)
 {
-	size_t	i;
-
-	i = 0;
-	while (src && *(src + i))
-		i++;
-	if (!n)
-		return (i);
-	while (--n && src && *src)
-		*dest++ = *src++;
-	*dest = '\0';
-	return (i);
+	if (!str)
+		return (1);
+	while (*str)
+	{
+		if (*str != ' ')
+			return (0);
+		str++;
+	}
+	return (1);
 }

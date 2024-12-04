@@ -6,7 +6,7 @@
 /*   By: pablogon <pablogon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 16:56:42 by pablogon          #+#    #+#             */
-/*   Updated: 2024/01/09 18:14:51 by pablogon         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:51:50 by pablogon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char	*ft_strdup(char const *s1);
 /* part II */
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *str1, char const *str2);
+char	*ft_strjoin2(const char *str1, const char *sep, const char *str2);
 char	*ft_strtrim(char const *str1, char const *set);
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
@@ -60,6 +61,9 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
+
+/* Extras */
+int		ft_strcmp(const char *s1, const char *s2);
 
 /* bonus */
 t_list	*ft_lstnew(void *content);

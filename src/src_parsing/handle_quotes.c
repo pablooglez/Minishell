@@ -1,28 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   handle_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pabloglez <pabloglez@student.42.fr>        +#+  +:+       +#+        */
+/*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/07 13:38:50 by pablogon          #+#    #+#             */
-/*   Updated: 2024/10/22 20:20:22 by pabloglez        ###   ########.fr       */
+/*   Created: 2024/10/12 20:32:11 by albelope          #+#    #+#             */
+/*   Updated: 2024/12/01 13:00:27 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t n)
+int	heredoc_quoted(const char *str)
 {
-	size_t	i;
-
-	i = 0;
-	while (src && *(src + i))
-		i++;
-	if (!n)
-		return (i);
-	while (--n && src && *src)
-		*dest++ = *src++;
-	*dest = '\0';
-	return (i);
+	if (!str)
+		return (0);
+	if (str[0] == '\'' && str[strlen(str) - 1] == '\'')
+		return (1);
+	if (str[0] == '"' && str[strlen(str) - 1] == '"')
+		return (2);
+	return (0);
 }

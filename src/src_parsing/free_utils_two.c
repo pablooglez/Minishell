@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   free_utils_two.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: albelope <albelope@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/11 21:58:29 by pablogon          #+#    #+#             */
-/*   Updated: 2024/11/01 21:32:12 by albelope         ###   ########.fr       */
+/*   Created: 2024/11/29 23:02:16 by albelope          #+#    #+#             */
+/*   Updated: 2024/12/01 12:58:56 by albelope         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strdup(const char *s1)
+void	print_error(const char *msg)
 {
-	char	*ret;
-	size_t	len;
+	if (msg)
+		write(2, msg, ft_strlen(msg));
+}
 
-	if (!s1)
-		return (0);
-	len = ft_strlen(s1);
-	ret = malloc(sizeof(char) * (len + 1));
-	if (!ret)
-		return (0);
-	ft_strlcpy(ret, s1, len + 1);
-	return (ret);
+int	error_handler(const char *msg, int exit_code)
+{
+	if (msg)
+		write(2, msg, ft_strlen(msg));
+	if (exit_code >= 0)
+		exit(exit_code);
+	return (exit_code);
 }
